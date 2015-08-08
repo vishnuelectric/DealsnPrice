@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_color"
+    android:orientation="vertical" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+  <include layout="@layout/header"/>
+    </HorizontalScrollView>
+	<!-- <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@color/black"
+        /> -->
+<LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            >
+            <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+				android:orientation="horizontal"
+				android:background="@drawable/autocomplete_border"      
+				android:layout_marginBottom="20dp" 
+				android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"         
+                >
+            <EditText 
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:id="@+id/shop_search"
+            android:background="#ebebeb"
+            android:hint="Search"
+            android:paddingLeft="5dp"
+            android:textColor="@color/search_text_color"
+            
+            
+            />
+            <ImageView 
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/go_btn"
+                android:scaleType="fitXY"
+                />
+            
+          </LinearLayout>  
+            
+            
+        </LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+	    android:layout_marginTop="5dp"
+	    android:orientation="vertical"
+	    android:background="@color/bg_color"
+	    >
+	<ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    
+	    >
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        >
+            <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/white_without_border"
+                android:orientation="vertical"
+                >
+	        
+            <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="CATEGORY"
+                    android:textSize="14dp"
+                    android:layout_margin="5dp"
+                    android:textColor="#444444"
+                    
+                    />
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all"
+                    android:id="@+id/view_all_category"
+                    android:layout_margin="5dp"
+                    android:visibility="gone"
+                    />
+               
+                
+            </LinearLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/deal_line_color"
+                android:layout_marginBottom="2dp"
+                
+                />
+	        
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/category_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+	        
+	        
+	        </LinearLayout>   
+	        <LinearLayout 
+	            android:layout_width="fill_parent"
+	            android:layout_height="0dp"
+	            android:layout_weight="1"
+	            android:orientation="vertical"
+	            android:background="@drawable/steal_rounded_shape"
+	            android:layout_margin="5dp"
+	            >
+            
+	    <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:id="@+id/steal_deal_layout"
+                >
+	    
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+              
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="STEAL DEALS"
+                    android:textSize="14dp"
+                    android:textColor="#444444"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    />
+                 <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all_btn"
+                    android:id="@+id/view_all_steal_deal"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    />
+                
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/deal_line_color"
+                />
+	        
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/steal_deal_list"
+                    android:layout_width="match_parent"
+                    android:background="@color/steal_bg_color"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="200dp" />
+	        
+	        </LinearLayout>
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:id="@+id/most_viewed_deal_layout"
+                >
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp"
+                    android:text="MOST VIEWED DEALS"
+                    android:textSize="14dp"
+                    android:textColor="#444444"
+                    android:layout_margin="5dp"
+                    android:gravity="center_vertical"
+                    />
+                 <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all_btn"
+                    android:id="@+id/most_view_all_deal"
+                    android:layout_marginRight="8dp"
+                    />
+                
+            </LinearLayout>
+	        <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/deal_line_color"
+                />
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/most_viewed_deal_list"
+                    android:background="@color/steal_bg_color"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="200dp" />
+	        </LinearLayout>
+	        
+	           <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:id="@+id/hot_coupon_layout"
+                >
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp"
+                    android:text="HOT COUPONS"
+                    android:textSize="14dp"
+                    android:textColor="#444444"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:gravity="center_vertical"
+                    />
+                 <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all_btn"
+                    android:id="@+id/view_all_hot_coupon"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="3dp"
+                    />
+                
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/deal_line_color"
+                />
+	        
+	        
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/hot_coupon_list"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="200dp" />
+	        </LinearLayout>
+	        
+	           
+	           <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:id="@+id/most_viewed_coupon_layout"
+                >
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp"
+                    android:text="MOST VIEWED COUPONS"
+                    android:textSize="14dp"
+                    android:textColor="#444444"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:gravity="center_vertical"
+                    />
+                 <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all_btn"
+                    android:id="@+id/most_view_all_coupon"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="3dp"
+                    />
+                
+            </LinearLayout>
+			<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/deal_line_color"
+			    />	        
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/most_coupon_list"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="200dp" />
+	        </LinearLayout>
+	        
+	         
+	        
+	        
+	       
+	       <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:id="@+id/top_store_layout"
+                android:visibility="visible"
+                >
+	        <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp"
+                    android:text="TOP STORES"
+                    android:textSize="16dp"
+                    android:textColor="#444444"
+                    android:layout_margin="5dp"
+                    android:gravity="center_vertical"
+                    />
+                 <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_all_btn"
+                    android:id="@+id/view_all_store"
+                    android:layout_marginRight="8dp"
+                    />
+                
+            </LinearLayout>
+	        <View
+			    android:layout_width="fill_parent"
+			    android:layout_height="1dp"
+			    android:background="@color/deal_line_color"
+			    />
+	        <com.meetme.android.horizontallistview.HorizontalListView
+                    android:id="@+id/top_store_list"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="200dp" />
+	        </LinearLayout>
+	            
+	           </LinearLayout>
+	        
+	        
+	        </LinearLayout>
+	        
+	</ScrollView>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:id="@+id/footer_layout"
+	    ></LinearLayout>
+	
+
+</LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_dnp_dealnprice.xml -->

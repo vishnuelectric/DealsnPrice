@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color" >
+    <HorizontalScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:id="@+id/horizontal_id"
+        android:scrollbars="none"
+        >
+        <include layout="@layout/header"/>
+      </HorizontalScrollView>
+    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+	    android:orientation="vertical"
+	    >
+	
+	<ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    >
+	
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/pure_white_rounded"
+	    android:orientation="vertical" >
+            
+	   <LinearLayout 
+	       android:layout_width="fill_parent"
+	       android:layout_height="50dp"
+	       android:orientation="vertical"
+	       android:background="@color/header_bg_color"
+	       android:gravity="center_vertical"
+	       >
+	       <TextView 
+	           android:layout_width="fill_parent"
+	           android:layout_height="wrap_content"
+	           android:text="MOBILE RECHARGE"
+	           android:textSize="20dp"
+	           android:textColor="@color/white"
+	           android:layout_marginLeft="5dp"
+	           android:gravity="center_vertical"
+	           />
+	   </LinearLayout> 
+
+	   <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/pure_white_rounded"
+	    android:orientation="vertical" >
+
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginTop="15dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/mobile_number"
+	            android:background="#00000000"
+	            android:paddingLeft="5dp"
+	             android:textSize="12dp"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:inputType="phone"
+	            android:id="@+id/mobile_number"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:background="@drawable/white_border"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:orientation="horizontal"
+	        android:gravity="center"
+	        android:id="@+id/operator_layout"
+	        >
+	        <!-- <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/bank_name"
+	            android:background="#00000000"
+	            android:paddingLeft="5dp"
+	            android:singleLine="true"
+	             android:textSize="12dp"
+	            android:textColor="@color/gray"
+	            android:id="@+id/bank_name"
+	            /> -->
+	            <TextView 
+	                android:layout_width="0dp"
+	                android:layout_weight="1"
+	                android:layout_height="wrap_content"
+	                android:text="Operator"
+	                android:textSize="12dp"
+	                android:gravity="center_vertical"
+	                android:layout_marginLeft="5dp"
+	                android:textColor="@color/gray"
+	                android:id="@+id/operator"
+	                />
+	            <ImageView 
+	                android:layout_width="20dp"
+	                android:layout_height="20dp"
+	                android:src="@drawable/drop_arrow"
+	                android:layout_marginRight="7dp"
+	                />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="horizontal"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:gravity="center"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:id="@+id/regional_layout"
+	        >
+	        <TextView 
+	                android:layout_width="0dp"
+	                android:layout_weight="1"
+	                android:layout_height="wrap_content"
+	                android:text="Circle"
+	                android:textSize="12dp"
+	                android:textColor="@color/gray"
+	                android:gravity="center_vertical"
+	                android:layout_marginLeft="5dp"
+	                android:id="@+id/regional"
+	                />
+	            <ImageView 
+	                android:layout_width="20dp"
+	                android:layout_height="20dp"
+	                android:src="@drawable/drop_arrow"
+	                android:layout_marginRight="7dp"
+	                />
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/amount"
+	            android:background="#00000000"
+	            android:paddingLeft="5dp"
+	            android:inputType="number"
+	             android:textSize="12dp"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:id="@+id/amount"
+	            />
+	        
+	    </LinearLayout>
+	    
+	    
+	    
+	    <TextView 
+	        android:layout_width="140dp"
+	        android:layout_height="40dp"
+	        android:text="@string/recharge"
+	        android:background="@drawable/profile_save_changes"
+	        android:textSize="16dp"
+	        android:textColor="@color/white"
+	        android:gravity="center"
+	        android:layout_gravity="center"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:id="@+id/recharge"
+	        />
+	    
+	    
+	    
+
+	    
+	    
+	</LinearLayout>
+	</LinearLayout>
+	</ScrollView>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/footer_layout"
+	    android:orientation="horizontal"
+	    ></LinearLayout>
+    
+
+</LinearLayout>

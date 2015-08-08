@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <gradient 
+        android:startColor="@color/signin_bg"
+        android:centerColor="@color/signin_bg"
+        android:endColor="@color/signin_bg"
+        android:angle="90"/>
+    <corners 
+        android:radius="10dp"/>
+
+
+</shape>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/drawable/signin_rounded_shape.xml -->

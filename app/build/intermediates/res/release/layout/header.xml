@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/header_height"
+    android:background="@color/tab_header_bg"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/offer_layout"
+        android:layout_width="@dimen/header_width"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="Offers"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="@dimen/header_height"
+        android:background="@drawable/gap_line" />
+
+    <LinearLayout
+        android:id="@+id/shopearn_layout"
+        android:layout_width="@dimen/header_width"
+        android:layout_height="@dimen/header_height"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/shopearn_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:text="Shop &amp; Earn"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="@dimen/header_height"
+        android:background="@drawable/gap_line" />
+
+    <LinearLayout
+        android:id="@+id/pricecomparison_layout"
+        android:layout_width="@dimen/header_width"
+        android:layout_height="@dimen/header_height"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/pricecomparison_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:text="Price Comparison"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="@dimen/header_height"
+        android:background="@drawable/gap_line" />
+
+    <LinearLayout
+        android:id="@+id/dealprice_layout"
+        android:layout_width="@dimen/header_width"
+        android:layout_height="@dimen/header_height"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dealprice_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:text="Deals &amp; Coupons"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="@dimen/header_height"
+        android:background="@drawable/gap_line" />
+
+    <LinearLayout
+        android:id="@+id/referearn_layout"
+        android:layout_width="@dimen/header_width"
+        android:layout_height="@dimen/header_height"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/referearn_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:text="Refer &amp; Earn"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/header.xml -->

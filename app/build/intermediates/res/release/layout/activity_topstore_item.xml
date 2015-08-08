@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+    <LinearLayout 
+        android:layout_width="140dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:background="@drawable/white_rounded_shape"
+        android:gravity="center"
+        android:layout_margin="4dp"
+        >
+        <ImageView 
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_launcher"
+            android:id="@+id/store_image"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+			android:background="@color/deal_coupon_view_color"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100 Deals,"
+            android:textSize="10dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="4dp"
+            android:id="@+id/deal_count"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="155 Coupons"
+            android:textSize="10dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="4dp"
+			android:id="@+id/coupon_count"            
+            />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            
+            >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upto "
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10%"
+                android:textSize="10dp"
+                android:textColor="#7ab319"
+                android:id="@+id/cashback_amount"
+                />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" CashBack"
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                />
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    
+
+</LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_topstore_item.xml -->

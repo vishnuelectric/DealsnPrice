@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DealnPrice</string>
+    <!-- <string name="app_id1">946706258674050</string> -->
+    <string name="app_id">1449536222015681</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="terms_of_use">By Registering account or signing in you agree to our Terms of use</string>
+    <string name="InviteFriends">Invite Friends</string>
+    <string name="About">About</string>
+    <string name="FAQ">FAQ</string>
+    <string name="refer_code">Your Refer Code is</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="Logout">Logout</string>
+    <string name="forgotPassword">Forgot Password</string>
+    <string name="selectCountrySpinner">select country</string>
+    <string name="network_error_message">Oops! You are disconnected from Internet!</string>
+    <string name="required_parameter_message">Please fill required parameter</string>
+    <string name="user_email_message">Please Enter Email Address</string>
+    <string name="user_name_message">Please Enter User Name</string>
+    <string name="user_password_message">Please enter Password</string>
+    <string name="user_confirm_password_message">Please enter Confirm Password</string>
+    <string name="mobile_number_message">Please enter mobile number</string>
+    <string name="valid_email">Please enter valid Email Address</string>
+    <string name="valid_account_number">Please Enter Valid Account Number</string>
+    <string name="valid_ifsc">Please Enter Valid Ifsc Code</string>
+    <string name="valid_account_holder">Please Enter Valid Account Account Holder Name</string>
+    <string name="valid_bank_name">Please Enter Valid Bank Name</string>
+    <string name="valid_branch_name">Please Enter Valid Branch Name</string>
+    <string name="valid_mobile_number">Please enter Valid Number</string>
+    <string name="country_name_message">Please select Country</string>
+    <string name="server_error_message">Please Try Again</string>
+    <string name="required_parameter_forgot">Please Enter Required Parameter</string>
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="get_password_text">Get Password</string>
+    <string name="unlimited_talktime">Earn Unlimited Talk</string>
+    <string name="share_talktime_offer">Earn Rs.2 per App name install</string>
+    <string name="share_earn">More you share, More you earn!</string>
+    <string name="invite_friends">Invite friends to earn free recharge.You will get Rs.5 per friend.</string>
+    <string name="offers">OFFERS</string>
+    <string name="install">Install</string>
+    <string name="invite">INVITE</string>
+    <string name="invite_earn_page_step1">Invite</string>
+    <string name="invite_earn_page_step2">Earn Rs.5/Friend joined</string>
+    <string name="invite_earn_page_step3">Engage</string>
+    <string name="engage_des">Tell them to install app from listed apps</string>
+    <string name="redeem">Redeem</string>
+    <string name="redeem_des">Redeem Your earned talktime</string>
+    <string name="free_sms">Free SMS</string>
+    <string name="whats_app">Whatsapp</string>
+    <string name="email">Email</string>
+    <string name="share_other">Share Via Other</string>
+    <string name="others">Others</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_using">Or Login to using</string>
+    <string name="signup_using">Or Sign Up to using</string>
+    <string name="or">Or</string>
+    <string name="share_link">Share this link on some technology</string>
+    <string name="amount_warning">Please Enter Amount</string>
+    <string name="operator_warning">Please Select Operator</string>
+    <string name="regional_warning">Please Select State</string>
+
+    <!--
+         <string-array name="list_drawer_nav">
+        <item>Overview</item>
+        <item>Earn Coin</item>
+        <item>Redeem Coin</item>
+        <item>Refferels</item>
+        <item>My Accounts</item>
+    </string-array>
+    -->
+    <string-array name="list_drawer_nav">
+        <item>EARN</item>
+        <item>Offers</item>
+        <item>Shop Earn</item>
+        <item>Refer Earn</item>
+        <item>SHOPPING SERVICES</item>
+        <item>Price Comparison</item>
+        <item>Deals Coupons</item>
+        <item>REDEEM</item>
+        <item>Recharge</item>
+        <item>Bank Transfer</item>
+        <item>MY ACCOUNT</item>
+        <item>TAKE A TOUR</item>
+        <item>CONTACT US</item>
+        <item>RATE US</item>
+        <item>LOG OUT</item>
+    </string-array>
+    <string-array name="nav_drawer_icons">
+        <item>@drawable/side_offer_icon</item>
+        <item>@drawable/side_shop_n_earn_icon</item>
+        <item>@drawable/side_refer_n_earn_icon</item>
+        <item>@drawable/side_price_comparison_icon</item>
+        <item>@drawable/side_deals_n_coupons</item>
+        <item>@drawable/side_recharge_icon</item>
+        <item>@drawable/side_bank_transfer_icon</item>
+    </string-array>
+    <string-array name="take_a_tour_icon">
+        <item>@drawable/display_1</item>
+        <item>@drawable/display_2</item>
+        <item>@drawable/display_3</item>
+    </string-array>
+    <string-array name="duration_array">
+        <item>1 day</item>
+        <item>2 days</item>
+        <item>3 days</item>
+        <item>4 days</item>
+        <item>5 days</item>
+        <item>6 days</item>
+        <item>7 days</item>
+        <item>8 days</item>
+        <item>9 days</item>
+        <item>10 days</item>
+        <item>11 days</item>
+        <item>12 days</item>
+        <item>13 days</item>
+        <item>14 days</item>
+        <item>15 days</item>
+        <item>16 days</item>
+        <item>17 days</item>
+        <item>18 days</item>
+        <item>19 days</item>
+        <item>20 days</item>
+        <item>21 days</item>
+        <item>22 days</item>
+        <item>23 days</item>
+        <item>24 days</item>
+        <item>25 days</item>
+        <item>26 days</item>
+        <item>27 days</item>
+        <item>28 days</item>
+        <item>29 days</item>
+        <item>30 days</item>
+    </string-array>
+
+    <string name="target_price_waring">Please Enter Target Price</string>
+    <string name="select_duration_warning">Please Select Duration</string>
+    <string name="valid_number_warning">Please Enter Valid Mobile Number</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="payment_setting">Payment Settings</string>
+    <string name="change_password">Change Password</string>
+    <string name="first_name">First Name</string>
+    <string name="email_hint">Email</string>
+    <string name="mobile">Mobile</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="account_holder_name">Account Holder Name</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="branch_name">Branch Name</string>
+    <string name="account_number">Account Number</string>
+    <string name="ifsc_code">IFSC Code</string>
+    <string name="pan_no">PAN No (optional)</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="update_details">Transfer</string>
+    <string name="bank_detail">BANK DETAILS</string>
+    <string name="mismatch_passsword">Mismatch Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="profile">PROFILE</string>
+    <string name="favourite">FAVOURITE</string>
+    <string name="home">HOME</string>
+    <string name="facebook">Facebook</string>
+    <string name="google_plus">Google +</string>
+    <string name="twitter">Twitter</string>
+    <string name="notification">NOTIFICATION</string>
+    <string name="account_holder_name_warning">Please Enter Account Holder Name</string>
+    <string name="bank_name_warning">Please Enter Bank Name</string>
+    <string name="branch_name_warning">Please Enter Branch Name</string>
+    <string name="account_number_warning">Please Enter Account Number</string>
+    <string name="ifsc_code_warning">Please Enter IFSC Code</string>
+    <string name="first_name_warning">Please Enter Your Name</string>
+    <string name="first_name_validation">Please Enter Valid Name</string>
+    <string name="email_warning">Please Enter Email Address</string>
+    <string name="email_validation">Please enter Valid Email</string>
+    <string name="mobile_warning">Please Enter Mobile Number</string>
+    <string name="mobile_number_valid_warning">Please Enter Valid Mobile Number</string>
+    <string name="password_warning">Please Enter Password</string>
+    <string name="valid_email_warning">Please Enter Valid Email Address</string>
+    <string name="valid_mobile_warning">Please Enter Valid Mobile Number</string>
+    <string name="old_password_warning">Plese Enter Old Password</string>
+    <string name="minimum_password_warning">Please Enter Password at least 6 character</string>
+    <string name="new_password_warning">Please Enter New Password</string>
+    <string name="confirm_password_warning">Please Enter Confirm Password</string>
+    <string name="mismatch_password_warning">Mismatch Password</string>
+    <string name="alert">Alert</string>
+    <string name="share">Share</string>
+    <string name="sellers">SELLERS</string>
+    <string name="specification">SPECIFICATIONS</string>
+    <string name="alternative">ALTERNATIVES</string>
+    <string name="drop_alert">PRICE DROP ALERT</string>
+    <string name="save_alert">Save Alert</string>
+    <string name="target_price">Target Price</string>
+    <string name="duration">Duration</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="operator">Operator</string>
+    <string name="circle">Circle</string>
+    <string name="amount">Amount</string>
+    <string name="recharge">Recharge</string>
+    <string name="brand">Brand</string>
+    <string name="skip"><u>Skip</u></string>
+    <string name="next"><u>Next</u></string>
+    <string name="model">Model</string>
+    <string name="pending_cashback_own">Pending Cashback (Own):</string>
+    <string name="pending_cashback_referal">Pending Cashback (Referal):</string>
+    <string name="total_pending_cashback">Total Pending Cashback : </string>
+    <string name="approved_cashback_own">Approved Cashback (Own):</string>
+    <string name="approved_cashback_referal">Approved Cashback (Referal):</string>
+    <string name="total_approved_cashback">Total Approved Cashback :</string>
+    <string name="requested_cashback">Requested Cashback:</string>
+    <string name="paid_cashback">Paid Cashback (Till Date):</string>
+    <string name="date">Date</string>
+    <string name="retailer">Retailer</string>
+    <string name="cashback">CashBack</string>
+    <string name="expected_cashback">Expected CashBack</string>
+    <string name="redeemable">REDEEMABLE CASHBACK</string>
+    <string name="total_rejected_cashback">Total Rejected Cashback:</string>
+
+</resources>

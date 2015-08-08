@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/maroon" />
+
+            <stroke
+                android:width="0dp"
+                android:color="@color/transparent80" />
+
+           <corners android:bottomLeftRadius="15dp" 
+                android:bottomRightRadius="15dp" 
+                android:topLeftRadius="15dp" 
+                android:topRightRadius="15dp" />
+<!-- 
+            <padding
+                android:bottom="10dp"
+                android:left="10dp"
+                android:right="10dp"
+                android:top="10dp" /> -->
+        </shape>
+    </item>
+    
+
+</layer-list><!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/drawable/home_coloreffect_button_selector.xml -->

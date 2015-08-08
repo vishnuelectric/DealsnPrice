@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/splash_bg" >
+    <ImageView 
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:src="@drawable/splash_logo"
+        android:id="@+id/logo"
+        android:scaleType="fitXY"
+        android:layout_centerInParent="true"
+        />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spend Less And Save More"
+        android:layout_below="@+id/logo"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="150dp"
+        />
+    
+
+</RelativeLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_splash.xml -->

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color" >
+    
+    
+    <HorizontalScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:id="@+id/horizontal_id"
+        android:scrollbars="none"
+        >
+        <include layout="@layout/header"/>
+       </HorizontalScrollView>
+    
+    
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:textColor="@color/gray"
+            android:text="@string/personal_info"
+            android:textSize="10dp"
+            android:gravity="center"
+            android:id="@+id/personal_info"
+            android:background="@color/white"
+            />
+        <View
+            android:layout_width="0.2dp"
+            android:layout_height="50dp"
+            android:background="@color/box_text_color"
+            />
+        <LinearLayout 
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/text_rs_color"
+            android:orientation="horizontal"
+            ></LinearLayout>
+        
+        <TextView 
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:textColor="@color/text_rs_color"
+            android:text="@string/payment_setting"
+            android:gravity="center"
+            android:textSize="10dp"
+            android:id="@+id/payment_setting"
+            android:background="@color/white"
+            />
+        </LinearLayout>
+        <View
+            android:layout_width="0.2dp"
+            android:layout_height="50dp"
+            android:background="@color/gray"
+            />
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:textColor="@color/gray"
+            android:text="@string/change_password"
+            android:gravity="center"
+            android:textSize="10dp"
+            android:id="@+id/change_password"
+            android:background="@color/white"
+            />
+        
+    </LinearLayout>
+	<View 
+	    android:layout_width="fill_parent"
+	    android:layout_height="0.2dp"
+	    android:background="@color/gray"
+	    />
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+	    android:orientation="vertical"
+	    >
+	
+	<ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    >
+	
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/pure_white_rounded"
+	    android:orientation="vertical" >
+
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginTop="15dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/account_holder_name"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	             android:textSize="13dp"
+	             android:inputType="text"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:id="@+id/account_holder_name"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/bank_name"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	            android:singleLine="true"
+	             android:textSize="13dp"
+	            android:textColor="@color/gray"
+	            android:id="@+id/bank_name"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/branch_name"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	            android:singleLine="true"
+	             android:textSize="13dp"
+	            android:textColor="@color/gray"
+	            android:id="@+id/branch_name"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/account_number"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	            android:inputType="phone"
+	             android:textSize="13dp"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:id="@+id/account_number"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/ifsc_code"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	            android:singleLine="true"
+	             android:textSize="13dp"
+	            android:textColor="@color/gray"
+	            android:id="@+id/ifsc_code"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/pan_no"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	             android:textSize="13dp"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:id="@+id/pan_no"
+	            />
+	        
+	    </LinearLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="35dp"
+	        android:orientation="vertical"
+	        android:background="@drawable/white_border"
+	         android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        >
+	        <EditText 
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:hint="@string/password"
+	            android:background="#00000000"
+	            android:paddingLeft="10dp"
+	             android:textSize="13dp"
+	             android:inputType="textPassword"
+	            android:textColor="@color/gray"
+	            android:singleLine="true"
+	            android:id="@+id/password"
+	            />
+	        
+	    </LinearLayout>
+	    
+	    <TextView 
+	        android:layout_width="120dp"
+	        android:layout_height="30dp"
+	        android:text="@string/save_changes"
+	        android:background="@drawable/profile_save_changes"
+	        android:textSize="13dp"
+	        android:textColor="@color/white"
+	        android:gravity="center"
+	        android:layout_gravity="center"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:id="@+id/save_change"
+	        />
+	    
+	    
+	    
+	</LinearLayout>
+	
+	</ScrollView>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/footer_layout"
+	    android:orientation="horizontal"
+	    ></LinearLayout>
+	
+</LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_payment_setting.xml -->

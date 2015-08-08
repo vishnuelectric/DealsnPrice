@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color" >
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:orientation="vertical"
+        android:background="@color/header_bg_color"
+        android:gravity="center"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            />
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Are you sure to share the link?"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        />
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:gravity="center"
+	    >
+	    <Button 
+	        android:layout_width="100dp"
+	        android:layout_height="40dp"
+	        android:text="Yes"
+	        android:textSize="15dp"
+	        android:textColor="@color/white"
+	        android:background="@color/header_bg_color"
+	        android:id="@+id/yes"
+	        
+	        />
+	    <Button 
+	        android:layout_width="100dp"
+	        android:layout_height="40dp"
+	        android:text="No"
+	        android:textSize="15dp"
+	        android:textColor="@color/white"
+	        android:background="@color/header_bg_color"
+	        android:layout_marginLeft="20dp"
+	        android:id="@+id/no"
+	        />
+	</LinearLayout>
+</LinearLayout>

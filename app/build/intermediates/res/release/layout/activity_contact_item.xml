@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/white" >
+    <LinearLayout 
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Satyendra Pal"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:id="@+id/contact_name"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="9584244428"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:id="@+id/contact_number"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+            
+            />
+        
+    </LinearLayout>
+    <!-- <CheckBox 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_checkbox"
+        android:gravity="center"
+        android:layout_marginRight="5dp"
+        /> -->
+
+</LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_contact_item.xml -->

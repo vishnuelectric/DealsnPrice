@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color" >
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/tab_header_bg"
+        android:gravity="center"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/drop_alert"
+            android:gravity="center"
+            android:layout_marginLeft="17dp"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            />
+        
+        
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        >
+        <EditText 
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:background="@drawable/price_border"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:textSize="14dp"
+            android:hint="@string/target_price"
+            android:textColor="@color/black"
+            android:paddingLeft="7dp"
+            android:id="@+id/target_price"
+            />
+        <EditText 
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:background="@drawable/price_border"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/email"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:paddingLeft="7dp"
+            android:id="@+id/email"
+            />
+        <EditText 
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:background="@drawable/price_border"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/mobile"
+            android:textColor="@color/black"
+            android:paddingLeft="7dp"
+            android:textSize="14dp"
+            android:inputType="phone"
+            android:id="@+id/mobile"
+            />
+        
+        <LinearLayout 
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:background="@drawable/price_border"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:id="@+id/duration_layout"
+            >
+            <TextView 
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:text="@string/duration"
+                android:textColor="@color/black"
+                android:id="@+id/duration"
+                android:layout_marginLeft="7dp"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                />
+            <ImageView 
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/drop_arrow"
+                android:layout_margin="7dp"
+                />
+        </LinearLayout>
+        <!-- <EditText 
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/price_border"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:drawableEnd="@drawable/drop_arrow"
+            android:hint="@string/duration"
+            android:textColor="@color/black"
+            android:paddingLeft="7dp"
+            android:id="@+id/duration"
+            /> -->
+        
+        <Button 
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@drawable/submit_btn"
+            android:text="Alert Me"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:id="@+id/alert_me"
+            />
+        
+        
+    </LinearLayout>
+    
+    </LinearLayout>
+   
+
+</LinearLayout>

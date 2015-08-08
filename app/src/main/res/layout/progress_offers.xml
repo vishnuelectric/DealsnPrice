@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/progress_startTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/progress_circle_grey"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/progress_text_color_dark"
+                android:textSize="22sp" >
+            </TextView>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/progress_line_start"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_weight="2.6"
+            android:src="@drawable/progress_line_grey" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/progress_installTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/progress_circle_grey"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/progress_text_color_dark"
+                android:textSize="22sp" >
+            </TextView>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/progress_line_install"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_weight="2.6"
+            android:src="@drawable/progress_line_grey" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.25"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/progress_tryTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/progress_circle_grey"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/progress_text_color_dark"
+                android:textSize="22sp" >
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Start"
+            android:textColor="@color/progress_text_color_dark"
+            android:textSize="12sp" >
+        </TextView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_weight="2.6" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Install"
+            android:textColor="@color/progress_text_color_dark"
+            android:textSize="12sp" >
+        </TextView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_weight="2.6" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Try"
+            android:textColor="@color/progress_text_color_dark"
+            android:textSize="12sp" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

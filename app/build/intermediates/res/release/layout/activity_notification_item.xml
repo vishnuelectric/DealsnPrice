@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            >
+            <LinearLayout 
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+            	android:layout_marginTop="10dp"	
+                >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Title"
+                android:textSize="16dp"
+                android:textColor="@color/offer_text_color"
+                android:id="@+id/notification_title"
+                />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11-Feb 5:34 PM"
+                android:textSize="10dp"
+                android:textColor="@color/offer_text_color"
+                android:layout_marginLeft="7dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="4dp"
+                android:id="@+id/notification_date"
+                />
+            </LinearLayout>
+            <ImageView 
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/notification_cancel"
+            android:layout_margin="5dp"
+            android:id="@+id/notification_cancel"
+            />
+        </LinearLayout>
+        <TextView 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Notification Description is here"
+            android:textSize="13dp"
+            android:layout_below="@+id/title_layout"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/offer_text_color"
+            android:id="@+id/notification_description"
+            />
+    </RelativeLayout> 
+</LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_notification_item.xml -->

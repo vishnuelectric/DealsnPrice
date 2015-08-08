@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+    <HorizontalScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:id="@+id/horizontal_id"
+        android:scrollbars="none"
+        >
+        <include layout="@layout/header"/>
+          </HorizontalScrollView>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+    
+    <ScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        >
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView 
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/default_app_img"
+            android:id="@+id/app_image"
+            android:layout_margin="5dp"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warangal"
+			android:textSize="18dp"            
+            android:layout_margin="5dp"
+            android:id="@+id/app_name"
+            android:textColor="@color/offer_text_color"
+            android:layout_toRightOf="@+id/app_image"
+            
+            />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Install Get Upto Rs.15"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/offer_text_color"
+            android:id="@+id/app_install_detail"
+            android:layout_toRightOf="@+id/app_image"
+            android:layout_below="@+id/app_name"
+            android:textSize="13dp"
+            />
+        
+        
+    </RelativeLayout>
+	<TextView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Long Description"
+	    android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="10dp"
+            android:textColor="@color/offer_text_color"
+            android:id="@+id/app_description"
+	    
+	    />
+	
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ratings: "
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black"
+            />
+<!--        <RatingBar 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="7dp"
+	     android:id="@+id/myrating"
+         android:clickable="false"
+         android:layout_gravity="center"
+         android:focusable="false"
+         android:focusableInTouchMode="false"
+         style="?android:attr/ratingBarStyleSmall"
+         android:numStars="5"
+         android:stepSize="1.0"
+	    />
+ -->  
+ <ImageView 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/app_image"
+	    android:layout_below="@+id/app_name"
+	    android:layout_marginLeft="7dp"
+	    android:layout_marginTop="7dp"
+	     android:id="@+id/myrating"
+         android:src="@drawable/s1"
+         
+         
+	    />  </LinearLayout>
+    
+   
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/normal_layout"
+        android:visibility="gone"
+        
+        >
+        <ImageView 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/start_icon"
+            android:id="@+id/normal_image"
+            android:layout_margin="5dp"
+            />
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/step_layout"
+        ></LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/footer_box_color"
+        >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Instructions to earn Rs.8"
+            android:textSize="17dp"
+            android:textColor="#333333"
+            android:id="@+id/instruction_header"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            />
+        
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 rupees will be credited within 24 hours of installing the app"
+            android:textColor="@color/offer_text_color"
+            android:id="@+id/instruction_step"
+             android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:textSize="12dp"
+            />
+            </LinearLayout>
+    
+    
+    
+    </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/offer_new_install_color"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/submit_btn"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/install_layout"
+            >
+            <ImageView 
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/refer"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                />  
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Install"
+                    android:textSize="16dp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="12dp"
+                    android:id="@+id/install_concept"
+                    />      
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/footer_layout"
+        ></LinearLayout>
+    
+    </LinearLayout>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_offer_share.xml -->

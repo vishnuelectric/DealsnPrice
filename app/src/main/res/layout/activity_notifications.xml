@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:orientation="vertical" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+        <include layout="@layout/header" />
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/notification"
+                    android:textColor="@color/offer_text_color"
+                    android:textSize="19dp" />
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="36dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/notification_bg"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:id="@+id/notification_off_layout"
+                        android:layout_width="35dp"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/notification_off"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="3dp"
+                            android:src="@drawable/notification_off_btn"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/notification_on_layout"
+                        android:layout_width="35dp"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/notification_on"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="3dp"
+                            android:src="@drawable/notification_on_btn"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/placeholder_color" />
+
+            <ListView
+                android:id="@+id/notification_list"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:divider="@color/placeholder_color"
+                android:dividerHeight="0.1dp" >
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+</LinearLayout>

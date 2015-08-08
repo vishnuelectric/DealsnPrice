@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_color" >
+        <HorizontalScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:id="@+id/horizontal_id"
+        android:scrollbars="none"
+        >
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="@color/tab_header_bg"
+            >
+            <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:id="@+id/overview_layout"
+                android:gravity="center"
+                
+                >
+                
+                
+                
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Overview"
+                android:textSize="11dp"
+                android:textColor="@color/white"
+                android:minHeight="40dp"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+            </LinearLayout>
+            <!-- <View 
+                android:layout_width="1dp"
+                android:layout_height="60dp"
+                android:background="@drawable/gap_line"
+                /> -->
+            <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:id="@+id/order_status_layout"
+                android:background="@color/active_stripe_tab_bg"
+                >
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Status"
+                android:id="@+id/shopearn_text"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:minHeight="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                />
+            </LinearLayout>
+            <!-- <View 
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line"
+                /> -->
+            <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:id="@+id/payout_status_layout"
+                android:gravity="center"
+                >
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payout Status"
+                android:id="@+id/pricecomparison_text"
+                android:textSize="15dp"
+                android:textColor="@color/white"
+                android:minHeight="30dp"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+            </LinearLayout>
+            <View 
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line"
+                />
+            <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:orientation="vertical"
+                android:id="@+id/missing_cashback_layout"
+                android:gravity="center"
+                >
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Missing CashBack"
+                android:id="@+id/dealprice_text"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:minHeight="30dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                />
+            </LinearLayout>
+            <View 
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line"
+                />
+             <!-- <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="30dp"
+                android:orientation="vertical"
+                android:id="@+id/missing_cashback_layout"
+                >
+            
+                 
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Missing CashBack"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:minHeight="50dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/couponprice_text"
+                android:layout_gravity="center"
+                
+                android:gravity="center"
+                />
+            </LinearLayout> -->
+        </LinearLayout>
+    </HorizontalScrollView>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/white_without_border"
+        >
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="85dp"
+            android:background="@color/cashback_bg"
+            >
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/cashback_rounded_shape"
+                android:layout_margin="15dp"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/redeemable"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    />
+                <LinearLayout 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="4dp"
+                    
+                    >
+                    <ImageView 
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/rs_icon"
+                        />
+                    <TextView 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="4dp"
+                        android:id="@+id/total_amount"
+                        />
+                    
+                </LinearLayout>
+                
+                
+            </LinearLayout>
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/recharge_rounded_border"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/recharge_layout"
+                
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recharge Now"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:layout_margin="4dp"
+                    
+                    />
+                <ImageView 
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/arrow_sign"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    />
+            </LinearLayout>
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/recharge_rounded_border"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/bank_layout"
+                android:layout_below="@+id/recharge_layout"
+                
+                >
+                <TextView 
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Bank Transfer"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"
+                    android:layout_margin="4dp"
+                    
+                    />
+                <ImageView 
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/arrow_sign"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/deal_border"
+            >
+            <LinearLayout 
+                android:layout_width="130dp"
+                android:layout_height="fill_parent"
+                 android:background="#1fa9cb"
+                 android:gravity="center"
+                 android:id="@+id/offer_layout"
+                >
+            
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OFFER CASHBACK"
+                android:textSize="12dp"
+                android:id="@+id/deals_id"
+                android:textColor="@color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+               android:gravity="center_vertical"
+                />
+            </LinearLayout> 
+            <TextView 
+                android:layout_width="130dp"
+                android:layout_height="fill_parent"
+                android:text="SHOPPING CASHBACK"
+                android:textSize="12dp"
+                android:textColor="@color/gray"
+                android:id="@+id/shopping_layout"
+                android:gravity="center|right"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+        </LinearLayout>
+    	<LinearLayout 
+    	    android:layout_width="200dp"
+    	    android:layout_height="35dp"
+    	    android:orientation="horizontal"
+    	    android:layout_gravity="right"
+    	    android:layout_marginTop="8dp"
+    	    android:background="@color/payout_table_column_color"
+    	    android:id="@+id/status_layout"
+    	    >
+    	    <TextView 
+    	        android:layout_width="0dp"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="1"
+    	        android:text="Select Order Status"
+    	        android:textSize="14dp"
+    	        android:layout_gravity="center_vertical"
+    	        android:textColor="@color/black"
+    	        android:layout_marginLeft="4dp"
+    	        android:id="@+id/order_status"
+    	        />
+    	    <ImageView 
+    	        android:layout_width="30dp"
+    	        android:layout_height="20dp"
+    	        android:src="@drawable/drop_arrow"
+    	        android:layout_gravity="center"
+    	        />
+    	    
+    	</LinearLayout>
+    	<LinearLayout 
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="35dp"
+    	    android:orientation="horizontal"
+    	    android:gravity="center"
+    	    android:layout_marginTop="5dp"
+    	    android:background="@color/payout_table_column_color"
+    	    >
+    	    <TextView 
+    	        android:layout_width="0dp"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="1"
+    	        android:text="Order Date"
+    	        android:textSize="13dp"
+    	        android:gravity="center"
+    	        android:textColor="@color/black"
+    	        />
+    	    <View 
+    	        android:layout_width="2dp"
+    	        android:layout_height="40dp"
+    	        android:background="#d5d5d5"
+    	        />
+    	    <TextView 
+    	        android:layout_width="0dp"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="1"
+    	        android:text="Offer Name"
+    	        android:textSize="13dp"
+    	        android:gravity="center"
+    	        android:textColor="@color/black"
+    	        />
+    	    <View
+    	        android:layout_width="2dp"
+    	        android:layout_height="40dp"
+    	        android:background="#d5d5d5"
+    	        />
+    	    <TextView 
+    	        android:layout_width="0dp"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="1"
+    	        android:text="Amount"
+    	        android:textSize="13dp"
+    	        android:gravity="center"
+    	        android:textColor="@color/black"
+    	        />
+    	    
+    	</LinearLayout>
+    	<ListView 
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="0dp"
+    	    android:layout_weight="1"
+    	    android:id="@+id/order_list"
+    	    ></ListView>
+		</LinearLayout>
+		<LinearLayout 
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:id="@+id/footer_layout"
+		    android:orientation="vertical"
+		    ></LinearLayout>
+</LinearLayout>

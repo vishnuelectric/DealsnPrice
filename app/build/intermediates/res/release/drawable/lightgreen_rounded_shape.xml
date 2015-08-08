@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <gradient 
+        android:startColor="@color/light_green_with_different"
+        android:centerColor="@color/light_green_with_different"
+        android:endColor="@color/light_green_with_different"
+        android:angle="90"/>
+    <corners 
+        android:radius="10dp"/>
+
+
+</shape>
+<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/drawable/lightgreen_rounded_shape.xml -->

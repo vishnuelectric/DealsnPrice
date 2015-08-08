@@ -1,0 +1,25 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="360" >
+
+    <shape
+        android:innerRadiusRatio="3"
+        android:shape="ring"
+        android:thicknessRatio="35"
+        android:useLevel="false" >
+        <size
+            android:height="42dip"
+            android:width="42dip" />
+
+        <gradient
+            android:centerColor="@color/color_preloader_center"
+            android:centerY="0.30"
+            android:endColor="@color/color_preloader_end"
+            android:startColor="@color/color_preloader_start"
+            android:type="sweep"
+            android:useLevel="false" />
+    </shape>
+
+</rotate><!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/drawable/loader_0.xml -->
