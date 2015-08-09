@@ -122,7 +122,7 @@
         
         <receiver
             android:name="com.dnp.data.Receiver"
-            android:exported="true" >
+            android:exported="false" >
             <intent-filter android:priority="999" >
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_INSTALL" />
