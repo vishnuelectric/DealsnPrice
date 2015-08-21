@@ -93,6 +93,7 @@ builder = new Notification.Builder(this);
                 ContentValues contentValues = new ContentValues();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 contentValues.put("datetask", "true");
+
                int rows_affected=  sqLiteDatabase.update("appinfo_upto",contentValues," targetdate < "+"'"+simpleDateFormat.format(new Date()) +"'"+ " AND datetask = 'false'" ,null);
     if(rows_affected > 0) {
         //TODO show notification for date tasks
