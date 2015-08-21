@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/background" android:drawable="@color/overviewBgColor"/>
-    <item android:id="@android:id/progress" android:drawable="@color/overviewBgColor" />
-</layer-list><!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/drawable/rating_bar_color_layer.xml -->

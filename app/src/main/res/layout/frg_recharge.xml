@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tab_header_bg"
+        android:gravity="center"
+        android:padding="6dp"
+        android:text="@string/recharge"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="6dp"
+        android:background="#f0ffffff">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/pure_white_rounded"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/edt_recharge_mobile_number"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="8dp"
+                android:background="@drawable/white_border"
+                android:hint="@string/mobile_number"
+                android:inputType="phone"
+                android:digits="0123456789"
+                android:maxLength="10"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/txv_recharge_operator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_border"
+                android:drawableRight="@drawable/arrow"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                android:text="Operator"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txv_recharge_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:drawableRight="@drawable/arrow"
+                android:background="@drawable/white_border"
+                android:padding="8dp"
+                android:text="Circle"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/edt_recharge_amount"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:digits="0123456789."
+                    android:drawablePadding="3dp"
+                    android:drawableLeft="@drawable/product_price_icon"
+                    android:background="@drawable/white_border"
+                    android:hint="@string/amount"
+                    android:inputType="number"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btn_recharge_recharge"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/profile_save_changes"
+                android:gravity="center"
+                android:text="@string/recharge"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
