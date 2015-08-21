@@ -1,11 +1,6 @@
 package com.dnp.data;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.UnknownHostException;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,12 +8,18 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 
-import android.util.Log;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
 
 public class HttpRequest {
+        static long  init  =   0;
+        static long end        =   0;
+        static long timetaken  =   0;
 	
 	  static InputStream is = null;
 	  static String response = "";
@@ -26,6 +27,7 @@ public class HttpRequest {
 	
 	  public static String post(String url) throws UnknownHostException {
 	        try {
+                init    =   System.currentTimeMillis();
 	            DefaultHttpClient httpClient = new DefaultHttpClient();
 	            HttpPost httpPost = new HttpPost(url);
 	            /*httpPost.setHeader("Content-type", "application/json");*/
@@ -64,6 +66,7 @@ public class HttpRequest {
 	  public static String post(String url,MultipartEntity multipart) {
 	        try {
 	            DefaultHttpClient httpClient = new DefaultHttpClient();
+				System.out.println("httprequest url "+ url);
 	            HttpPost httpPost = new HttpPost(url);
 	            /*httpPost.setHeader("Content-type", "application/json");*/
 	            httpPost.setHeader("Accept", "application/json");
@@ -109,6 +112,12 @@ public class HttpRequest {
 	            Log.e("Buffer Error", "Error converting result " + e.toString());
 	            response = null;
 	        }
+
+            end =   System.currentTimeMillis();
+            timetaken   =   end - init;
+
+            Log.e(" "," TIME TAKEN "+timetaken);
+
 	        return response;
 	    }
 }

@@ -1,19 +1,18 @@
 package com.dnp.asynctask;
 
-import org.apache.http.entity.mime.MultipartEntity;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.dnp.bean.ShopOfferBean;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.StaticData;
-import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
 import com.dnp.fragment.ShopEarnFragment.ShopEarnListener;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class GetShopListTask extends AsyncTask<String, Void, String>{
 	Context cxt;
@@ -66,6 +65,7 @@ public class GetShopListTask extends AsyncTask<String, Void, String>{
 					ShopOfferBean sobean=new ShopOfferBean();
 					sobean.setShop_id(jobj.getString("id"));
 					sobean.setShop_name(jobj.getString("name"));
+					Log.e("GetShopList "," "+jobj.getString("name"));
 					sobean.setShop_image(jobj.getString("image"));
 					sobean.setShop_url(jobj.getString("storelink"));
 					sobean.setShop_offer_name(jobj.getString("description"));

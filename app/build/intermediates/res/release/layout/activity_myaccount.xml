@@ -11,7 +11,148 @@
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:scrollbars="none" >
-        <include layout="@layout/header" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/tab_header_bg"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/overview_layout"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:background="@color/active_stripe_tab_bg"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="Overview"
+                    android:textColor="@color/white"
+                    android:textSize="11dp" />
+            </LinearLayout>
+            <!--
+                 <View 
+                android:layout_width="1dp"
+                android:layout_height="60dp"
+                android:background="@drawable/gap_line"
+                />
+            -->
+
+            <LinearLayout
+                android:id="@+id/order_status_layout"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/shopearn_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="Order Status"
+                    android:textColor="@color/white"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line" />
+
+            <LinearLayout
+                android:id="@+id/payout_status_layout"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/pricecomparison_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="Payout Status"
+                    android:textColor="@color/white"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line" />
+
+            <LinearLayout
+                android:id="@+id/missing_cashback_layout"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/dealprice_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:text="Missing CashBack"
+                    android:textColor="@color/white"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@drawable/gap_line" />
+            <!--
+            <LinearLayout 
+                android:layout_width="160dp"
+                android:layout_height="30dp"
+                android:orientation="vertical"
+                android:id="@+id/missing_cashback_layout"
+                >
+            
+                 
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Missing CashBack"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:minHeight="50dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/couponprice_text"
+                android:layout_gravity="center"
+                
+                android:gravity="center"
+                />
+            </LinearLayout>
+            -->
+        </LinearLayout>
     </HorizontalScrollView>
 
     <LinearLayout

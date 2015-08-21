@@ -1,19 +1,5 @@
 package com.dnp.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-
-
-
-
-
-
-import com.dnp.bean.CouponBean;
-import com.dnp.bean.DealBean;
-import com.dnp.bean.PriceComparisonBean;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,12 +8,20 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.dnp.bean.CouponBean;
+import com.dnp.bean.DealBean;
+import com.dnp.bean.PriceComparisonBean;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class sqlHelper extends SQLiteOpenHelper
 {
 	public static int Countrycount,StateCount,CityCount,JobProfileCount,Skillscount;
 	
 	  private static final int DATABASE_VERSION = 1;  
-	    private static final String DATABASE_NAME = "DealsnPrice";  
+	  private static final String DATABASE_NAME = "DealsnPrice";
 	    Context cxt;
 
 	public sqlHelper(Context context, String name, CursorFactory factory,
@@ -60,11 +54,7 @@ public class sqlHelper extends SQLiteOpenHelper
 		  
 		  String CREATE_STORE_TABLE = "CREATE TABLE store_details(id integer primary key autoincrement, store_price text, store_color text, store_offer text, store_shipping text, store_cod text, store_deal_id text, store_image text, storurl text, store_coupon_offer text, store_discount_type text, store_offer_amount text, product_id text, product_brand text, product_name text, product_description text, imagepath text, product_image text, product_mrp text, product_selling_price text, product_feature text, variant_value text, product_selling_price_compare double)";
 		  db.execSQL(CREATE_STORE_TABLE);
-		  
-
-
-
-	}
+     }
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -270,9 +260,11 @@ public class sqlHelper extends SQLiteOpenHelper
 		sqdbl.close();
 		/*}*/
 	}
-	
-	
-	public void update_favstatus(String pd_id,int fav_status){
+
+
+
+
+    public void update_favstatus(String pd_id,int fav_status){
 		SQLiteDatabase sqdbl=this.getWritableDatabase();
 		String sql="update product_details SET fav_status="+fav_status+" where pd_id='"+pd_id+"'";
 		sqdbl.execSQL(sql);
@@ -1574,3 +1566,4 @@ public class sqlHelper extends SQLiteOpenHelper
 	
 	
 }
+

@@ -1,26 +1,21 @@
 package com.dnp.asynctask;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.content.Context;
+import android.os.AsyncTask;
 
-import com.dealnprice.activity.DashboardActivity;
 import com.dnp.bean.FavouriteBean;
 import com.dnp.bean.MyAccountBean;
 import com.dnp.bean.UserBean;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.StaticData;
-import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
 import com.dnp.fragment.BankTransferFragment.BankListener;
 import com.dnp.fragment.DNPMyAccountFragment.MyAccountListener;
 import com.dnp.fragment.FavouriteFragment.FavouriteListener;
 import com.dnp.fragment.ProfileFragment.ProfileListener;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 	Context cxt;
@@ -58,6 +53,7 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 		try{
 			String st=WebService.USER_INFO_SERVICE+cxt.getSharedPreferences("User_login",1).getString("user_id",null);
 		String response=HttpRequest.post(WebService.USER_INFO_SERVICE+cxt.getSharedPreferences("User_login",1).getString("user_id",null));
+			System.out.println("user info  "+response);
 		return response;
 		}
 		catch(Exception e){

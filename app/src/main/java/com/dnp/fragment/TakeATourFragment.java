@@ -1,5 +1,9 @@
 package com.dnp.fragment;
 
+/**
+ * Take a Tour Screen Code
+ */
+
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dealnprice.activity.DashboardActivity;
 import com.dealnprice.activity.R;
 import com.dnp.adapter.OriginalPhotoGalleryAdapter;
 import com.dnp.asynctask.Pending_amount;
@@ -54,7 +57,7 @@ public class TakeATourFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		shopearn_text.setText("Shop & Earn");
 		dealprice_text.setText("Deals & Coupons");
 		referearn_text.setText("Refer & Earn");

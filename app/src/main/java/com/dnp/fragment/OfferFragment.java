@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,12 +33,13 @@ import com.dnp.data.APP_Constants;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 
-public class OfferFragment extends Fragment{
+public class OfferFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 	LinearLayout offer_layout,shopearn_layout,priceearn_layout,dealprice_layout,referearn_layout;
 	TextView shopearn_text,priceearn_text,dealprice_text,referearn_text;
 	LinearLayout footer_layout;
 	FragmentManager fm;
 	ListView offer_list;
+	SwipeRefreshLayout swipe;
 	FragmentTransaction ft;
 	Fragment fragment;
 	HorizontalScrollView horizontal_id;
@@ -46,11 +48,11 @@ public class OfferFragment extends Fragment{
 	ImageView loading_image;
 	SharedPreferences shpf;
 	//private AnimationDrawable loadingViewAnim;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		View view=inflater.inflate(R.layout.activity_offer, container, false);
 		offer_layout=(LinearLayout) view.findViewById(R.id.offer_layout);
 		shopearn_layout=(LinearLayout) view.findViewById(R.id.shopearn_layout);
@@ -71,8 +73,8 @@ public class OfferFragment extends Fragment{
 		//--
 		Pending_amount pp= new Pending_amount(getActivity());
 		pp.execute();
-		
-	/*	shopearn_text.setText("Shop & Earn");
+
+		/*	shopearn_text.setText("Shop & Earn");
 		dealprice_text.setText("Deals & Coupons");
 		referearn_text.setText("Refer & Earn");
 		priceearn_text.setText("Price Comparison");*/
@@ -82,7 +84,7 @@ public class OfferFragment extends Fragment{
 
 			@Override
 			public void run() {
-				
+
 				horizontal_id.fullScroll(HorizontalScrollView.FOCUS_LEFT);
 			}
 		});
@@ -105,42 +107,68 @@ public class OfferFragment extends Fragment{
 
 		v1.setLayoutParams(param);
 		footer_layout.addView(v1);
+		swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+		swipe.setOnRefreshListener(this);
+		//swipe.setProgressBackgroundColor(android.R.color.darker_gray);
 
-		callTask();//get offers list
+		swipe.setProgressViewOffset(true,0,100);
+
+		swipe.setColorSchemeResources(android.R.color.holo_orange_light, android.R.color.holo_blue_bright,android.R.color.holo_green_dark);
+		//get offers list
 		//view.setF
 
 		fm=getActivity().getSupportFragmentManager();
-		
+
 		return view;
 	}
-	
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		//swipe.setProgressViewOffset(true,0,10);
+		swipe.setDistanceToTriggerSync(200);
+		if(StaticData.application_list.size() == 0) {
+		swipe.setRefreshing(true);
+
+			callTask();
+		}else{
+			new OfferListener().onSuccess();
+		}
+	}
+
 	/*private void setProgressDialog(){
-		
-		dialog=new Dialog(getActivity());
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.activity_loading);
-		LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
-		loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
-		loading_image.setBackgroundResource(R.anim.loading_animation);
-		loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
-		//dialog.setCancelable(false);
-		loadingViewAnim.start();
-		
-		dialog.show();
-	}*/
+
+            dialog=new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.activity_loading);
+            LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
+            loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
+            loading_image.setBackgroundResource(R.anim.loading_animation);
+            loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
+            //dialog.setCancelable(false);
+            loadingViewAnim.start();
+
+            dialog.show();
+        }*/
 	private void setProgressDialog() {
 		dialog = new Dialog(getActivity());
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.activity_loading_progressbar);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		dialog.setCancelable(false);
-		dialog.show();
+		if(getActivity()!=null)
+		{
+			if(!getActivity().isDestroyed())
+				dialog.show();
+		}
 	}
-	
+
 	private void callTask(){
-		
-		setProgressDialog();
-		
+
+		//setProgressDialog();
+		swipe.setRefreshing(true);
+
+System.out.println(swipe.isRefreshing()+ " hel");
 		try {
 			/*MultipartEntity multipart=new MultipartEntity();
 			multipart.addPart("user_id", new StringBody(user_id));*/
@@ -148,27 +176,27 @@ public class OfferFragment extends Fragment{
 		} catch (Exception e) {
 			//UtilMethod.showToast("Exception is "+e, getActivity());
 		}
-		
-		
+
+
 	}
-	
+
 	OnShowListener show=new OnShowListener() {
 
 		@Override
 		public void onShow(DialogInterface dialog) {
 			// TODO Auto-generated method stub
-			
+
 			//loading_image.post(new Starter());
 		}
 	};
-	
-/*	class Starter implements Runnable{
+
+	/*	class Starter implements Runnable{
 
 		@Override
 		public void run() {
-			
+
 			setProgressDialog();
-			
+
 			try{
 				MultipartEntity multipart=new MultipartEntity();
 				multipart.addPart("user_id", new StringBody(user_id));
@@ -179,8 +207,8 @@ public class OfferFragment extends Fragment{
 			}
 		}
 	}*/
-	
-	
+
+
 	OnClickListener offerListener=new OnClickListener() {
 
 		@Override
@@ -265,21 +293,36 @@ public class OfferFragment extends Fragment{
 	};
 
 	public void onReplace(Fragment fragment1){
+		System.out.println("backstack count is "+fm.getBackStackEntryCount());
 		ft=fm.beginTransaction();
 		ft.replace(R.id.container, fragment1);
 		ft.addToBackStack(null);
+
 		ft.commit();
 	}
 
+	@Override
+	public void onRefresh() {
+		callTask();
+
+	}
+
 	public class OfferListener{
+
 		public void onSuccess(){
-			dialog.dismiss();
-			offer_list.setAdapter(new AppListDemoAdapter(getActivity(),new OfferListener()));
+			//dialog.dismiss();
+			AppListDemoAdapter appListDemoAdapter = new AppListDemoAdapter(getActivity(),new OfferListener());
+			offer_list.setAdapter(appListDemoAdapter);
 			offer_list.setDivider(null);
 			offer_list.setDividerHeight(12);
+			appListDemoAdapter.notifyDataSetChanged();
+			swipe.setRefreshing(false);
 		}
 		public void onError(String msg){
-			dialog.dismiss();
+			//dialog.dismiss();
+			swipe.setRefreshing(false);
+			fm.beginTransaction().replace(R.id.container,new RetryFragment()).commit();
+
 			if(msg.equals("slow")){
 				UtilMethod.showServerError(getActivity());
 			}
@@ -295,9 +338,10 @@ public class OfferFragment extends Fragment{
 					}
 				});
 				adialog.show();
+				
 			}
 		}
-		
+
 		/**
 		 * OnClick Listener called from Adapter[Offers List] AppListDemoAdapter
 		 * @param position
@@ -324,6 +368,7 @@ public class OfferFragment extends Fragment{
 				b.putInt("position",position);
 				f.setArguments(b);
 				ft.replace(R.id.container, f);
+				ft.addToBackStack("OFFER FRAGMENT 1");
 				ft.commit();
 			}
 		}

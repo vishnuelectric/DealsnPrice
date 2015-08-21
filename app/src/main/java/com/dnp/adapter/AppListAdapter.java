@@ -195,7 +195,7 @@ public class AppListAdapter extends BaseAdapter{
 		LayerDrawable stars = (LayerDrawable) myrating.getProgressDrawable();
 		stars.getDrawable(2).setColorFilter(Color.YELLOW,);*/
 			if(StaticData.application_list.get(position).getApp_rate()==0.5){
-				vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s0));
+				vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s0_5_stars));
 			}
 			else if(StaticData.application_list.get(position).getApp_rate()==1){
 				vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s1_star));

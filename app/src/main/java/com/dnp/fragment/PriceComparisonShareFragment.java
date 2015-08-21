@@ -1,8 +1,5 @@
 package com.dnp.fragment;
 
-import java.io.File;
-import java.io.IOException;
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -26,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dealnprice.activity.DashboardActivity;
 import com.dealnprice.activity.R;
 import com.dnp.asynctask.Pending_amount;
 import com.dnp.data.Downloader;
@@ -34,9 +30,11 @@ import com.dnp.data.StaticData;
 import com.dnp.data.UniversalImageLoaderHelper;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.io.File;
+import java.io.IOException;
 
 public class PriceComparisonShareFragment extends Fragment{
 	LinearLayout footer_layout,offer_layout,shopearn_layout,pricecomparison_layout,dealcoupon_layout,referearn_layout;
@@ -69,7 +67,7 @@ public class PriceComparisonShareFragment extends Fragment{
 		shopearn_text=(TextView) view.findViewById(R.id.shopearn_text);
 		inviteearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
-		couponprice_text=(TextView) view.findViewById(R.id.couponprice_text);
+		couponprice_text=(TextView) view.findViewById(R.id.referearn_text);
 		share_text=(TextView) view.findViewById(R.id.share_text);
 		product_name=(TextView) view.findViewById(R.id.product_name);
 		product_price=(TextView) view.findViewById(R.id.product_price);
@@ -300,9 +298,10 @@ public class PriceComparisonShareFragment extends Fragment{
 	    					StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 	    			        StrictMode.setThreadPolicy(policy); 
 	    					Downloader.DownloadFile(StaticData.pc_detail.get(0).getProduct_image(), file);
-		/*	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+			/*FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
 			.setLink("http://dealsnprice.com/").setPicture(StaticData.pc_detail.get(0).getProduct_image()).setCaption(StaticData.pc_detail.get(0).getProduct_name()).setDescription("Hello").setFragment(getParentFragment()).build();
 			uiHelper.trackPendingDialogCall(shareDialog.present());*/
+
 			}
 			else{
 				UtilMethod.showToast("Please install Facebook App", getActivity());

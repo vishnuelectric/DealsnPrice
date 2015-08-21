@@ -284,10 +284,11 @@
                     android:id="@+id/normal_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:layout_marginTop="3dp" >
+                    android:layout_marginTop="3dp"
+                    android:visibility="visible" >
 
-                    <include layout="@layout/progress_offers" />
+                    <include layout="@layout/progress_offers"
+                         />
 
                     <!--
                          <ImageView
@@ -307,6 +308,28 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/pleaseWaitRewardLL"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/footer_box_color"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:text="Congratulations!! You have completed all the steps, you will be credited within 48 hrs."
+                        android:textColor="@android:color/black" >
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/instructionBox"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"

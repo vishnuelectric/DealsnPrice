@@ -3,12 +3,13 @@ package com.dnp.data;
 public class WebService {
 	//public static String HOST_URL="http://cashitback.ypsilonitsolutions.com/webservices/";
 	
-	public static String WEB_HOST_URL="http://dealsnprice.com/";
+	public static String WEB_HOST_URL="http://dealsnprice.com/"; //old default
 	
-	
+	//public static String WEB_HOST_URL="http://ec2-52-26-132-174.us-west-2.compute.amazonaws.com/"; //new server
+	//public static String WEB_HOST_URL="http://ec2-52-27-70-107.us-west-2.compute.amazonaws.com/"; //testing
+	//public static String WEB_HOST_URL="http://dealsandprice.in/";
 	public static String HOST_URL="http://72.167.41.165/cashitback/webservices/";
-	
-	
+		
 	public static String REGISTRATION_SERVICE=WEB_HOST_URL+"login/register";
 	
 	public static String LOGIN_SERVICE=WEB_HOST_URL+"login/";

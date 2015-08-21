@@ -5,6 +5,9 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +19,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ShareCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +32,7 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.dealnprice.activity.R;
+import com.dnp.data.APP_Constants;
 import com.dnp.data.Downloader;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
@@ -101,6 +106,28 @@ public class ShopListAdapter extends BaseAdapter{
 				Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(StaticData.shop_offer_list.get(position).getShop_url()));
 				cxt.startActivity(intent);
 				}*/
+				
+				//--
+				Log.e(" ON CLICK "," Shop Now");
+				String storeName	=	StaticData.shop_offer_list.get(position).getShop_name();
+				Log.e(" ON CLICK "," Store "+storeName);
+				
+				if(storeName !=null && !storeName.isEmpty())
+				{
+					Log.e(" ON CLICK "," Not Null");
+					
+					if(storeName.equalsIgnoreCase("Flipkart") )
+					{
+						isNoPlayStore(APP_Constants.FLIPKART);
+						return;
+					}
+					else if(storeName.equalsIgnoreCase("Myntra") || storeName.equalsIgnoreCase("Myntra123"))
+					{
+						isNoPlayStore(APP_Constants.MYNTRA);
+						return;
+					}
+				}
+				//--
 				if(!UtilMethod.isStringNullOrBlank(StaticData.shop_offer_list.get(position).getShop_url())){
 				seListener.onUrl(position);
 				}
@@ -116,7 +143,7 @@ public class ShopListAdapter extends BaseAdapter{
 				dialog.setContentView(R.layout.activity_shareearn);
 				LinearLayout facebook_share_layout=(LinearLayout) dialog.findViewById(R.id.facebook_share_layout);
 				LinearLayout whatsapp_share_layout=(LinearLayout) dialog.findViewById(R.id.whatsapp_share_layout);
-				LinearLayout google_plus_share_layout=(LinearLayout) dialog.findViewById(R.id.google_plus_share_layout);
+				//LinearLayout google_plus_share_layout=(LinearLayout) dialog.findViewById(R.id.google_plus_share_layout);
 				LinearLayout twitter_share_layout=(LinearLayout) dialog.findViewById(R.id.twitter_share_layout);
 				whatsapp_share_layout.setOnClickListener(new OnClickListener() {
 					
@@ -238,7 +265,7 @@ public class ShopListAdapter extends BaseAdapter{
 						}
 					}
 				});
-				google_plus_share_layout.setOnClickListener(new OnClickListener() {
+			/*	google_plus_share_layout.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -251,17 +278,40 @@ public class ShopListAdapter extends BaseAdapter{
 			    					File folder = new File(extStorageDirectory, "dnp_images");
 			    					folder.mkdir();
 			    					File file = new File(folder, "sharing_image.png");
-			    					/*File file1=new File(Company_constants.str_candidate_resume);*/
+			    					File file1=new File(Company_constants.str_candidate_resume);
 			    					try {
 			    						file.createNewFile();
 			    					
 			    					//Log.v("File Path",Company_constants.str_candidate_resume);
-			    					/*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			    			        StrictMode.setThreadPolicy(policy);*/ 
+			    					StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			    			        StrictMode.setThreadPolicy(policy); 
 			    					Downloader.DownloadFile(StaticData.shop_offer_list.get(position).getShop_image(), file);
-			    					 final String photoUri = MediaStore.Images.Media.insertImage(
+			    					Log.e("SHOPLISTADAPTER  "," image URL "+StaticData.shop_offer_list.get(position).getShop_image());
+			    					final String photoUri = MediaStore.Images.Media.insertImage(
 									         cxt.getContentResolver(), file.getAbsolutePath(), null, null);
-			    					 
+			    					
+			    					
+			    					//String photoUri	=	"";
+			    					
+			    					
+			    					final String photoUri	=	"";
+			    					if(cxt!=null)
+			    					{
+			    						ContentResolver cxtResolver	=	cxt.getContentResolver();
+			    						if(cxtResolver!=null)
+			    						{
+			    							Log.e(" ShopListAdapter "," STEP 1");
+			    							if(file!=null)
+			    							{
+			    								String path	=	file.getAbsolutePath();
+			    								Log.e(" ShopListAdapter "," STEP 2 FILE not null");
+			    								if(path!=null && !path.isEmpty())
+			    								{
+			    									Log.e(" ShopListAdapter "," STEP 3"+path);
+			    								}
+			    							}
+			    						}
+			    					}
 			    					 Intent shareIntent = ShareCompat.IntentBuilder.from((Activity) cxt)
 									         .setText(StaticData.shop_offer_list.get(position).getShop_offer_name()+"\n"+StaticData.shop_offer_list.get(position).getShop_url())
 									         .setType("image/jpeg")
@@ -282,13 +332,33 @@ public class ShopListAdapter extends BaseAdapter{
 						}
 						
 					}
-				});
+				});*/
 				dialog.show();
 				
 			}
 		});
 		
 		return view;
+	}
+	
+	/**
+	 * This method opens a given store url in chrome if available else in default browser
+	 * @param url
+	 */
+	private void isNoPlayStore(String url)
+	{
+		Log.e("isNoPlayStore "," "+url);
+		try {
+		    Intent i = new Intent("android.intent.action.MAIN");
+		    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+		    i.addCategory("android.intent.category.LAUNCHER");
+		    i.setData(Uri.parse(url));
+		    cxt.startActivity(i);
+		}
+		catch(ActivityNotFoundException e) {
+		    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		    cxt.startActivity(i);
+		}
 	}
 	
 	private boolean isAppInstalled(String packageName) {

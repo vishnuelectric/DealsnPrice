@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.dealnprice.activity.CommonUtilities;
 import com.dealnprice.activity.Constant;
@@ -68,6 +69,7 @@ public class GetAppUrlTask extends AsyncTask<String, Void, String>{
 				StaticData.our_app_list.clear();
 				ApplicationBean abean=new ApplicationBean();
 				abean.setApp_id(jobj.getString(Constant.APP_ID));
+				//Log.e("GetAppUrlTask ","App URL "+ jobj.getString(Constant.APP_URL));
 				abean.setApp_url(jobj.getString(Constant.APP_URL)+ "&" + Constant.USER_ID + "=" + cxt.getSharedPreferences(Constant.pref_name,1).getString(Constant.USER_ID, null) + "&" + "=" + CommonUtilities.getImei(cxt));
 				StaticData.our_app_list.add(abean);
 			}

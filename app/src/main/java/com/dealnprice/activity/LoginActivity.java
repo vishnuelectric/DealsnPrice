@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,8 +41,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -51,16 +52,19 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -69,15 +73,18 @@ import java.util.Date;
 public class LoginActivity extends Activity {
 	EditText user_email,user_password;
 	Button sign_in;
+	String google_code;
+	WebView v;
+	public static LoginActivity la = null;
+	Dialog d;
 	TextView forgot_password,sign_up;
 	String s_user_email,s_user_password;
-	private TwitterLoginButton loginButton;
 	String s_user_name,s_email;
 	Context cxt;
 	CallbackManager callbackManager;
 	Dialog dialog;
 	private AnimationDrawable loadingViewAnim;
-
+	public LoginManager loginManager;
 	public static AccessToken accessToken;
 	Date accessExpir;
 	String firstName,lastName,email,userFbId,httpRequest;
@@ -87,10 +94,10 @@ public class LoginActivity extends Activity {
 	ImageView loading_image;
 	ImageView google_plus_id;
 	public static String regId;
-	LoginButton authButton;
+	ImageView authButton;
 	Profile profile;
 	ProgressDialog mDialog;
-	public static boolean isFbDataReceived = false,isServiceCalled = false; 
+	public static boolean isFbDataReceived = false,isServiceCalled = false;
 	Context con;
 	private String googleWarn = "Could not connect with Google+. Please try again";
 	private String googleText = "Sign in with Google";
@@ -101,8 +108,8 @@ public class LoginActivity extends Activity {
 	private ConnectionResult mConnectionResult;
 	private static final int RC_SIGN_IN = 0;
 	public static int flag1=0;
-	
-	
+
+
 	ConnectionCallbacks googleOnConnectionCallBack = new ConnectionCallbacks() {
 		@Override
 		public void onConnectionSuspended(int connectionSuspendedReason) {
@@ -114,7 +121,8 @@ public class LoginActivity extends Activity {
 		public void onConnected(Bundle arg0) {
 
 			if (mSignInClicked && Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-				getProfileInformation();
+				JSONObject jsonObject= null;
+				getProfileInformation(jsonObject);
 
 
 			} else {
@@ -161,17 +169,19 @@ public class LoginActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			//if (NetworkConnectivityCheck.checkNetConnectivity(LoginActivity.this)) {
-				if (!mGoogleApiClient.isConnecting()) {
+			if (!mGoogleApiClient.isConnecting()) {
 
-					//tracker.send(new HitBuilders.EventBuilder().setCategory("GPlusLogin").setAction("ClickonGPlusLogin").setLabel("GPlusLogin").setValue(1).build());
+				//tracker.send(new HitBuilders.EventBuilder().setCategory("GPlusLogin").setAction("ClickonGPlusLogin").setLabel("GPlusLogin").setValue(1).build());
 
-					mSignInClicked = true;
-					resolveSignInError();
-				}
+				mSignInClicked = true;
+				resolveSignInError();
+			}
 			//} else {
-				//authenticationFail("Seems like you are not connected to the internet. Please try again later");
+			//authenticationFail("Seems like you are not connected to the internet. Please try again later");
 			//}
 		}
+
+
 	};
 
 	/* A helper method to resolve the current ConnectionResult error. */
@@ -196,26 +206,13 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		FacebookSdk.sdkInitialize(getApplicationContext());
 		setContentView(R.layout.login_layout);
-		user_email=(EditText) findViewById(R.id.user_email);
+		user_email = (EditText) findViewById(R.id.user_email);
 		user_password=(EditText) findViewById(R.id.user_password);
 		forgot_password=(TextView) findViewById(R.id.forgot_password);
 		sign_up=(TextView) findViewById(R.id.sign_up);
-		loginButton = (TwitterLoginButton) findViewById(R.id.twitter_button);
-		loginButton.setCallback(new Callback<TwitterSession>() {
-			@Override
-			public void success(Result<TwitterSession> result) {
-				// Do something with result, which provides a TwitterSession for making API calls
-				System.out.println(result.data.getAuthToken()+" "+result.data.getUserId() +" "+ result.data.getUserName());
-			}
-
-			@Override
-			public void failure(TwitterException exception) {
-				// Do something on failure
-			}
-		});
 		sign_in=(Button) findViewById(R.id.sign_in);
 		google_plus_id=(ImageView) findViewById(R.id.google_plus_id);
-		authButton=(LoginButton) findViewById(R.id.authButton);
+		authButton=(ImageView) findViewById(R.id.authButton);
 		sign_up.setOnClickListener(signupListener);
 		SharedPreferences shpf=getSharedPreferences("User_login", 1);
 		callbackManager = CallbackManager.Factory.create();
@@ -227,11 +224,12 @@ public class LoginActivity extends Activity {
 
 		isFbDataReceived = false;
 		con=LoginActivity.this;
-
-		authButton.setReadPermissions(Arrays.asList("public_profile", "email"));
-		authButton.setBackgroundResource(R.drawable.facebook);
+		loginManager = LoginManager.getInstance();
+		
+		la = this;
+		
 		/*authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);*/
-		authButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0,0);
+		
 		/*authButton.setLayoutParams(LayoutParams.FILL_PARENT,"60dp");*/
 		APP_ID=getString(R.string.app_id);
 		//fb=new Facebook(APP_ID);
@@ -243,41 +241,46 @@ public class LoginActivity extends Activity {
 			.addScope(Plus.SCOPE_PLUS_LOGIN)
 			.build();
 		}*/
+
+loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+	@Override
+	public void onSuccess(LoginResult loginResult) {
+		accessToken = loginResult.getAccessToken();
+
+		Arrays.toString(accessToken.getPermissions().toArray());
+		Profile.fetchProfileForCurrentAccessToken();
+	
+		//profile = Profile.getCurrentProfile();
+
+		System.out.println(profile == null);
+		System.out.println(Arrays.toString(accessToken.getPermissions().toArray()) +" "+ loginResult.getAccessToken());
+		fetchUserDetails();
+	}
+
+	@Override
+	public void onCancel() {
+
+	}
+
+	@Override
+	public void onError(FacebookException e) {
+
+	}
+});
+
 		signInWithGplus();
 		cxt=this;
-		getGCMId();
+		//getGCMId();
 
-		authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-			@Override
-			public void onSuccess(LoginResult loginResult) {
-				 accessToken = loginResult.getAccessToken();
 
-				Arrays.toString(accessToken.getPermissions().toArray());
-				Profile.fetchProfileForCurrentAccessToken();
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				 //profile = Profile.getCurrentProfile();
-
-				System.out.println(profile == null);
-				System.out.println(Arrays.toString(accessToken.getPermissions().toArray()) +" "+ loginResult.getAccessToken());
-				fetchUserDetails();
-
-			}
+		authButton.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onCancel() {
-				System.out.println("cancel");
-			}
-
-			@Override
-			public void onError(FacebookException e) {
-				System.out.println("error" + e.getMessage());
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				sign_in_with_facebook();
 			}
 		});
-
 
 		/*if(mGoogleApiClient.isConnected()){*/
 		/*if(getSharedPreferences("User_login", 1).getString("type", null).equals("gplus")){*/
@@ -288,9 +291,139 @@ public class LoginActivity extends Activity {
 			.addScope(Plus.SCOPE_PLUS_LOGIN).build();
 		}*/
 		/*}*/
+google_plus_id.setOnClickListener(signInOnClickListener);
+		/*google_plus_id.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
 
-		google_plus_id.setOnClickListener(signInOnClickListener);
+				v= new WebView(LoginActivity.getAct());
+				d = new Dialog(LoginActivity.getAct());
+				d.addContentView(v, new ViewGroup.LayoutParams(getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()- 100));
+				CookieManager cookieManager = CookieManager.getInstance();
+				cookieManager.setAcceptThirdPartyCookies(v,true);
+				CookieManager.setAcceptFileSchemeCookies(true);
+				//cookieManager.setAcceptCookie(true);
+				v.getSettings().setJavaScriptEnabled(true);
+				v.getSettings().setDomStorageEnabled(true);
+
+				v.setWebViewClient(new WebViewClient() {
+					@Override
+					public boolean shouldOverrideUrlLoading(WebView view, String url) {
+						System.out.println(url);
+						if(url.startsWith("https://localhost/"))
+						{
+							String [] ar = url.trim().split("&");
+							google_code = ar[0].trim().split("=")[1];
+							System.out.println(google_code);
+							d.dismiss();
+							JSONObject obj = getAccesstoken();
+							//getProfileInformation(obj);
+							return true;
+						}
+						return false;
+					}
+
+					@Override
+					public void onPageStarted(WebView view, String url, Bitmap favicon) {
+						super.onPageStarted(view, url, favicon);
+						System.out.println(url);
+					}
+
+					@Override
+					public void onPageFinished(WebView view, String url) {
+						super.onPageFinished(view, url);
+						System.out.println(url);
+						//v.loadUrl("javascript:clickit();");
+					}
+				});
+
+				v.loadUrl("https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/plus.login+https://www.googleapis.com/auth/userinfo.email&redirect_uri=https://localhost&response_type=code&client_id=342578389641-f2o3ijf95cglblqddv8ddgmumhl33e45.apps.googleusercontent.com");
+             //v.loadUrl("file:///android_asset/gplus.html");
+
+				d.show();
+
+
+
+			}
+		});*/
 	}
+
+	public JSONObject getAccesstoken(){
+ JSONObject jsonObject1 = null;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					URL url = new URL("https://www.googleapis.com/oauth2/v3/token");
+					HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+					httpURLConnection.setRequestMethod("POST");
+					httpURLConnection.setDoInput(true);
+					httpURLConnection.setDoOutput(true);
+					OutputStreamWriter writer = new OutputStreamWriter(
+							httpURLConnection.getOutputStream());
+					writer.write("code="+ google_code +"&redirect_uri=https://localhost&client_id=342578389641-f2o3ijf95cglblqddv8ddgmumhl33e45.apps.googleusercontent.com&client_secret=fHlFs7r2DCTb6PLuLokltbgu&scope=&grant_type=authorization_code");
+					writer.flush();
+					String response = streamToString(httpURLConnection.getInputStream());
+					System.out.println(response);
+					JSONObject jsonObject = (JSONObject)new JSONTokener(response).nextValue();
+                       String token = jsonObject.getString("access_token");
+                        writer.close();
+
+					       httpURLConnection.disconnect();
+					URL url1 = new URL("https://www.googleapis.com/plus/v1/people/me?access_token="+ token);
+				HttpURLConnection	httpURLConnection1 = (HttpURLConnection) url1.openConnection();
+					httpURLConnection1.setRequestMethod("GET");
+					httpURLConnection1.setDoInput(true);
+
+					String response1 = streamToString(httpURLConnection1.getInputStream());
+
+					System.out.println(response1);
+					JSONObject jsonObject1 =(JSONObject) new JSONTokener(response1).nextValue();
+
+
+
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+
+
+
+
+			}
+		}).start();
+		return jsonObject1;
+	}
+	private String streamToString(InputStream is) throws IOException {
+		String str = "";
+
+		if (is != null) {
+			StringBuilder sb = new StringBuilder();
+			String line;
+
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is));
+
+				while ((line = reader.readLine()) != null) {
+					sb.append(line);
+				}
+
+				reader.close();
+			} finally {
+				is.close();
+			}
+
+			str = sb.toString();
+		}
+
+		return str;
+	}
+	public void sign_in_with_facebook(){
+		loginManager.logInWithReadPermissions(this, Arrays.asList("email,public_profile"));
+	}
+
 
 
 
@@ -313,7 +446,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 		Bundle parameters = new Bundle();
-		parameters.putString("fields", "id,name,link,email,address,about,hometown,interested_in");
+		parameters.putString("fields", "id,name,email");
 		request.setParameters(parameters);
 		request.executeAsync();
 	}
@@ -363,59 +496,12 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		/* final Session session = Session.getActiveSession();
-		if(fb.isSessionValid()){
-			accessToken = session.getAccessToken();
-			accessExpir = session.getExpirationDate();
 
-			 Log.i("MAinActivity", "Logged in...");
-
-			if (Session.getActiveSession().isOpened()) {
-				if(mDialog==null){
-					mDialog = new ProgressDialog(LoginActivity.this);
-				}
-				if(!mDialog.isShowing()){
-					mDialog.setMessage("Please Wait...");
-					mDialog.setCancelable(false);
-					mDialog.show();
-				}
-
-				StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		             StrictMode.setThreadPolicy(policy);
-
-				Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-					public void onCompleted(GraphUser user, Response response) {
-						Log.v("come here"," "+session);
-						session.close();
-
-						getUserFacebookData(user);
-					}
-				});
-			}
-
-		}
-
-		else if(session != null &&
-				(session.isOpened() || session.isClosed()) ) {
-			onSessionStateChange(session, session.getState(), null);
-		}
-		else{
-			if(flag){
-				Session s = new Session(LoginActivity.this);
-				Session.setActiveSession(s);
-				s.openForRead(new Session.OpenRequest(this).setCallback(callback).setPermissions(Arrays.asList("public_profile","email")));
-			}
-
-		}
-*/
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-          callbackManager.onActivityResult(requestCode, resultCode, data);
-
-		//uiHelper.onActivityResult(requestCode, resultCode, data);
-		loginButton.onActivityResult(requestCode, resultCode, data);
+		callbackManager.onActivityResult(requestCode,resultCode,data);
 		if (requestCode == RC_SIGN_IN) {
 			if (resultCode != RESULT_OK) {
 				mSignInClicked = false;
@@ -441,7 +527,7 @@ public class LoginActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-	//	uiHelper.onDestroy();
+		//	uiHelper.onDestroy();
 	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -449,37 +535,27 @@ public class LoginActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		//uiHelper.onSaveInstanceState(outState);
 	}
-	/*private Session.StatusCallback callback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChange(session, state, exception);
-		}
-	};*/
+
 
 	private void getUserFacebookData(JSONObject jsonObject){
 		if(jsonObject!= null){
 			try{
+				System.out.println(jsonObject.toString());
 				isFbDataReceived = true;
-				String userName = profile.getName();
-				/* Log.v("USer Name",userName);*/
-				// profilePic = "http://graph.facebook.com/"+user.getId()+"/picture?type=large";
 
-				firstName = profile.getFirstName();
-				lastName = profile.getLastName();
-				/*String mobile =user.getP*/
 
 				String gender = "male";//user.getProperty("gender").toString();
 				email =  jsonObject.getString("email"); //user.getProperty("email").toString();
-				userFbId = profile.getId();
+				//userFbId = profile.getId();
 				/* String loginType = AppConstents.FACEBOOK;*/
-				httpRequest = "username="+userName+"&firstname="+firstName+
-						"&lastname="+lastName+"&email="+email+
-						"&gender="+gender+"&logintype="+1+
-						"&accesstoken="+accessToken+"&accessexpir="+accessExpir.getTime();
+				httpRequest = "username="+jsonObject.getString("name")+"&firstname="+jsonObject.getString("name")+
+						"&lastname="+""+"&email="+email+
+						"&gender="+""+"&logintype="+1+
+						"&accesstoken="+accessToken+"&accessexpir="+accessToken.getExpires();
 				Log.v("Http Request Facebook Data User",httpRequest); 
-				if(mDialog.isShowing()){
+				/*if(mDialog.isShowing()){
 					mDialog.dismiss();
-				}
+				}*/
 				try{
 					isServiceCalled = true;
 					SharedPreferences shpf1=getSharedPreferences("User_login", 1);
@@ -488,7 +564,7 @@ public class LoginActivity extends Activity {
 					edt.commit();
 
 					MultipartEntity multiPart=new MultipartEntity();
-					multiPart.addPart("txtname", new StringBody(firstName+" "+lastName));
+					multiPart.addPart("txtname", new StringBody(jsonObject.getString("name")+" "+""));
 					multiPart.addPart("txtemail1", new StringBody(email));
 					multiPart.addPart("txtpassword1", new StringBody("1234"));
 					multiPart.addPart("mobileval", new StringBody(""));
@@ -520,20 +596,20 @@ public class LoginActivity extends Activity {
 
 	}
 
-/*	private void setProgressDialog(){
+	/*	private void setProgressDialog(){
 
-		dialog=new Dialog(LoginActivity.this);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.activity_loading);
-		LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
-		loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
-		loading_image.setBackgroundResource(R.anim.loading_animation);
-		loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
+            dialog=new Dialog(LoginActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.activity_loading);
+            LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
+            loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
+            loading_image.setBackgroundResource(R.anim.loading_animation);
+            loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
 
-		loadingViewAnim.start();
-		dialog.setCancelable(false);
-		dialog.show();
-	}*/
+            loadingViewAnim.start();
+            dialog.setCancelable(false);
+            dialog.show();
+        }*/
 	private void setProgressDialog() {
 		dialog = new Dialog(LoginActivity.this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -546,7 +622,7 @@ public class LoginActivity extends Activity {
 	public void generateHash(){
 		try {
 			PackageInfo info = getPackageManager().getPackageInfo(
-					"com.dealnprice.activity", 		
+					"com.dealnprice.activity",
 					PackageManager.GET_SIGNATURES);
 			for (Signature signature : info.signatures) {
 				MessageDigest md = MessageDigest.getInstance("SHA");
@@ -585,7 +661,7 @@ public class LoginActivity extends Activity {
 			else if(UtilMethod.isStringNullOrBlank(s_user_password)){
 				UtilMethod.showToast(getResources().getString(R.string.user_password_message), LoginActivity.this);
 			}
-			else{		
+			else{
 				try{
 					setProgressDialog();
 					//UtilMethod.showToast("GCMID is "+regId, LoginActivity.this);
@@ -603,7 +679,7 @@ public class LoginActivity extends Activity {
 						multipart.addPart("gcmid",new StringBody(regId));
 					}
 					else{
-						multipart.addPart("gcmid",new StringBody(""));	
+						multipart.addPart("gcmid",new StringBody(""));
 					}
 					new LoginTask(LoginActivity.this, multipart, new LoginListener(),"hfdhfhsfhdfh").execute();
 				}
@@ -750,10 +826,16 @@ public class LoginActivity extends Activity {
 		}
 	}
 	 */
+
+
+	public static LoginActivity getAct()
+	{
+		return la;
+	}
 	/**
 	 * Fetching user's information name, email, profile pic
 	 * */
-	private void getProfileInformation() {
+	private void getProfileInformation(JSONObject jsonObject) {
 		try {
 			if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
 				Person currentPerson = Plus.PeopleApi
@@ -795,7 +877,12 @@ public class LoginActivity extends Activity {
 
 				/*new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);*/
 
-			} else {
+			} else if(jsonObject != null){
+
+
+
+			}
+			else{
 				Toast.makeText(getApplicationContext(),
 						"Person information is null", Toast.LENGTH_LONG).show();
 			}
@@ -814,14 +901,14 @@ public class LoginActivity extends Activity {
 	 * Sign-in into google
 	 * */
 	private void signInWithGplus() {
-		
+
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
-		.addConnectionCallbacks(googleOnConnectionCallBack)
-		.addOnConnectionFailedListener(googleOnConnectionFailedListener)
-		.addScope(Plus.SCOPE_PLUS_LOGIN)
-		.addApi(Plus.API, Plus.PlusOptions.builder().build())
-		.build();
-	
+				.addConnectionCallbacks(googleOnConnectionCallBack)
+				.addOnConnectionFailedListener(googleOnConnectionFailedListener)
+				.addScope(Plus.SCOPE_PLUS_LOGIN)
+				.addApi(Plus.API, Plus.PlusOptions.builder().build())
+				.build();
+
 	}
 
 	/**
@@ -843,14 +930,14 @@ public class LoginActivity extends Activity {
 		if (mGoogleApiClient.isConnected()) {
 			Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 			Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-			.setResultCallback(new ResultCallback<Status>() {
-				@Override
-				public void onResult(Status arg0) {
-					Log.e("DnP", "User access revoked!");
-					mGoogleApiClient.connect();
-				}
+					.setResultCallback(new ResultCallback<Status>() {
+						@Override
+						public void onResult(Status arg0) {
+							Log.e("DnP", "User access revoked!");
+							mGoogleApiClient.connect();
+						}
 
-			});
+					});
 		}
 	}
 

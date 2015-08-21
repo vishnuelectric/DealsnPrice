@@ -1,19 +1,17 @@
 package com.dnp.asynctask;
 
-import org.json.JSONObject;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.widget.TextView;
+import android.util.Log;
 
 import com.dealnprice.activity.Constant;
 import com.dealnprice.activity.DashboardActivity;
-import com.dealnprice.activity.R;
+import com.dnp.data.APP_Constants;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.WebService;
+
+import org.json.JSONObject;
 
 public class Pending_amount extends AsyncTask<String, Void, String> {
 
@@ -51,13 +49,36 @@ public class Pending_amount extends AsyncTask<String, Void, String> {
 				{
 					if(jobj.getString("amount").equals("0"))
 					{
+						Log.e(" "," 000 Amount is 0");
 						DashboardActivity.onCustomActionView(""+jobj.getString("amount"));
 					}
 					else
 					{
+						Log.e(" ","  Amount is "+jobj.getString("amount"));
 						DashboardActivity.onCustomActionView(""+ Math.round(jobj.getDouble("amount")));
 					}
-					
+					/**
+					 * Code Below Shows Notification whenever ther's a change in users AMOUNT
+					 */
+					int finalAmount	=	(int) Math.round(jobj.getDouble("amount"));
+					if(APP_Constants.AMOUNT_COUNTER > 0)
+					{
+						/*if(finalAmount != APP_Constants.AMOUNT)
+						{
+							/**
+							 * Put Notifications Code here for Money Received
+
+							if(DashboardActivity.actRef!=null)
+							{
+								DashboardActivity.actRef.showNotification(APP_Constants.MONEY_RECIEVED, "Dealsnprice");
+							}
+						}*/
+					}
+					if(finalAmount >= 0) //avoid -ve amounts
+					{
+						APP_Constants.AMOUNT	=	finalAmount;
+						APP_Constants.AMOUNT_COUNTER++;
+					}
 					//((TextView)cxt.findViewById(R.id.amount_text)).setText(""+Math.round(jobj.getDouble("amount")));
 
 				}

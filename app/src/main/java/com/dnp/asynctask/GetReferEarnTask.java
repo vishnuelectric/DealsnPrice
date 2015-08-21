@@ -1,14 +1,14 @@
 package com.dnp.asynctask;
 
-import org.json.JSONObject;
+import android.content.Context;
+import android.os.AsyncTask;
 
 import com.dnp.bean.ReferEarnBean;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.StaticData;
 import com.dnp.fragment.ReferEarnFragment.ReferEarnListener;
 
-import android.content.Context;
-import android.os.AsyncTask;
+import org.json.JSONObject;
 
 public class GetReferEarnTask extends AsyncTask<String, Void, String>{
 	String url;

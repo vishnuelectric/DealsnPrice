@@ -1,18 +1,18 @@
 package com.dnp.asynctask;
 
-import org.apache.http.entity.mime.MultipartEntity;
-import org.json.JSONObject;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.dealnprice.activity.Constant;
 import com.dealnprice.activity.LoginActivity.LoginListener;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.WebService;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
-import android.util.Log;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.json.JSONObject;
 
 public class RegistrationWithSocialTask extends AsyncTask<String, Void, String>{
 	Context cxt;
@@ -54,7 +54,7 @@ public class RegistrationWithSocialTask extends AsyncTask<String, Void, String>{
 				edt.putString("user_name", jobj.getString("name"));
 				edt.putString("user_email", jobj.getString("email"));
 				edt.putString("user_mobile",jobj.getString("mobile"));
-				edt.putString("usercode", jobj.getString("usercode"));
+				edt.putString("user_code", jobj.getString("usercode"));
 				edt.commit();
 				lListener.onSuccesswithSocial();
 				
@@ -66,7 +66,7 @@ public class RegistrationWithSocialTask extends AsyncTask<String, Void, String>{
 				edt.putString("user_name", jobj.getString("name"));
 				edt.putString("user_email", jobj.getString("email"));
 				edt.putString("user_mobile",jobj.getString("mobile"));
-				edt.putString("usercode", jobj.getString("usercode"));
+				edt.putString("user_code", jobj.getString("usercode"));
 				edt.commit();
 				lListener.onSuccesswithSocial();
 			}

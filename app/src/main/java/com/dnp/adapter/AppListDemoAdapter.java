@@ -1,8 +1,7 @@
 package com.dnp.adapter;
 
-import java.util.StringTokenizer;
-
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +16,8 @@ import com.dealnprice.activity.R;
 import com.dnp.data.StaticData;
 import com.dnp.fragment.OfferFragment.OfferListener;
 
+import java.util.StringTokenizer;
+
 public class AppListDemoAdapter extends BaseAdapter{
 	Context cxt;
 	ViewHolder vholder;
@@ -29,7 +30,7 @@ public class AppListDemoAdapter extends BaseAdapter{
 		inflater=LayoutInflater.from(cxt);
 		this.oListener=olistener;
 	}
-	
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -73,7 +74,9 @@ public class AppListDemoAdapter extends BaseAdapter{
 		while(st.hasMoreTokens()){
 			String s = st.nextToken();
 			count++;
+
 		}
+		Log.e("AppListDemoAdapter "," size list "+StaticData.application_list.size());
 		vholder.app_name.setText(StaticData.application_list.get(position).getApp_name());
 		if(StaticData.application_list.get(position).getApp_short_description().length()>80){
 			vholder.app_description.setText(StaticData.application_list.get(position).getApp_short_description().substring(0, 79)+"...");
@@ -103,9 +106,17 @@ public class AppListDemoAdapter extends BaseAdapter{
 			}*/
 			vholder.app_cost.setText(StaticData.application_list.get(position).getUptotalamount());
 		}
-		
+
+        /**
+         * Purpose Id usage:
+         * 1: Intsall or Intsall and Get Upto
+         * 2: Shop & Earn
+         * 3: Refer & Earn
+         * 4: Detail or Task
+         */
+
 		if(StaticData.application_list.get(position).getPurpose_id()==1){
-			
+
 			if(StaticData.application_list.get(position).getAppinstall().equals("null")){
 				if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("normal"))
 				{
@@ -113,12 +124,11 @@ public class AppListDemoAdapter extends BaseAdapter{
 				}
 				else
 				{
-					vholder.install_text.setText("install & getupto");
+					vholder.install_text.setText("Install ");
 				}
-			
-			vholder.install.setBackgroundDrawable(cxt.getResources().getDrawable(R.drawable.deal_install_bg_rounded));
-			vholder.install_image.setImageDrawable(cxt.getResources().getDrawable(R.drawable.download));
-			
+
+				vholder.install.setBackgroundDrawable(cxt.getResources().getDrawable(R.drawable.deal_install_bg_rounded));
+				vholder.install_image.setImageDrawable(cxt.getResources().getDrawable(R.drawable.download));
 			}
 			else if(StaticData.application_list.get(position).getAppinstall().equals("1")){
 				vholder.install_text.setText("In Progress");
@@ -126,6 +136,41 @@ public class AppListDemoAdapter extends BaseAdapter{
 				vholder.install_image.setImageDrawable(cxt.getResources().getDrawable(R.drawable.download));
 				vholder.install_image.setVisibility(View.GONE);
 			}
+
+			/*
+			 * Conditions if app already Installed:
+			 * TODO::
+			 * These case are to be reviewed
+			 */
+			int APP_FINAL_STATUS	=	StaticData.application_list.get(position).getAppfinalstatus();
+			boolean isInstalled		=	StaticData.application_list.get(position).isPackage_flag();
+
+			switch (APP_FINAL_STATUS) {
+			case 0:
+			{
+
+			}
+			break;
+			case 1:
+				if(!isInstalled)
+				{
+					vholder.install_text.setText("Install");
+				}else{
+					vholder.install_text.setText("Installed");
+				}
+				break;
+			case 2:
+				if(isInstalled)
+					vholder.install_text.setText("In Progress");
+				else
+					vholder.install_text.setText("Install");
+				break;
+			default:
+				break;
+			}
+
+			Log.e(" AppListDemoAdapter ","App: "+StaticData.application_list.get(position).getApp_name()+" Status "+StaticData.application_list.get(position).getAppfinalstatus());
+
 		}
 		else if(StaticData.application_list.get(position).getPurpose_id()==2){
 			vholder.install_text.setText("Refer");
@@ -143,7 +188,7 @@ public class AppListDemoAdapter extends BaseAdapter{
 			vholder.install_image.setImageDrawable(cxt.getResources().getDrawable(R.drawable.details));
 		}
 		if(StaticData.application_list.get(position).getApp_rate()>=0.5 && StaticData.application_list.get(position).getApp_rate()<1.0){
-			vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s0));
+			vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s0_5_stars));
 		}
 		else if(StaticData.application_list.get(position).getApp_rate()>=1.0 && StaticData.application_list.get(position).getApp_rate()<1.5){
 			vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s1_star));
@@ -172,24 +217,24 @@ public class AppListDemoAdapter extends BaseAdapter{
 		else if(StaticData.application_list.get(position).getApp_rate()==5){
 			vholder.myrating.setImageDrawable(cxt.getResources().getDrawable(R.drawable.s5_stars));
 		}
-		
+
 		vholder.install.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				oListener.onAppClick(position);
 			}
 		});
-			
+
 		AQuery aq = new AQuery(convertView);
-        aq.id(R.id.app_image).image(StaticData.application_list.get(position).getApp_image(),
-            true, true, 0, R.drawable.ic_launcher, null,
-            AQuery.CACHE_DEFAULT,0.0f).visible();
-		
+		aq.id(R.id.app_image).image(StaticData.application_list.get(position).getApp_image(),
+				true, true, 0, R.drawable.ic_launcher, null,
+				AQuery.CACHE_DEFAULT,0.0f).visible();
+
 		return convertView;
 	}
-	
+
 	public class ViewHolder{
 		public ImageView app_image;
 		public TextView app_name;

@@ -60,7 +60,7 @@ public class FAQFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		footer_layout=(LinearLayout) view.findViewById(R.id.footer_layout);
 		contact_us_layout=(TextView) view.findViewById(R.id.contact_us_layout);
 		contact_us_layout.setOnClickListener(contactListener);

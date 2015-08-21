@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import com.dnp.data.APP_Constants;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -38,16 +40,14 @@ import com.dnp.asynctask.GetCouponProductTask;
 import com.dnp.asynctask.GetDealStoreTask;
 import com.dnp.asynctask.GetTopStoreTask;
 import com.dnp.asynctask.Pending_amount;
-import com.dnp.data.APP_Constants;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
 import com.dnp.data.sqlHelper;
 
-
 public class DNPDealCouponFragment extends Fragment {
 
-	String tag= getClass().getName();
+	String tag= "DNPDealCouponFragment";
 	private HorizontalListView mHlvCustomList,top_stores;
 	private HorizontalListView steal_deal_list,most_viewed_deal_list;
 	private HorizontalListView hot_coupon_list,most_viewed_coupon_list;

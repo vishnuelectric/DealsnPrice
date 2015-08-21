@@ -2,29 +2,27 @@ package com.dealnprice.activity;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-
-import io.fabric.sdk.android.Fabric;
 
 public class DNPApplication extends Application{
-
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "6zVZdERZfbXLQuwxKOWOKZDSk";
-    private static final String TWITTER_SECRET = "5ocetjwhgsCj8sDT645y5VuyPBOsFxne99GfY7V8Fq0CzRf09W";
-
 
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-		Fabric.with(this, new Twitter(authConfig));
+		Stetho.initialize(
+				Stetho.newInitializerBuilder(this)
+						.enableDumpapp(
+								Stetho.defaultDumperPluginsProvider(this))
+						.enableWebKitInspector(
+								Stetho.defaultInspectorModulesProvider(this))
+						.build());
+
 		initUniversalImageLoader();
 	}
 	public void initUniversalImageLoader(){

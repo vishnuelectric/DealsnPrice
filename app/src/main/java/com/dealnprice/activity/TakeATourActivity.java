@@ -39,8 +39,8 @@ public class TakeATourActivity extends Activity {
 		mTakeTourImages	=	new int[]{
 				R.drawable.slid1,
 				R.drawable.slid2,
-				R.drawable.slid3,
-				R.drawable.slid4,
+				//R.drawable.slid3,
+				//R.drawable.slid4,
 				R.drawable.slid5        		
 		};
 		bindViews(); // find views by id
@@ -58,40 +58,41 @@ public class TakeATourActivity extends Activity {
 				case 0:
 					dot1.setImageResource(R.drawable.dot_selected);
 					dot2.setImageResource(R.drawable.dot_unselected);
-					dot3.setImageResource(R.drawable.dot_unselected);
-					dot4.setImageResource(R.drawable.dot_unselected);
+					//dot3.setImageResource(R.drawable.dot_unselected);
+					//dot4.setImageResource(R.drawable.dot_unselected);
 					dot5.setImageResource(R.drawable.dot_unselected);
 					break;
 
 				case 1:
 					dot1.setImageResource(R.drawable.dot_unselected);
 					dot2.setImageResource(R.drawable.dot_selected);
-					dot3.setImageResource(R.drawable.dot_unselected);
-					dot4.setImageResource(R.drawable.dot_unselected);
+					//dot3.setImageResource(R.drawable.dot_unselected);
+					//dot4.setImageResource(R.drawable.dot_unselected);
 					dot5.setImageResource(R.drawable.dot_unselected);
 					break;
 
 				case 2:
 					dot1.setImageResource(R.drawable.dot_unselected);
 					dot2.setImageResource(R.drawable.dot_unselected);
-					dot3.setImageResource(R.drawable.dot_selected);
-					dot4.setImageResource(R.drawable.dot_unselected);
-					dot5.setImageResource(R.drawable.dot_unselected);
+					//dot3.setImageResource(R.drawable.dot_selected);
+					//dot4.setImageResource(R.drawable.dot_unselected);
+					//dot5.setImageResource(R.drawable.dot_unselected);
+					dot5.setImageResource(R.drawable.dot_selected);
 					break;
 
 				case 3:
 					dot1.setImageResource(R.drawable.dot_unselected);
 					dot2.setImageResource(R.drawable.dot_unselected);
-					dot3.setImageResource(R.drawable.dot_unselected);
-					dot4.setImageResource(R.drawable.dot_selected);
+					//dot3.setImageResource(R.drawable.dot_unselected);
+					//dot4.setImageResource(R.drawable.dot_selected);
 					dot5.setImageResource(R.drawable.dot_unselected);
 					
 					break;
 				case 4:
 					dot1.setImageResource(R.drawable.dot_unselected);
 					dot2.setImageResource(R.drawable.dot_unselected);
-					dot3.setImageResource(R.drawable.dot_unselected);
-					dot4.setImageResource(R.drawable.dot_unselected);
+					//dot3.setImageResource(R.drawable.dot_unselected);
+					//dot4.setImageResource(R.drawable.dot_unselected);
 					dot5.setImageResource(R.drawable.dot_selected);
 					break;
 
@@ -141,8 +142,8 @@ public class TakeATourActivity extends Activity {
 		pager		=	(ViewPager) findViewById(R.id.pager_taketour);
 		dot1		=	(ImageView) findViewById(R.id.dot1IV);
 		dot2		=	(ImageView) findViewById(R.id.dot2IV);
-		dot3		=	(ImageView) findViewById(R.id.dot3IV);
-		dot4		=	(ImageView) findViewById(R.id.dot4IV);
+		//dot3		=	(ImageView) findViewById(R.id.dot3IV);
+		//dot4		=	(ImageView) findViewById(R.id.dot4IV);
 		dot5		=	(ImageView) findViewById(R.id.dot5IV);
 		nextTV		=	(TextView) findViewById(R.id.takeTour_nextBtn);
 		skipTV		=	(TextView) findViewById(R.id.takeTour_skipBtn);

@@ -1,20 +1,18 @@
 package com.dnp.asynctask;
 
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-import org.json.JSONObject;
-
-import com.dealnprice.activity.Constant;
-import com.dealnprice.activity.LoginActivity.LoginListener;
-import com.dnp.data.HttpRequest;
-import com.dnp.data.UtilMethod;
-import com.dnp.data.WebService;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.dealnprice.activity.Constant;
+import com.dealnprice.activity.LoginActivity.LoginListener;
+import com.dnp.data.HttpRequest;
+import com.dnp.data.WebService;
+
+import org.apache.http.entity.mime.MultipartEntity;
+import org.json.JSONObject;
 
 public class LoginTask extends AsyncTask<String, Void, String>{
 	Context cxt;
@@ -51,6 +49,7 @@ public class LoginTask extends AsyncTask<String, Void, String>{
 			try{
 			JSONObject obj=new JSONObject(result);
 			String status=obj.getString("loginstatus");
+				Log.e(" onLogin","return JSON "+status);
 			if(status.equals("0")){
 				SharedPreferences shpf=cxt.getSharedPreferences(Constant.pref_name, 1);
 				Editor edt=shpf.edit();
@@ -59,6 +58,7 @@ public class LoginTask extends AsyncTask<String, Void, String>{
 				edt.putString("user_email", obj.getString("email"));
 				edt.putString("user_mobile",obj.getString("mobile"));
 				edt.putString("user_code", obj.getString("usercode"));
+				Log.e(" "," USER CODE "+obj.getString("usercode"));
 				edt.putString("pendingamount", obj.getString("pendingamount"));
 				edt.commit();
 				lListener.onSuccess();

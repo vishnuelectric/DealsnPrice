@@ -1,29 +1,41 @@
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
+
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+
 
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
 }
 
 
 android {
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
     signingConfigs {
         config {
-            keyAlias 'vishyalias'
-            keyPassword '27021990abcd'
-            storeFile file('/Users/vishnuprasad/Documents/vishy')
-            storePassword '27021990abcd'
+            keyAlias 'dealsnprice'
+            keyPassword '123456'
+            storeFile file('/Users/vishnuprasad/dealsnprice.keystore')
+            storePassword '123456'
         }
-        lintOptions{
+        lintOptions {
             checkReleaseBuilds false
             abortOnError false
         }
@@ -50,16 +62,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+
+
+    compile 'com.facebook.stetho:stetho:1.1.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.facebook.android:facebook-android-sdk:4.2.0'
-    compile files('libs/android-query-full.0.26.7.jar')
-    compile files('libs/httpmime-4.2.5.jar')
-    compile files('libs/splunk-mint-4.2.jar')
-    compile files('libs/universal-image-loader-1.9.1-with-sources.jar')
-    compile files('libs/gcm.jar')
-    compile('com.twitter.sdk.android:twitter:1.7.0@aar') {
-        transitive = true;
-    }
-
+    compile 'com.android.support:support-v4:22.2.1'
 }

@@ -77,7 +77,7 @@ public class ContactUsFragment extends Fragment{
 		faqs_layout=(LinearLayout) view.findViewById(R.id.faq_layout);
 		aboutus_layout=(LinearLayout) view.findViewById(R.id.aboutus_layout);
 		scrooling=(ScrollView) view.findViewById(R.id.scrooling);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		shopearn_text.setText("Shop & Earn");
 		dealprice_text.setText("Deals & Coupons");
 		referearn_text.setText("Refer & Earn");

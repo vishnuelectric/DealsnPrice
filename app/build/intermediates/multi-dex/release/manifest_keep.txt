@@ -9,10 +9,10 @@
 -keep class com.dealnprice.activity.ForgotPasswordActivity { <init>(); }
 -keep class com.dealnprice.activity.DashboardActivity { <init>(); }
 -keep class com.dealnprice.activity.TakeATourActivity { <init>(); }
--keep class com.dealnprice.activity.AmountService { <init>(); }
 -keep class com.google.android.gcm.GCMBroadcastReceiver { <init>(); }
 -keep class com.dealnprice.activity.GCMIntentService { <init>(); }
 -keep class com.dnp.data.Receiver { <init>(); }
+-keep class com.dealnprice.activity.UptoService { <init>(); }
 -keep class com.google.android.gms.ads.AdActivity { <init>(); }
 -keep class com.google.android.gms.ads.purchase.InAppPurchaseActivity { <init>(); }
 -keep class com.google.android.gms.wallet.EnableWalletOptimizationReceiver { <init>(); }

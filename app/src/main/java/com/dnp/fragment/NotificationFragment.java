@@ -5,17 +5,18 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,8 +28,13 @@ import com.dealnprice.activity.R;
 import com.dnp.adapter.NotificationAdapter;
 import com.dnp.asynctask.GetNotificationTask;
 import com.dnp.asynctask.Pending_amount;
+import com.dnp.bean.NotificationBean;
+import com.dnp.data.APP_Constants;
+import com.dnp.data.DBHELPER;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
+
+import java.util.ArrayList;
 
 public class NotificationFragment extends Fragment{
 	View view;
@@ -42,13 +48,14 @@ public class NotificationFragment extends Fragment{
 	FragmentTransaction ft;
 	Fragment fragment;
 	HorizontalScrollView horizontal_id;
+    TextView notifMessageTV =   null;
 	Dialog dialog;
 	//private AnimationDrawable loadingViewAnim;
 	ImageView loading_image;
+    NotificationAdapter notificationAdapter    =   null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		view=inflater.inflate(R.layout.activity_notifications, container, false);
 		notification_list=(ListView) view.findViewById(R.id.notification_list);
 		offer_layout=(LinearLayout) view.findViewById(R.id.offer_layout);
@@ -60,7 +67,9 @@ public class NotificationFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
+        notifMessageTV=(TextView) view.findViewById(R.id.notifmessageTV);
+
 		fm=getActivity().getSupportFragmentManager();
 		ft=fm.beginTransaction();
 		shopearn_text.setText("Shop & Earn");
@@ -68,13 +77,9 @@ public class NotificationFragment extends Fragment{
 		referearn_text.setText("Refer & Earn");
 		priceearn_text.setText("Price Comparison");
 		//DashboardActivity.onCustomActionView();
-		
 		Pending_amount pp= new Pending_amount(getActivity());
 		pp.execute();
-		
 		footer_layout=(LinearLayout) view.findViewById(R.id.footer_layout);
-		
-		
 		LayoutInflater inflater1=LayoutInflater.from(getActivity());
 		View v1=inflater1.inflate(R.layout.activity_footer,null);
 		LinearLayout home_layout=(LinearLayout) v1.findViewById(R.id.home_layout);
@@ -105,7 +110,7 @@ public class NotificationFragment extends Fragment{
 		notification_text.setTextColor(getResources().getColor(R.color.black));
 		home_icon.setImageDrawable(getResources().getDrawable(R.drawable.home));
 		LinearLayout.LayoutParams param=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		
+
 		v1.setLayoutParams(param);
 		footer_layout.addView(v1);
 		offer_layout.setOnClickListener(offerListener);
@@ -118,26 +123,53 @@ public class NotificationFragment extends Fragment{
 		if(UtilMethod.isStringNullOrBlank(notification_value)){
 			notification_off.setVisibility(View.GONE);
 			notification_on.setVisibility(View.VISIBLE);
+            notifMessageTV.setVisibility(View.GONE);
+            notification_list.setVisibility(View.VISIBLE);
 		}
 		else if(notification_value.equals("on")){
 			notification_off.setVisibility(View.GONE);
 			notification_on.setVisibility(View.VISIBLE);
+            notifMessageTV.setVisibility(View.GONE);
+            notification_list.setVisibility(View.VISIBLE);
 		}
 		else if(notification_value.equals("off")){
 			notification_off.setVisibility(View.VISIBLE);
 			notification_on.setVisibility(View.GONE);
+            notifMessageTV.setVisibility(View.VISIBLE);
+            notification_list.setVisibility(View.GONE);
 		}
-		
 		notification_off_layout.setOnClickListener(notificationofflistener);
 		notification_on_layout.setOnClickListener(notificationonlistener);
-		
 		setProgressDialog();
 		new GetNotificationTask(getActivity(), new NotificationListener()).execute();
+
+
+        SwipeDismissList.OnDismissCallback callback =   new SwipeDismissList.OnDismissCallback() {
+            @Override
+            public SwipeDismissList.Undoable onDismiss(AbsListView listView, int position) {
+
+                String id   =   StaticData.notification_list.get(position).getNotification_id();
+                DBHELPER sqDb  =   new DBHELPER(DashboardActivity.actRef);
+                sqDb.getWritableDatabase();
+                sqDb.deleteNotification(id);
+                StaticData.notification_list.remove(position);
+                if(notificationAdapter!=null)
+                    notificationAdapter.notifyDataSetChanged();
+
+                Log.e("On swipe ","LSize  "+StaticData.notification_list.size()+" id "+id+" pos "+position);
+
+                return null;
+            }
+        };
+
+        SwipeDismissList.UndoMode mode  =   SwipeDismissList.UndoMode.SINGLE_UNDO;
+        SwipeDismissList mSwipeDismissList  =   new SwipeDismissList(notification_list, callback, mode);
+        mSwipeDismissList.setSwipeDirection(SwipeDismissList.SwipeDirection.BOTH);
 		return view;
 	}
-	
+
 	/*private void setProgressDialog(){
-		
+
 		dialog=new Dialog(getActivity());
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.activity_loading);
@@ -147,7 +179,7 @@ public class NotificationFragment extends Fragment{
 		loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
 		dialog.setCancelable(false);
 		loadingViewAnim.start();
-		
+
 		dialog.show();
 	}*/
 	private void setProgressDialog() {
@@ -158,59 +190,78 @@ public class NotificationFragment extends Fragment{
 		dialog.setCancelable(false);
 		dialog.show();
 	}
-	
+
 	OnClickListener notificationofflistener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			notification_off.setVisibility(View.VISIBLE);
 			notification_on.setVisibility(View.GONE);
+            notification_list.setVisibility(View.GONE);
+            notifMessageTV.setVisibility(View.VISIBLE);
 			SharedPreferences shpf=getActivity().getSharedPreferences("User_login", 1);
 			Editor edt=shpf.edit();
 			edt.putString("notification_value","off");
 			edt.commit();
 		}
 	};
-	
+
 	OnClickListener notificationonlistener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			notification_off.setVisibility(View.GONE);
 			notification_on.setVisibility(View.VISIBLE);
+            notification_list.setVisibility(View.VISIBLE);
+            notifMessageTV.setVisibility(View.GONE);
 			SharedPreferences shpf1=getActivity().getSharedPreferences("User_login", 1);
 			Editor edt1=shpf1.edit();
 			edt1.putString("notification_value", "on");
 			edt1.commit();
 		}
 	};
-	
+
+    /**
+     * Max Allowed notifications are 50
+     */
+
 	public class NotificationListener{
 		public void onSuccess(){
+            Log.e(" ", " inside OnSuccess notif");
 			if(dialog!=null && dialog.isShowing()){
 				dialog.dismiss();
 			}
 			notification_off_layout.setOnClickListener(notificationofflistener);
 			notification_on_layout.setOnClickListener(notificationonlistener);
-			
-			if(StaticData.notification_list.size()>0){
-			//notification_list.setDivider(getResources().getColor(R.color.offer_text_color));
-			notification_list.setAdapter(new NotificationAdapter(getActivity()));
+            DBHELPER sqLiteHelper   =   new DBHELPER(DashboardActivity.actRef);
+            ArrayList<NotificationBean> notificationBeanArrayList=sqLiteHelper.getNotifications(APP_Constants.USERNAME);
+            if(notificationBeanArrayList!=null && !notificationBeanArrayList.isEmpty())
+            {
+                StaticData.notification_list    =   notificationBeanArrayList;
+                int size    =    StaticData.notification_list.size();
+				if(StaticData.notification_list.size()>50)
+                {
+                    int upLimit =   size-50;
+                    for(int i=0;i<upLimit;i++)
+                        StaticData.notification_list.remove(i);
+                }
+                notificationAdapter =   new NotificationAdapter(getActivity());
+                notification_list.setAdapter(notificationAdapter);
 			}
 			else{
-				AlertDialog adialog=new AlertDialog.Builder(getActivity()).create();
-				adialog.setTitle("Message");
-				adialog.setMessage("No Notification Found!");
-				adialog.setButton("OK",new DialogInterface.OnClickListener() {
-					
+				final AlertDialog alertDialog=new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Message");
+                alertDialog.setMessage("No Notification Found!");
+                alertDialog.setButton("OK",new DialogInterface.OnClickListener() {
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						
+                        alertDialog.dismiss();
 					}
 				});
+                alertDialog.show();
 			}
 		}
 		public void onError(String msg){
@@ -225,7 +276,7 @@ public class NotificationFragment extends Fragment{
 				adialog.setTitle("Message");
 				adialog.setMessage(msg);
 				adialog.setButton("OK",new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
@@ -237,9 +288,9 @@ public class NotificationFragment extends Fragment{
 			}
 		}
 	}
-	
+
 	OnClickListener offerListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -250,7 +301,7 @@ public class NotificationFragment extends Fragment{
 		}
 	};
 	OnClickListener profileListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -261,7 +312,7 @@ public class NotificationFragment extends Fragment{
 		}
 	};
 	OnClickListener shopEarnListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -269,11 +320,11 @@ public class NotificationFragment extends Fragment{
 			ft.replace(R.id.container, fragment);
 			ft.addToBackStack(null);
 			ft.commit();
-			
+
 		}
 	};
 	OnClickListener favouriteListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -284,7 +335,7 @@ public class NotificationFragment extends Fragment{
 		}
 	};
 	OnClickListener inviteEarnListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -295,7 +346,7 @@ public class NotificationFragment extends Fragment{
 		}
 	};
 	OnClickListener dealpriceListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -304,9 +355,9 @@ public class NotificationFragment extends Fragment{
 			ft.addToBackStack(null);
 			ft.commit();
 		}
-	}; 
+	};
 	OnClickListener couponListener=new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -316,5 +367,5 @@ public class NotificationFragment extends Fragment{
 			ft.commit();
 		}
 	};
-			
+
 }

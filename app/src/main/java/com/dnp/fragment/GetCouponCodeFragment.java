@@ -1,8 +1,5 @@
 package com.dnp.fragment;
 
-import java.io.File;
-import java.io.IOException;
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -25,18 +22,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
-import com.dealnprice.activity.DashboardActivity;
 import com.dealnprice.activity.R;
 import com.dnp.asynctask.Pending_amount;
 import com.dnp.data.Downloader;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
-import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class GetCouponCodeFragment extends Fragment{
@@ -62,8 +58,8 @@ public class GetCouponCodeFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//uiHelper = new UiLifecycleHelper(getActivity(), callback);
-	    //uiHelper.onCreate(savedInstanceState);
+	//	uiHelper = new UiLifecycleHelper(getActivity(), callback);
+	  //  uiHelper.onCreate(savedInstanceState);
 	}
 	
 	@Override
@@ -88,7 +84,7 @@ public class GetCouponCodeFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		expiry_date=(TextView) view.findViewById(R.id.expiry_date);
 		see_all_offer_layout=(LinearLayout) view.findViewById(R.id.see_all_offer_layout);
 		shopearn_text.setText("Shop & Earn");
@@ -330,9 +326,9 @@ public class GetCouponCodeFragment extends Fragment{
 	    					/*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 	    			        StrictMode.setThreadPolicy(policy);*/ 
 	    					Downloader.DownloadFile(StaticData.most_viewed_coupon_list.get(position).getStore_image(), file);
-			//FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-			//.setLink("http://dealsnprice.com/").setPicture(StaticData.most_viewed_coupon_list.get(position).getStore_image()).setCaption(StaticData.most_viewed_deal_list.get(position).getCategory_name()).setDescription("Hello").setFragment(getParentFragment()).build();
-			//uiHelper.trackPendingDialogCall(shareDialog.present());
+		//	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+		//	.setLink("http://dealsnprice.com/").setPicture(StaticData.most_viewed_coupon_list.get(position).getStore_image()).setCaption(StaticData.most_viewed_deal_list.get(position).getCategory_name()).setDescription("Hello").setFragment(getParentFragment()).build();
+		//	uiHelper.trackPendingDialogCall(shareDialog.present());
 				}
 				else if(purpose.equals("hot") && StaticData.hot_coupon_product_list.get(position).getStore_image()!=null){
 	    			String extStorageDirectory = Environment.getExternalStorageDirectory()
@@ -350,9 +346,9 @@ public class GetCouponCodeFragment extends Fragment{
 	    					/*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 	    			        StrictMode.setThreadPolicy(policy);*/ 
 	    					Downloader.DownloadFile(StaticData.hot_coupon_product_list.get(position).getStore_image(), file);
-			//FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-			//.setLink("http://dealsnprice.com/").setPicture(StaticData.hot_coupon_product_list.get(position).getStore_image()).setCaption("").setDescription(StaticData.hot_coupon_product_list.get(position).getStore_name()).setFragment(getParentFragment()).build();
-			//uiHelper.trackPendingDialogCall(shareDialog.present());
+		//	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+		//	.setLink("http://dealsnprice.com/").setPicture(StaticData.hot_coupon_product_list.get(position).getStore_image()).setCaption("").setDescription(StaticData.hot_coupon_product_list.get(position).getStore_name()).setFragment(getParentFragment()).build();
+		//	uiHelper.trackPendingDialogCall(shareDialog.present());
 				}
 			}
 			else{
@@ -613,7 +609,7 @@ public class GetCouponCodeFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
  
-      //  uiHelper.onActivityResult(requestCode, resultCode, data);
+       // uiHelper.onActivityResult(requestCode, resultCode, data);
         Log.i("hello", "OnActivityResult...");
     }
 	/*private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -652,7 +648,7 @@ public class GetCouponCodeFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onStart();
 		//uiHelper.onStart
-		//Session session=Session.getActiveSession();
+	//	Session session=Session.getActiveSession();
 	}
 	@Override
 	public void onResume() {
@@ -664,7 +660,7 @@ public class GetCouponCodeFragment extends Fragment{
 	@Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-      //  uiHelper.onSaveInstanceState(outState);
+       // uiHelper.onSaveInstanceState(outState);
     }
 	@Override
     public void onDestroy() {
@@ -674,7 +670,7 @@ public class GetCouponCodeFragment extends Fragment{
 	@Override
 	public void onPause() {
 	    super.onPause();
-	    //uiHelper.onPause();
+	  //  uiHelper.onPause();
 	}
 
 	private void publishFeedDialog() {
@@ -685,11 +681,11 @@ public class GetCouponCodeFragment extends Fragment{
 		params.putString("link", "https://developers.facebook.com/android");
 	//	params.putString("picture", "https://raw.github.com/fbsamples/ios-3.x-howtos/master/Images/iossdk_logo.png");
 
-		//WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(getActivity(), Session.getActiveSession(), params)).setOnCompleteListener(
-		//new OnCompleteListener() {
+		/*WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(getActivity(), Session.getActiveSession(), params)).setOnCompleteListener(
+		new OnCompleteListener() {
 
 
-	/*	@Override
+		@Override
 		public void onComplete(Bundle values, FacebookException error) {
 			// TODO Auto-generated method stub
 			if (error == null) {

@@ -1,11 +1,5 @@
 package com.dealnprice.activity;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Date;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -43,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
 import com.androidquery.AQuery;
 import com.dnp.asynctask.InsertStartTask;
 import com.dnp.data.Downloader;
@@ -59,7 +54,11 @@ import com.dnp.fragment.ReferEarnFragment;
 import com.dnp.fragment.ShopEarnFragment;
 import com.dnp.fragment.StartTaskUrlFragment;
 
-import com.dealnprice.activity.R;
+import java.io.File;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 public class OfferShareFragment extends Fragment{
 	Bundle b;
@@ -101,8 +100,8 @@ public class OfferShareFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//uiHelper = new UiLifecycleHelper(getActivity(), callback);
-	    //uiHelper.onCreate(savedInstanceState);
+	//	uiHelper = new UiLifecycleHelper(getActivity(), callback);
+	  //  uiHelper.onCreate(savedInstanceState);
 	    
 	}
 	
@@ -180,7 +179,7 @@ public class OfferShareFragment extends Fragment{
 			LayerDrawable stars = (LayerDrawable) myrating.getProgressDrawable();
 			stars.getDrawable(2).setColorFilter(Color.YELLOW,);*/
 			if(StaticData.application_list.get(position).getApp_rate()>=0.5 && StaticData.application_list.get(position).getApp_rate()<1.0){
-				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s0));
+				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s0_5_stars));
 			}
 			else if(StaticData.application_list.get(position).getApp_rate()>=1.0 && StaticData.application_list.get(position).getApp_rate()<1.5){
 				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s1_star));
@@ -365,13 +364,13 @@ public class OfferShareFragment extends Fragment{
 			LinearLayout facebook_share_layout=(LinearLayout) dialog.findViewById(R.id.facebook_share_layout);
 			LinearLayout google_plus_share_layout=(LinearLayout) dialog.findViewById(R.id.google_plus_share_layout);
 			LinearLayout twitter_share_layout=(LinearLayout) dialog.findViewById(R.id.twitter_share_layout);
-			/* authButton=(LoginButton) dialog.findViewById(R.id.authButton);
-			 authButton.setFragment(getParentFragment());
-			    authButton.setReadPermissions(Arrays.asList("public_profile","email"));
-				authButton.setBackgroundResource(R.drawable.share_facbook_icon);
-				authButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0,0);
+			// authButton=(LoginButton) dialog.findViewById(R.id.authButton);
+			// authButton.setFragment(getParentFragment());
+			//    authButton.setReadPermissions(Arrays.asList("public_profile","email"));
+				//authButton.setBackgroundResource(R.drawable.share_facbook_icon);
+			//	authButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0,0);
 				APP_ID=getString(R.string.app_id);
-				fb=new Facebook(APP_ID);*/
+				//fb=new Facebook(APP_ID);
 				 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 				
 			whatsapp_share_layout.setOnClickListener(new OnClickListener() {
@@ -445,7 +444,7 @@ public class OfferShareFragment extends Fragment{
 					}
 				}
 			});*/
-			/*facebook_share_layout.setOnClickListener(new OnClickListener() {
+			facebook_share_layout.setOnClickListener(new OnClickListener() {
 				
 				@SuppressWarnings("deprecation")
 				@Override
@@ -453,16 +452,16 @@ public class OfferShareFragment extends Fragment{
 					// TODO Auto-generated method stub
 					dialog.dismiss();
 					if(isAppInstalled("com.facebook.katana")){
-					FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+				/*	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
 					.setLink(StaticData.application_list.get(position).getShare_link()).setCaption(StaticData.application_list.get(position).getApp_name()).setDescription(StaticData.application_list.get(position).getApp_name()).setFragment(getParentFragment()).build();
-					uiHelper.trackPendingDialogCall(shareDialog.present());
+					uiHelper.trackPendingDialogCall(shareDialog.present());*/
 					}
 					else{
 						UtilMethod.showToast("Please install Facebook App", getActivity());
 					}
 
 			}
-			});*/
+			});
 			
 			
 					
@@ -545,15 +544,15 @@ public class OfferShareFragment extends Fragment{
 	@Override
     public void onDestroy() {
         super.onDestroy();
-        //uiHelper.onDestroy();
+       // uiHelper.onDestroy();
     }
 	 @Override
 	    public void onPause() {
 	        super.onPause();
-	       // uiHelper.onPause();
+	     //   uiHelper.onPause();
 	    }
 	 
-	 /*private void onSessionStateChange(Session session, SessionState state,
+	/* private void onSessionStateChange(Session session, SessionState state,
 	            Exception exception) {
 	        
 	         
@@ -674,12 +673,12 @@ public class OfferShareFragment extends Fragment{
 		        s.openForRead(new Session.OpenRequest(this).setCallback(callback).setPermissions(Arrays.asList("public_profile","email")));
 	    	}
 	    }*/
-	  //  uiHelper.onResume();
+	   // uiHelper.onResume();
 	}
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
  
-       // uiHelper.onActivityResult(requestCode, resultCode, data);
+      //  uiHelper.onActivityResult(requestCode, resultCode, data);
         Log.i("hello", "OnActivityResult...");
     }
 	/*private Session.StatusCallback callback = new Session.StatusCallback() {

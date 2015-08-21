@@ -18,6 +18,7 @@ public class NotificationAdapter extends BaseAdapter{
 	public NotificationAdapter(Context cxt){
 		this.cxt=cxt;
 		inflater=LayoutInflater.from(cxt);
+
 	}
 	
 	@Override
@@ -46,7 +47,6 @@ public class NotificationAdapter extends BaseAdapter{
 			convertView=inflater.inflate(R.layout.activity_notification_item, parent, false);
 			vholder.notification_title=(TextView) convertView.findViewById(R.id.notification_title);
 			vholder.notification_detail=(TextView) convertView.findViewById(R.id.notification_description);
-			vholder.notification_cancel=(ImageView) convertView.findViewById(R.id.notification_cancel);
 			vholder.notification_time=(TextView) convertView.findViewById(R.id.notification_date);
 			convertView.setTag(vholder);
 		}
@@ -63,7 +63,6 @@ public class NotificationAdapter extends BaseAdapter{
 	public class ViewHolder{
 		public TextView notification_title;
 		public TextView notification_detail;
-		public ImageView notification_cancel;
 		public TextView notification_time;
 	}
 	

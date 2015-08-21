@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
+
     android:orientation="vertical" >
 
     <ScrollView
@@ -84,14 +85,14 @@
                 android:background="@drawable/signin_rounded_shape"
                 android:text="Sign In"
                 android:textColor="#fff"
+
                 android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="horizontal" >
 
@@ -102,11 +103,11 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Forgot Password?" />
-
+<!--
                 <View
                     android:layout_width="1dp"
                     android:layout_height="30dp"
-                    android:background="@color/view_color" />
+                    android:background="@color/view_color" />-->
 
                 <TextView
                     android:id="@+id/sign_up"
@@ -115,6 +116,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Sign Up"
+                    android:visibility="gone"
                     android:textSize="15dp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -123,13 +125,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:orientation="horizontal" >
+                android:orientation="horizontal" 
+                android:visibility="visible">
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@color/white" />
 
@@ -145,7 +148,7 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:background="@color/white" />
             </LinearLayout>
@@ -156,34 +159,34 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <com.facebook.login.widget.LoginButton
+                <ImageView
                     android:id="@+id/authButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/facebook" />
+                    android:src="@drawable/facebook"
+                     />
 
-                <com.twitter.sdk.android.core.identity.TwitterLoginButton
-                    android:layout_width="40dp"
-                    android:id="@+id/twitter_button"
-                    android:layout_height="40dp"
-                    android:text="twitter"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:src="@drawable/twitter"
-                     />
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/google_plus_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    android:src="@drawable/google_plus" />
+                    android:src="@drawable/google_plus" 
+                   />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

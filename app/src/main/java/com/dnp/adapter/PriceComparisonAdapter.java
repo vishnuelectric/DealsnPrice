@@ -11,7 +11,6 @@ import com.dealnprice.activity.R;
 import com.dnp.data.StaticData;
 import com.dnp.fragment.HorizontalListView;
 
-
 public class PriceComparisonAdapter extends BaseAdapter{
 	LayoutInflater inflater;
 	Context cxt;

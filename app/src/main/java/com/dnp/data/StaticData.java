@@ -2,6 +2,8 @@ package com.dnp.data;
 
 import java.util.ArrayList;
 
+import android.app.Application;
+
 import com.dnp.bean.AlertProductBean;
 import com.dnp.bean.ApplicationBean;
 import com.dnp.bean.BrandBean;

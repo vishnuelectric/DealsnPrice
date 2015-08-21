@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.dealnprice.activity.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class UtilMethod {
 
 	public static ProgressDialog showLoading(ProgressDialog progress,
@@ -100,7 +103,7 @@ public class UtilMethod {
 
 	public static boolean isNetworkAvailable(Context context) {
 		NetworkInfo localNetworkInfo = ((ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+				.getSystemService("connectivity")).getActiveNetworkInfo();
 		return (localNetworkInfo != null) && (localNetworkInfo.isConnected());
 	}
 
@@ -141,6 +144,30 @@ public class UtilMethod {
 			}
 		});
 		adialog.show();
+	}
+
+    /**
+     * This Method uses system current time to return a current date
+     * @return
+     */
+
+    public static final String getCurrentDate()
+    {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c.getTime());
+        return  formattedDate;
+    }
+
+	public static String mimicObjectToString(Object o)
+	{
+		//prevent a NullPointerException by returning null if o is null
+		String result = null;
+		if (o !=null)
+		{
+			result = o.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(o));
+		}
+		return  result;
 	}
 
 }

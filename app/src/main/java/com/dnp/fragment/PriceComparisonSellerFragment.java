@@ -85,7 +85,7 @@ public class PriceComparisonSellerFragment extends Fragment{
 		shopearn_text=(TextView) view.findViewById(R.id.shopearn_text);
 		inviteearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
-		couponprice_text=(TextView) view.findViewById(R.id.couponprice_text);
+		couponprice_text=(TextView) view.findViewById(R.id.referearn_text);
 		seller_list=(ListView) view.findViewById(R.id.seller_list);
 		product_name=(TextView) view.findViewById(R.id.product_name);
 		product_price=(TextView) view.findViewById(R.id.product_price);

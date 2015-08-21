@@ -65,7 +65,7 @@ public class DNPDealGridFragment extends Fragment{
 		referearn_layout=(LinearLayout) view.findViewById(R.id.referearn_layout);
 		shopearn_text=(TextView) view.findViewById(R.id.shopearn_text);
 		price_text=(TextView) view.findViewById(R.id.pricecomparison_text);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		footer_layout=(LinearLayout) view.findViewById(R.id.footer_layout);
 		fmanager=getActivity().getSupportFragmentManager();

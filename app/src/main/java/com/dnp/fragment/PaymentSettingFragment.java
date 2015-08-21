@@ -69,7 +69,7 @@ public class PaymentSettingFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		shopearn_text.setText("Shop & Earn");
 		dealprice_text.setText("Deals & Coupons");
 		referearn_text.setText("Refer & Earn");

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.dnp.data.APP_Constants;
 import com.dnp.data.StaticData;
 import com.splunk.mint.Mint;
 
@@ -25,6 +26,7 @@ public class StylistActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		
 		shpf=getSharedPreferences("User_login", 1);
 		user_id=shpf.getString("user_id", null);
 		Mint.initAndStartSession(this, "dfeda966");
@@ -54,9 +56,10 @@ public class StylistActivity extends Activity {
 		       StylistActivity.this.finish();*/
 		       if(user_id!=null){
 		    	   StaticData.product_price_list.clear();
-		    	 Intent i=new Intent(StylistActivity.this,AmountService.class);
-		    	 startService(i);
-		    	   
+
+
+                 SharedPreferences shpf=getSharedPreferences(Constant.pref_name, 1);
+                 APP_Constants.USERNAME   =   shpf.getString("user_email","");
 		    	Intent intent=new Intent(StylistActivity.this,DashboardActivity.class);
 		    	startActivity(intent);
 		    	finish();

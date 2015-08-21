@@ -1,1 +1,1 @@
-include ':app', ':meetme'
+include ':app'

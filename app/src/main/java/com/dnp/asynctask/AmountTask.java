@@ -1,14 +1,12 @@
 package com.dnp.asynctask;
 
-import org.json.JSONObject;
+import android.content.Context;
+import android.os.AsyncTask;
 
 import com.dealnprice.activity.DashboardActivity;
 import com.dnp.data.HttpRequest;
-import com.dnp.data.StaticData;
-import com.dnp.data.UtilMethod;
 
-import android.content.Context;
-import android.os.AsyncTask;
+import org.json.JSONObject;
 
 public class AmountTask extends AsyncTask<String, Void, String>{
 	Context cxt;
@@ -49,7 +47,7 @@ public class AmountTask extends AsyncTask<String, Void, String>{
 			}
 			}
 			catch(Exception e){
-				
+				e.printStackTrace();
 			}
 		}
 		

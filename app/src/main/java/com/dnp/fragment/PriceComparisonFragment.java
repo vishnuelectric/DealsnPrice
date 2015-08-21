@@ -1,11 +1,17 @@
 package com.dnp.fragment;
 
+import java.util.ArrayList;
+
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,12 +46,6 @@ import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
 import com.dnp.data.sqlHelper;
-
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-
-import java.util.ArrayList;
-
 
 public class PriceComparisonFragment extends Fragment{
 	LinearLayout offer_layout,shopearn_layout,pricecomparison_layout,dealcoupon_layout,referearn_layout,footer_layout;

@@ -2,13 +2,18 @@ package com.dnp.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +30,8 @@ import com.dealnprice.activity.R;
 import com.dnp.adapter.ShopDetailAdapter;
 import com.dnp.asynctask.GetShopDetailTask;
 import com.dnp.asynctask.Pending_amount;
+import com.dnp.data.APP_Constants;
+import com.dnp.data.StaticData;
 import com.dnp.data.UniversalImageLoaderHelper;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
@@ -43,7 +50,7 @@ public class DNPShopDetailFragment extends Fragment{
 	GridView gridview;
 	Bundle b;
 	String shop_cashback;
-	String shop_offer_image,shop_url,detaillink;
+	String shop_offer_image,shop_url,detaillink,shop_name;
 	DisplayImageOptions opt;
 	ImageLoader image_load;
 	Dialog dialog;
@@ -67,7 +74,7 @@ public class DNPShopDetailFragment extends Fragment{
 		shopearn_text=(TextView) view.findViewById(R.id.shopearn_text);
 		inviteearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
-		couponprice_text=(TextView) view.findViewById(R.id.couponprice_text);
+		couponprice_text=(TextView) view.findViewById(R.id.referearn_text);
 		shopearn_text.setText("Shop & Earn");
 		inviteearn_text.setText("Price Comparison");
 		dealprice_text.setText("Deals & Coupons");
@@ -117,6 +124,7 @@ public class DNPShopDetailFragment extends Fragment{
 		shop_url=b.getString("shop_url");
 		detaillink=b.getString("detaillink");
 		shop_cashback=b.getString("cashback");
+		shop_name=b.getString("shop_name");
 		opt=UniversalImageLoaderHelper.setImageOptions();
 		image_load=ImageLoader.getInstance();
 		image_load.displayImage(shop_offer_image, shop_image, opt);
@@ -126,9 +134,32 @@ public class DNPShopDetailFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Log.e("OnClick ","SHOP NOW");
 				if(!UtilMethod.isStringNullOrBlank(shop_url)){
 				/*Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(shop_url));
 				getActivity().startActivity(intent);*/
+
+					//--
+					Log.e("OnCLick "," "+shop_name);
+					if(shop_name !=null && !shop_name.isEmpty())
+					{
+						Log.e(" ON CLICK "," Not Null");
+						
+						if(shop_name.equalsIgnoreCase("Flipkart") )
+						{
+							isNoPlayStore(APP_Constants.FLIPKART);
+							return;
+						}
+						else if(shop_name.equalsIgnoreCase("Myntra")||shop_name.equalsIgnoreCase("Myntra123"))
+						{
+							isNoPlayStore(APP_Constants.MYNTRA);
+							return;
+						}
+					}
+					//--	
+					
+					
+					
 				Fragment f=new OpenShopUrlFragment();
 				FragmentManager fm=getActivity().getSupportFragmentManager();
 				FragmentTransaction ft=fm.beginTransaction();
@@ -146,6 +177,27 @@ public class DNPShopDetailFragment extends Fragment{
 		new GetShopDetailTask(getActivity(), url,new ShopDetailListener()).execute();
 		
 		return view;
+	}
+	/**
+	 * This method opens a given store url in chrome if available else in default browser
+	 * @param url
+	 */
+	private void isNoPlayStore(String url)
+	{
+		Log.e("isNoPlayStore "," "+url);
+		try {
+		    Intent i = new Intent("android.intent.action.MAIN");
+		    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+		    i.addCategory("android.intent.category.LAUNCHER");
+		    i.setData(Uri.parse(url));
+		    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		    getActivity().getApplicationContext().startActivity(i);
+		}
+		catch(ActivityNotFoundException e) {
+		    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		    getActivity().getApplicationContext().startActivity(i);
+		}
 	}
 	/*private void setProgressDialog(){
 		

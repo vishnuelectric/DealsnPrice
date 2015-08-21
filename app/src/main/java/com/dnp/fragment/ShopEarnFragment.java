@@ -1,24 +1,20 @@
 package com.dnp.fragment;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,13 +38,23 @@ import com.dnp.data.APP_Constants;
 import com.dnp.data.Downloader;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 
-public class ShopEarnFragment extends Fragment{
+public class ShopEarnFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 	LinearLayout footer_layout,offer_layout,shopearn_layout,pricecomparison_layout,dealcoupon_layout,referearn_layout;
 	TextView shopearn_text,inviteearn_text,dealprice_text,referearn_text;
 	Fragment fragment;
 	FragmentManager fm;
+	SwipeRefreshLayout swipe;
 	FragmentTransaction ft;
 	HorizontalScrollView horizontal_id;
 	String user_id;
@@ -64,8 +70,8 @@ public class ShopEarnFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//uiHelper = new UiLifecycleHelper(getActivity(), callback);
-		//uiHelper.onCreate(savedInstanceState);
+	/*	uiHelper = new UiLifecycleHelper(getActivity(), callback);
+		uiHelper.onCreate(savedInstanceState);*/
 	}
 
 	@Override
@@ -85,6 +91,13 @@ public class ShopEarnFragment extends Fragment{
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		shop_list=(ListView) view.findViewById(R.id.offer_list);
+		swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+		swipe.setOnRefreshListener(this);
+		//swipe.setProgressBackgroundColor(android.R.color.darker_gray);
+
+		//swipe.setProgressViewOffset(false,150,150);
+
+		swipe.setColorSchemeResources(android.R.color.holo_orange_light, android.R.color.holo_blue_bright,android.R.color.holo_green_dark);
 		/*shopearn_text.setText("Shop & Earn");
 		inviteearn_text.setText("Price Comparison");
 		dealprice_text.setText("Deals & Coupons");
@@ -133,17 +146,34 @@ public class ShopEarnFragment extends Fragment{
 		shpf=getActivity().getSharedPreferences("User_login", 1);
 		user_id=shpf.getString("user_id", null);
 		try{
-			setProgressDialog();
-			MultipartEntity multipart=new MultipartEntity();
-			multipart.addPart("user_id",new StringBody(user_id));
-			new GetShopListTask(getActivity(), multipart,new ShopEarnListener()).execute();
+			if(StaticData.shop_offer_list.size() == 0 || StaticData.shop_offer_search.size() == 0 || StaticData.shop_search.size() ==0) {
+				setProgressDialog();
+				MultipartEntity multipart = new MultipartEntity();
+				multipart.addPart("user_id", new StringBody(user_id));
+				new GetShopListTask(getActivity(), multipart, new ShopEarnListener()).execute();
+			}
+			else
+			{
+				new ShopEarnListener().onSuccess();
+			}
 		}
 		catch(Exception e){
-
+e.printStackTrace();
 		}
 		return view;
 	}
 
+	@Override
+	public void onRefresh() {
+		swipe.setRefreshing(true);
+		MultipartEntity multipart = new MultipartEntity();
+		try {
+			multipart.addPart("user_id", new StringBody(user_id));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		new GetShopListTask(getActivity(), multipart, new ShopEarnListener()).execute();
+	}
 	/*private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
@@ -170,7 +200,7 @@ public class ShopEarnFragment extends Fragment{
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.activity_loading_progressbar);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
 		dialog.show();
 	}
 	/*private void onSessionStateChange(Session session, SessionState state,
@@ -318,6 +348,7 @@ public class ShopEarnFragment extends Fragment{
 	}
 	public class ShopEarnListener{
 		public void onSuccess(){
+			swipe.setRefreshing(false);
 			if(dialog!=null && dialog.isShowing()){
 				//loadingViewAnim.stop();
 				dialog.dismiss();
@@ -380,6 +411,8 @@ public class ShopEarnFragment extends Fragment{
 					b.putString("detaillink",StaticData.shop_offer_list.get(arg2).getShop_detaillink());
 					b.putString("shop_url",StaticData.shop_offer_list.get(arg2).getShop_url());
 					b.putString("cashback", StaticData.shop_offer_list.get(arg2).getShop_offer_name());
+					b.putString("shop_name", StaticData.shop_offer_list.get(arg2).getShop_name());
+					Log.e("SHOP "," SET NAME AS "+ StaticData.shop_offer_list.get(arg2).getShop_name());
 					f.setArguments(b);
 					FragmentTransaction ft=fmanager.beginTransaction();
 					ft.replace(R.id.container, f);
@@ -390,6 +423,7 @@ public class ShopEarnFragment extends Fragment{
 
 		}
 		public void onError(){
+			swipe.setRefreshing(false);
 			if(dialog!=null && dialog.isShowing()){
 				//loadingViewAnim.stop();
 				dialog.dismiss();
@@ -408,6 +442,8 @@ public class ShopEarnFragment extends Fragment{
 			b.putString("detaillink",StaticData.shop_offer_list.get(position).getShop_detaillink());
 			b.putString("shop_url",StaticData.shop_offer_list.get(position).getShop_url());
 			b.putString("cashback",StaticData.shop_offer_list.get(position).getShop_offer_name());
+			b.putString("shop_name", StaticData.shop_offer_list.get(position).getShop_name());
+			Log.e("SHOP "," SET NAME AS "+ StaticData.shop_offer_list.get(position).getShop_name());
 			f.setArguments(b);
 			FragmentTransaction ft=fmanager.beginTransaction();
 			ft.replace(R.id.container, f);
@@ -428,16 +464,16 @@ public class ShopEarnFragment extends Fragment{
 		public void onShareFacebook(int position){
 			if(isAppInstalled("com.facebook.katana")){
 
-				/*ShareDialog shareDialog = new ShareDialog(getActivity());
+				ShareDialog shareDialog = new ShareDialog(getActivity());
 
 				ShareLinkContent content = new ShareLinkContent.Builder()
 				.setContentTitle("E-StateBook")
 				.setContentDescription(
 				"E-StateBook Buy & Rent Mobile Application. E-State is Mobile Application")
 				.setContentUrl(Uri.parse(StaticData.shop_offer_list.get(position).getShop_image()))
-				.build();*/
+				.build();
 
-				/*shareDialog.show(getActivity(), content);*/
+				shareDialog.show(getActivity(), content);
 
 
 				String extStorageDirectory = Environment.getExternalStorageDirectory()
@@ -455,9 +491,9 @@ public class ShopEarnFragment extends Fragment{
 				/*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     			        StrictMode.setThreadPolicy(policy);*/ 
 				Downloader.DownloadFile(StaticData.shop_offer_list.get(position).getShop_image(), file);
-				//FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-				//.setLink("http://dealsnprice.com/").setPicture(StaticData.shop_offer_list.get(position).getShop_image()).setCaption(StaticData.shop_offer_list.get(position).getShop_offer_name()).setDescription(StaticData.shop_offer_list.get(position).getShop_url()).setFragment(getParentFragment()).build();
-				//uiHelper.trackPendingDialogCall(shareDialog.present());
+			//	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+			//	.setLink("http://dealsnprice.com/").setPicture(StaticData.shop_offer_list.get(position).getShop_image()).setCaption(StaticData.shop_offer_list.get(position).getShop_offer_name()).setDescription(StaticData.shop_offer_list.get(position).getShop_url()).setFragment(getParentFragment()).build();
+			//	uiHelper.trackPendingDialogCall(shareDialog.present());
 			}
 			else{
 				UtilMethod.showToast("Please install Facebook App", getActivity());

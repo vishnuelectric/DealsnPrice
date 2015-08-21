@@ -1,19 +1,12 @@
 package com.dnp.fragment;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.http.entity.mime.MultipartEntity;
-
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,8 +14,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +25,6 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ShareCompat;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
@@ -42,12 +36,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
 import com.androidquery.AQuery;
@@ -57,12 +52,22 @@ import com.dnp.adapter.OfferStepAdapter;
 import com.dnp.asynctask.Pending_amount;
 import com.dnp.bean.ApplicationBean;
 import com.dnp.data.APP_Constants;
+import com.dnp.data.DBHELPER;
 import com.dnp.data.Downloader;
 import com.dnp.data.Helper;
 import com.dnp.data.Receiver;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class OfferDetailFragment extends Fragment{
@@ -72,15 +77,23 @@ public class OfferDetailFragment extends Fragment{
 	public static OfferDetailFragment fragRef	=	null;
 	public static String targetApp		=	"";
 	private Timer	appDetector_timer	=	null;
-	
+	public DBHELPER dbhelper = null;
+	public SQLiteDatabase sqLiteDatabase = null;
+
+
 	//Class Level Variables
 	private TextView progressOneTV		=	null;
 	private TextView progressTwoTV		=	null;
 	private TextView progressThreeTV	=	null;
-	private ImageView progressOneIV		=	null;
-	private ImageView progressTwoIV		=	null;
+	private LinearLayout progressOneLL		=	null;
+	private LinearLayout progressTwoLL		=	null;
 	private Resources mResources		=	null;
-	private Activity actRef				=	null;
+	public Activity actRef				=	null;
+	private LinearLayout plsWaitLL		=	null;
+	private LinearLayout instructionBoxLL	=	null;
+	private   NotificationManager notifMgr=	null;
+	ArrayList<ApplicationBean> offer_list;
+
 
 	LinearLayout offer_layout,shopearn_layout,priceearn_layout,dealprice_layout,referearn_layout;
 	TextView shopearn_text,priceearn_text,dealprice_text,referearn_text;
@@ -113,9 +126,10 @@ public class OfferDetailFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-	//	uiHelper = new UiLifecycleHelper(getActivity(), callback);
-	//	uiHelper.onCreate(savedInstanceState);
+		/*uiHelper = new UiLifecycleHelper(getActivity(), callback);
+		uiHelper.onCreate(savedInstanceState);*/
 		actRef	=	getActivity();
+		offer_list= new ArrayList<>();
 	}
 
 	/*private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -145,8 +159,8 @@ public class OfferDetailFragment extends Fragment{
 		} else if (state.isClosed()) {
 
 		}
-	}
-*/
+	}*/
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,11 +170,13 @@ public class OfferDetailFragment extends Fragment{
 		mResources		=	getResources();
 		fragRef			=	this;
 		progressOneTV	=	(TextView)view.findViewById(R.id.progress_startTV);
+		plsWaitLL		=	(LinearLayout)view.findViewById(R.id.pleaseWaitRewardLL);
 		progressTwoTV	=	(TextView)view.findViewById(R.id.progress_installTV);
 		progressThreeTV	=	(TextView)view.findViewById(R.id.progress_tryTV);
-		progressOneIV	=	(ImageView) view.findViewById(R.id.progress_line_start);
-		progressTwoIV	=	(ImageView) view.findViewById(R.id.progress_line_install);
+		progressOneLL	=	(LinearLayout) view.findViewById(R.id.progress_line_start);
+		progressTwoLL	=	(LinearLayout) view.findViewById(R.id.progress_line_install);
 		offer_layout=(LinearLayout) view.findViewById(R.id.offer_layout);
+		instructionBoxLL	=	(LinearLayout) view.findViewById(R.id.instructionBox);
 		shopearn_layout=(LinearLayout) view.findViewById(R.id.shopearn_layout);
 		priceearn_layout=(LinearLayout) view.findViewById(R.id.pricecomparison_layout);
 		dealprice_layout=(LinearLayout) view.findViewById(R.id.dealprice_layout);
@@ -176,9 +192,10 @@ public class OfferDetailFragment extends Fragment{
 		priceearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
 		horizontal_id=(HorizontalScrollView) view.findViewById(R.id.horizontal_id);
-		referearn_text=(TextView) view.findViewById(R.id.couponprice_text);
+		referearn_text=(TextView) view.findViewById(R.id.referearn_text);
 		install_text=(TextView) view.findViewById(R.id.install_text);
 		install_image=(ImageView) view.findViewById(R.id.install_image);
+
 		/*shopearn_text.setText("Shop & Earn");
 		dealprice_text.setText("Deals & Coupon");
 		referearn_text.setText("Refer & Earn");*/
@@ -189,8 +206,12 @@ public class OfferDetailFragment extends Fragment{
 		DashboardActivity.actRef.selectTab(lin, APP_Constants.OFFERS);
 		//--
 
+		//--
+		//onBackPressListener();
+		//--
 		Pending_amount pp= new Pending_amount(getActivity());
 		pp.execute();
+
 
 		priceearn_text.setText("Price Comparison");
 		shpf=getActivity().getSharedPreferences("User_login", 1);
@@ -259,14 +280,31 @@ public class OfferDetailFragment extends Fragment{
 		 */		
 		b=getArguments();
 		position=b.getInt("position");
-		if(StaticData.application_list.get(position).isPackage_flag()){
-			normal_image.setImageDrawable(getResources().getDrawable(R.drawable.start_2));
+		//--
+		/**
+		 * +Out of Memory Crash Here , All Lists have been erased by OS as they are static 
+		 */ 
+		if(StaticData.application_list.isEmpty())
+		{
+			//UtilMethod.showToast("Out of Memory, Please Free some Memory..", actRef.getApplicationContext());
+			//getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+			DashboardActivity.actRef.displayView(1);//Offers Section
+			return view;
+		}
+		//--
+		if(StaticData.application_list.get(position).isPackage_flag() && StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("normal")){
+			//	normal_image.setImageDrawable(getResources().getDrawable(R.drawable.start_2));
+			setProgress(APP_Constants.TRIED);
 			//open_check.setImageDrawable(getResources().getDrawable(R.drawable.active_circle));
 			install_layout.setVisibility(View.VISIBLE);
+			plsWaitLL.setVisibility(View.VISIBLE);
+			instructionBoxLL.setVisibility(View.GONE);
+
 			install_image.setImageDrawable(getResources().getDrawable(R.drawable.refer));
 			install_text.setText("Refer");
-
+			//install_layout.setVisibility(View.GONE);
 		}
+
 		String value;
 		//UtilMethod.showToast("Descriptin Size is "+StaticData.application_list.get(position).getApp_description().length(), getActivity());
 		if(StaticData.application_list.get(position).getApp_description().length()>200){
@@ -309,23 +347,78 @@ public class OfferDetailFragment extends Fragment{
 		else if(StaticData.application_list.get(position).getApp_type().equals("upto")){
 			box_layout.setVisibility(View.VISIBLE);
 			upto_layout.setVisibility(View.GONE);
-			ArrayList<ApplicationBean> offer_list=new ArrayList<ApplicationBean>();
+
 			for(int i=0;i<StaticData.upto_list.size();i++){
 				if(StaticData.application_list.get(position).getApp_id().equals(StaticData.upto_list.get(i).getApp_id())){
 					ApplicationBean abean=new ApplicationBean();
 					abean.setUpto_purpose(StaticData.upto_list.get(i).getUpto_purpose());
 					abean.setUpto_amount(StaticData.upto_list.get(i).getUpto_amount());
-					abean.setPackid(StaticData.upto_list.get(i).getPackid());
+					abean.setTaskId(StaticData.upto_list.get(i).getTaskId());
 					abean.setStep_status(StaticData.upto_list.get(i).getStep_status());
 					abean.setApp_id(StaticData.upto_list.get(i).getApp_id());
+					abean.setTaskValue(StaticData.upto_list.get(i).getTaskValue());
 					offer_list.add(abean);
+					System.out.println("in get upto");
+
 				}
 			}
 
-			Log.e(TAG,"Using OfferStep Adapter");
+			if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("upto")){
+				dbhelper = new DBHELPER(getActivity());
+				sqLiteDatabase = dbhelper.getWritableDatabase();
+
+
+				Cursor c = sqLiteDatabase.rawQuery("select installdate,datetask,datatask,dataused,targetdata,uid from appinfo_upto where packagename = "+"'"+StaticData.application_list.get(position).getPackage_name()+"'",null);
+				if(c.moveToFirst()) {
+					Long byt = c.getString(3) == null ? 0 : Long.parseLong(c.getString(3)) + TrafficStats.getUidTxBytes(Integer.parseInt(c.getString(5))) + TrafficStats.getUidRxBytes(Integer.parseInt(c.getString(5)));
+					System.out.println(" "+c.getString(0)+" "+c.getString(1)+" "+c.getString(2)+" "+c.getString(3)+" "+c.getString(4)+" "+ c.getString(5) + " " + byt);
+
+					if (c.getString(0) != null && !c.getString(0).equalsIgnoreCase("")  ) {
+						int i =0;
+
+						for(ApplicationBean b :offer_list){
+                           System.out.println("install "+b.getPackage_name()+ " " +b.getTaskId()+ " ");
+							if(b.getTaskId().equalsIgnoreCase("111")) {
+								 offer_list.get(i).setStep_status(1);
+							}
+							i++;
+						}
+
+
+					}
+					if ( c.getString(1) != null&&c.getString(1).equalsIgnoreCase("true") ) {
+						int i =0;
+						for(ApplicationBean b :offer_list){
+							System.out.println("date  "+b.getPackage_name()+ " " +b.getTaskId()+ " ");
+							if(b.getTaskId().equalsIgnoreCase("222")) {
+								offer_list.get(i).setStep_status(1);
+							}
+									i++;
+						}
+
+						//ImageView v = (ImageView) lv.getChildAt(1).findViewById(R.id.step_offer_image);
+						//v.setImageDrawable(getResources().getDrawable(R.drawable.active_circle));
+					}
+					if ( c.getString(2)!= null && c.getString(4) != null  && (c.getString(2).equalsIgnoreCase("true") || (byt / 1024) > c.getInt(4))) {
+						int i =0;
+						for(ApplicationBean b :offer_list){
+							System.out.println("data "+b.getPackage_name()+ " " +b.getTaskId()+ " ");
+							if(b.getTaskId().equalsIgnoreCase("333")) {
+								offer_list.get(i).setStep_status(1);
+							}
+							i++;
+						}
+						//	ImageView v = (ImageView) lv.getChildAt(0).findViewById(R.id.step_offer_image);
+						//	v.setImageDrawable(getResources().getDrawable(R.drawable.active_circle));
+					}
+				}
+				sqLiteDatabase.close();
+			}
+			Log.e(TAG, "Using OfferStep Adapter");
 			step_list.setAdapter(new OfferStepAdapter(getActivity(), StaticData.application_list.get(position).getApp_id(), offer_list));
 			helper.getListViewSize(step_list);
-			instruction_header.setText("Instructions to earn Rs."+StaticData.application_list.get(position).getUptotalamount());
+
+			instruction_header.setText("Instructions to earn Rs." + StaticData.application_list.get(position).getUptotalamount());
 			//int val=Integer.valueOf(String.valueOf(StaticData.application_list.get(position).getAmount_per_install())+Integer.valueOf(StaticData.application_list.get(position).getAmount_per_open()));
 			//int val=Integer.valueOf(String.valueOf(StaticData.application_list.get(position).getAmount_per_install()));
 			app_install_detail.setText("Install & Get Upto Rs."+StaticData.application_list.get(position).getAmount_per_install());
@@ -342,7 +435,7 @@ public class OfferDetailFragment extends Fragment{
 			LayerDrawable stars = (LayerDrawable) myrating.getProgressDrawable();
 			stars.getDrawable(2).setColorFilter(Color.YELLOW,);*/
 			if(StaticData.application_list.get(position).getApp_rate()>=0.5 && StaticData.application_list.get(position).getApp_rate()<1.0){
-				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s0));
+				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s0_5_stars));
 			}
 			else if(StaticData.application_list.get(position).getApp_rate()>=1.0 && StaticData.application_list.get(position).getApp_rate()<1.5){
 				myrating.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.s1_star));
@@ -382,6 +475,7 @@ public class OfferDetailFragment extends Fragment{
 				AQuery.CACHE_DEFAULT,0.0f).visible();
 		fm=getFragmentManager();
 
+
 		install_layout.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -394,9 +488,8 @@ public class OfferDetailFragment extends Fragment{
 					try{
 
 						if(StaticData.application_list.get(position).isPackage_flag()){
-
 							/*if(StaticData.application_list.get(position).getPurpose_id()==2 || StaticData.application_list.get(position).getPurpose_id()==3){*/
-							Log.e(TAG,"true Case Install");
+							Log.e(TAG,"true Case Installed REFER");
 							final Dialog dialog1=new Dialog(getActivity());
 							dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
 							dialog1.setContentView(R.layout.activity_shareearn);
@@ -454,11 +547,11 @@ public class OfferDetailFragment extends Fragment{
 										} catch (NameNotFoundException e) {
 											/* Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT)
 						                .show();*/
-											// UtilMethod.showToast("WhatsApp not Installed", cxt);
+											UtilMethod.showToast("WhatsApp not Installed", getActivity().getApplicationContext());
 										}
 									}
 									else{
-										UtilMethod.showToast("Please install WhatsApp", getActivity());
+										//UtilMethod.showToast("Please install WhatsApp", getActivity());
 									}
 								}
 							});
@@ -475,7 +568,7 @@ public class OfferDetailFragment extends Fragment{
 							}
 						}
 					});*/
-							facebook_share_layout.setOnClickListener(new OnClickListener() {
+							/*facebook_share_layout.setOnClickListener(new OnClickListener() {
 
 								@SuppressWarnings("deprecation")
 								@Override
@@ -492,7 +585,7 @@ public class OfferDetailFragment extends Fragment{
 									}
 
 								}
-							});
+							});*/
 
 
 
@@ -525,7 +618,7 @@ public class OfferDetailFragment extends Fragment{
 									}
 								}
 							});
-							google_plus_share_layout.setOnClickListener(new OnClickListener() {
+						/*	google_plus_share_layout.setOnClickListener(new OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -538,51 +631,113 @@ public class OfferDetailFragment extends Fragment{
 												.getIntent()
 												.setPackage("com.google.android.apps.plus");
 										getActivity().startActivity(shareIntent);
-										/*} catch (IOException e1) {
+										} catch (IOException e1) {
 				    						e1.printStackTrace();
-				    					}*/
+				    					}
 									}
 									else{
 										UtilMethod.showToast("Please install Google Plus", getActivity());
+
 									}
-
-
-
-
-
-
 								}
 							});
-
+*/
 							dialog1.show();
 							/*}*/
 
 						}
 						else{
+							//--
+							dbhelper = new DBHELPER(getActivity());
+							sqLiteDatabase=dbhelper.getWritableDatabase();
+							ContentValues contentValues = new ContentValues();
+							contentValues.put("packagename",StaticData.application_list.get(position).getPackage_name());
+							contentValues.put("userid", getActivity().getSharedPreferences("User_login", 1).getString("user_id", null));
+							contentValues.put("appname", StaticData.application_list.get(position).getApp_name());
+							for(ApplicationBean b :offer_list) {
+								if (b.getTaskId().equalsIgnoreCase("333")) {
+									//TODO change condition to value, put value in upto list in applisttask, n get it here n insert in db
+									contentValues.put("targetdata", b.getTaskValue()*1024);
+									System.out.println(b.getTaskValue());
+								}
+								if(b.getTaskId().equalsIgnoreCase("222"))
+								{
+									SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-							MultipartEntity multipart=new MultipartEntity();
-							SharedPreferences shpf=getActivity().getSharedPreferences("User_login",1);
+									Date d = new Date(System.currentTimeMillis());
+									d.setTime(d.getTime()+ (b.getTaskValue()*24*60*60*1000));
+									System.out.println(simpleDateFormat.format(d) + "  " + b.getTaskValue() + " "+ b.getTaskId());
+									contentValues.put("targetdate",simpleDateFormat.format(d));
 
-							/*multipart.addPart("user_id", new StringBody(shpf.getString("user_id",null)));
+								}
+							}
+							sqLiteDatabase.insertWithOnConflict("appinfo_upto", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+
+							sqLiteDatabase.close();
+							if(!StaticData.application_list.get(position).isOpened() && StaticData.application_list.get(position).isPackage_flag())
+							{
+								UtilMethod.showToast("You Have to Open the Application Now", getActivity().getApplicationContext());
+								OfferDetailFragment.fragRef.startProcessDetection(OfferDetailFragment.targetApp);
+							}//--
+							else
+							{
+
+
+								/*multipart.addPart("user_id", new StringBody(shpf.getString("user_id",null)));
 				multipart.addPart("app_id",new StringBody(StaticData.application_list.get(position).getApp_id()));
 				multipart.addPart("app_status",new StringBody("2"));
 				setProgressDialog();
 				new ReadAppTask(getActivity(), multipart, StaticData.application_list.get(position).getApp_url(),new OfferDetailListener(),position).execute();
-							 */
-							ApplicationBean abean=new ApplicationBean();
-							abean.setPackage_name(StaticData.application_list.get(position).getPackage_name());
-							abean.setApp_id(StaticData.application_list.get(position).getApp_id());	
-							Receiver.createAppPreference(abean, getActivity(), getActivity().getSharedPreferences("User_login",1).getString("user_id",null));
-							Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(StaticData.application_list.get(position).getApp_url()));
-							getActivity().startActivity(intent);
-							setProgress(APP_Constants.STARTED);
-							targetApp	=	StaticData.application_list.get(position).getPackage_name().trim();
-							//targetApp	=	"com.cpuid.cpu_z"; //testing
-							Log.e(TAG,"Target App is "+targetApp);
+								 */
+								ApplicationBean abean=new ApplicationBean();
+								abean.setPackage_name(StaticData.application_list.get(position).getPackage_name());
+								abean.setApp_id(StaticData.application_list.get(position).getApp_id());
+								WebView webView= new WebView(getActivity());
+								webView.getSettings().setJavaScriptEnabled(true);
+								webView.setWebViewClient(new WebViewClient() {
+									@Override
+									public boolean shouldOverrideUrlLoading(WebView view, String url) {
+										System.out.println(url);
+										if (url.contains("play.google")) {
+											System.out.println("in if");
+											Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+											i.setPackage("com.android.vending");
+											getActivity().startActivity(i);
+
+											return true;
+										}
+										System.out.println("out if");
+										return false;
+									}
+								});
+								//webView.loadUrl(StaticData.application_list.get(position).getApp_url());
+								Receiver.createAppPreference(abean, getActivity(), getActivity().getSharedPreferences("User_login", 1).getString("user_id", null));
+								Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(StaticData.application_list.get(position).getApp_url()));
+								Log.e("CLICK INSTALL ", "URL " + StaticData.application_list.get(position).getApp_url());
+								getActivity().startActivity(intent);
+								setProgress(APP_Constants.STARTED);
+								UtilMethod.showToast("Click on Install Button", getActivity().getApplicationContext());
+
+
+								install_text.setText("In Progress");
+								targetApp	=	StaticData.application_list.get(position).getPackage_name().trim();
+								//targetApp	=	"com.cpuid.cpu_z"; //testing
+								Log.e(TAG,"Target App is "+targetApp);
+								//startInstallDetection();
+								String appName	=	StaticData.application_list.get(position).getApp_name();	
+								
+								DashboardActivity.actRef.showNotification(APP_Constants.INTSALL_NOTIF_ID,appName);
+                                //--
+
+                                //--
+							}
 						}
 
 					}
 					catch(Exception e){
+						Log.e(" INSTALL "," CRASH "+ ""+e);
+						e.printStackTrace();
 
 					}
 					/*else{
@@ -597,350 +752,475 @@ public class OfferDetailFragment extends Fragment{
 
 
 			}
-		});
+
+
+        });
 
 
 
 		return view;
 	}
 
-	//--
-
-	
-	
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		//flag = false;
-	//	Session session=Session.getActiveSession();
-		/*if(session!=null && session.isOpened()){
-			session.close();
-		}*/
-		//	mGoogleApiClient.connect();
-	}
-	private boolean isAppInstalled(String packageName) {
-		PackageManager pm = getActivity().getPackageManager();
-		boolean installed = false;
-		try {
-			pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-			installed = true;
-		} catch (PackageManager.NameNotFoundException e) {
-			installed = false;
-		}
-		return installed;
-	}
-
-	private void setProgressDialog(){
-
-		dialog=new Dialog(getActivity());
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.activity_loading);
-		LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
-		loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
-		loading_image.setBackgroundResource(R.anim.loading_animation);
-		//	loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
-		dialog.setCancelable(false);
-		//loadingViewAnim.start();
-
-		dialog.show();
-	}
-
-	public void onLess(){
-		String value=StaticData.application_list.get(position).getApp_description()+"Read Less";
-		int startIndex = value.indexOf("Read Less");
-		int endIndex = value.length();
-		app_description.setText(value);
-		app_description.setMovementMethod(LinkMovementMethod.getInstance());
-		app_description.setText(value, BufferType.SPANNABLE);
-
-		Spannable mySpannable = (Spannable) app_description.getText();
-		ClickableSpan myClickableSpan = new ClickableSpan() {
-			@Override
-			public void onClick(View widget) {
-
-				onMore();
-
-				/*homescreenActivity.showTermsOfService();*/
 
 
-			}
-		};
-
-		mySpannable.setSpan(myClickableSpan, startIndex, endIndex,
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-	}
-	public void onMore(){
-		String value;
-		if(StaticData.application_list.get(position).getApp_description().length()>200){
-			value=StaticData.application_list.get(position).getApp_description().substring(0,200)+"Read More";
-		}
-		else{
-			value=StaticData.application_list.get(position).getApp_description();
-		}
-		int startIndex = value.indexOf("Read More");
-		int endIndex = value.length();
-		app_description.setText(value);
-		app_description.setMovementMethod(LinkMovementMethod.getInstance());
-		app_description.setText(value, BufferType.SPANNABLE);
-		Spannable mySpannable = (Spannable) app_description.getText();
-		ClickableSpan myClickableSpan = new ClickableSpan() {
-			@Override
-			public void onClick(View widget) {
-
-				System.out.println("show terms of use box --------  ");
-
-				/*homescreenActivity.showTermsOfService();*/
-				onLess();
-
-			}
-		};
-
-		mySpannable.setSpan(myClickableSpan, startIndex, endIndex,
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-	}
-	OnClickListener offerListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new OfferFragment();
-			onReplace(fragment);
-		}
-	};
-
-	OnClickListener profileListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new ProfileFragment();
-			onReplace(fragment);
-		}
-	};
-
-	OnClickListener favouriteListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new FavouriteFragment();
-			onReplace(fragment);
-		}
-	};
-
-	OnClickListener homeListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new OfferFragment();
-			onReplace(fragment);
-		}
-	};
-
-	OnClickListener notificationListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new NotificationFragment();
-			onReplace(fragment);
-		}
-	};
-
-	OnClickListener shopEarnListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new ShopEarnFragment();
-			onReplace(fragment);
-		}
-	};
-	OnClickListener inviteEarnListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			/*fragment=new InviteEarnFragment();*/
-			fragment=new PriceComparisonFragment();
-			onReplace(fragment);
-		}
-	};
-	OnClickListener dealpriceListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new DNPDealCouponFragment();
-			onReplace(fragment);
-		}
-	};
-	OnClickListener couponListener=new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			fragment=new ReferEarnFragment();
-			onReplace(fragment);
-		}
-	};
-
-	public void onReplace(Fragment fragment1){
-		ft=fm.beginTransaction();
-		ft.replace(R.id.container, fragment1);
-		ft.commit();
-	}
-
-	public class OfferDetailListener{
-		public void onSuccess(){
-			if(dialog!=null && dialog.isShowing()){
-				//loadingViewAnim.stop();
-				dialog.dismiss();
-			}
-
-		}
-		public void onError(String msg){
-			if(dialog!=null && dialog.isShowing()){
-				//loadingViewAnim.stop();
-				dialog.dismiss();
-			}
-			if(msg.equals("slow")){
-				UtilMethod.showServerError(getActivity());
-			}
-			else{
-				final AlertDialog adialog=new AlertDialog.Builder(getActivity()).create();
-				adialog.setTitle("Message");
-				adialog.setMessage(msg);
-				adialog.setButton("OK", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						adialog.dismiss();
-					}
-				});
-				adialog.show();
-			}
-
-
-		}
-	}
 	/**
-	 * This method Updates the progress on UI
-	 * @param progress
+	 * This Threads Detects whether the installation completes or not while user is installing the target application
 	 */
-	public void setProgress(int progress)
-	{
-		switch (progress) {
-		case 0: //Revert back all progress 
-			progressOneIV.setImageResource(R.drawable.progress_line_grey);
-			progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
-			progressOneTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
-			progressTwoIV.setImageResource(R.drawable.progress_line_grey);
-			progressTwoTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
-			progressTwoTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
-			progressThreeTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
-			progressThreeTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
-			break;
-		case 1: //Started the install Process
-			progressOneIV.setImageResource(R.drawable.progress_line_blue);
-			progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
-			progressOneTV.setTextColor(Color.WHITE);
-			break;
-		case 2: //Installed the app through DnP
-			progressTwoIV.setImageResource(R.drawable.progress_line_blue);
-			progressTwoTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
-			progressTwoTV.setTextColor(Color.WHITE);
-			break;
-		case 3: //Tried the App / Opened the App
-			progressThreeTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
-			progressThreeTV.setTextColor(Color.WHITE);
-			break;
-		default:
-			break;
-		}
-	}
-	
-	/**
-	 * This method starts a thread that detects if the target app installed has been opened by the user or not
-	 * @param targetApp
-	 */
-	
-	public void startDetection(final String targetApp) {
+	/*protected void startInstallDetection() {
 		if(appDetector_timer == null)
 			appDetector_timer	=	new Timer();
 		else
 			stopDetectionTimer();
-		
 		TimerTask timerTask	=	new TimerTask() {
+			int count	=	0;
 
 			@Override
 			public void run() {
-			Log.e("Detect "," "+targetApp);
-				if(isNamedProcessRunning(targetApp))
+				count++;
+				Log.e(" INTSALL ","Waiting for app to install  "+count);
+				if(StaticData.application_list.get(position).isPackage_flag())
 				{
-					actRef.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							stopDetectionTimer();
-							setProgress(APP_Constants.TRIED);
-						}
-					});
+					String appName	=	StaticData.application_list.get(position).getApp_name();	
+					stopDetectionTimer();
+					DashboardActivity.actRef.showNotification(APP_Constants.OPEN_NOTIF,appName);
+					Log.e(" INTSALL ","Install Finished ");
+
 				}
 				else
 				{
-					/* TODO
-					 * put handling code if user never opens the app or any other scenario
-					 */
+					if(count	==	10*60) //20 Mins
+					{	
+						stopDetectionTimer();
+						UtilMethod.showToast("Time Expired, Process Failed", getActivity().getApplicationContext());
+						install_text.setText("Install");
+						setProgress(APP_Constants.REVERT);
+						Log.e("INSTALL "," install timeout ");
+					}
 				}
 			}
 		};
 		appDetector_timer.scheduleAtFixedRate(timerTask, 0, 2000);
-	}
-	
-	/**
-	 * This method stops the timer thread, if waiting for user to open the target App
-	 */
-	public void stopDetectionTimer()
-	{
-		if(appDetector_timer != null)
-		{
-			appDetector_timer.cancel();
-			appDetector_timer.purge();
-		}
-	}
+	}*/
+
 
 	/**
-	 * This Method checks whether the given process is currently running or not.
-	 * @param processName
-	 * @return
-	 */
-	boolean isNamedProcessRunning(String processName){
-		if (processName == null) 
-			return false;
-
-		ActivityManager manager = (ActivityManager) actRef.getSystemService(actRef.ACTIVITY_SERVICE);
-		List<RunningAppProcessInfo> processes = manager.getRunningAppProcesses();
-		for (RunningAppProcessInfo process : processes)
+	 * This Method overrides the functionality of hardware back press button
+	 *//*
+	private void onBackPressListener() {
+		//You need to add the following line for this solution to work; thanks skayred
+		fragRef.getView().setFocusableInTouchMode(true);
+		fragRef.getView().requestFocus();
+		fragRef.getView().setOnKeyListener( new OnKeyListener()
 		{
-			if (processName.equals(process.processName))
-			{
-				Log.e("isNamedProcessRunning "," "+processName +" FOUND ");
-				return true;
-			}
-		}
-		return false;
+		    @Override
+		    public boolean onKey( View v, int keyCode, KeyEvent event )
+		    {
+		        if( keyCode == KeyEvent.KEYCODE_BACK )
+		        {
+		        	Log.e("On Bsck Press "," Click Clik Brak Press");
+		            return true;
+		        }
+		        return false;
+		    }
+		} );		
 	}
-	
+	//--
+	  */	@Override
+	  public void onStart() {
+		  super.onStart();
+		  //flag = false;
+		  //Session session=Session.getActiveSession();
+		  /*if(session!=null && session.isOpened()){
+			session.close();
+		}*/
+		  //	mGoogleApiClient.connect();
+	  }
+
+	  private boolean isAppInstalled(String packageName) {
+		  PackageManager pm = getActivity().getPackageManager();
+		  boolean installed = false;
+		  try {
+			  pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+			  installed = true;
+		  } catch (PackageManager.NameNotFoundException e) {
+			  installed = false;
+		  }
+		  return installed;
+	  }
+
+	  private void setProgressDialog(){
+
+		  dialog=new Dialog(getActivity());
+		  dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		  dialog.setContentView(R.layout.activity_loading);
+		  LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
+		  loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
+		  loading_image.setBackgroundResource(R.anim.loading_animation);
+		  //	loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
+		  dialog.setCancelable(false);
+		  //loadingViewAnim.start();
+
+		  dialog.show();
+	  }
+
+	  public void onLess(){
+		  String value=StaticData.application_list.get(position).getApp_description()+"Read Less";
+		  int startIndex = value.indexOf("Read Less");
+		  int endIndex = value.length();
+		  app_description.setText(value);
+		  app_description.setMovementMethod(LinkMovementMethod.getInstance());
+		  app_description.setText(value, BufferType.SPANNABLE);
+
+		  Spannable mySpannable = (Spannable) app_description.getText();
+		  ClickableSpan myClickableSpan = new ClickableSpan() {
+			  @Override
+			  public void onClick(View widget) {
+
+				  onMore();
+
+				  /*homescreenActivity.showTermsOfService();*/
+
+
+			  }
+		  };
+
+		  mySpannable.setSpan(myClickableSpan, startIndex, endIndex,
+				  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	  }
+	  public void onMore(){
+		  String value;
+		  if(StaticData.application_list.get(position).getApp_description().length()>200){
+			  value=StaticData.application_list.get(position).getApp_description().substring(0,200)+"Read More";
+		  }
+		  else{
+			  value=StaticData.application_list.get(position).getApp_description();
+		  }
+		  int startIndex = value.indexOf("Read More");
+		  int endIndex = value.length();
+		  app_description.setText(value);
+		  app_description.setMovementMethod(LinkMovementMethod.getInstance());
+		  app_description.setText(value, BufferType.SPANNABLE);
+		  Spannable mySpannable = (Spannable) app_description.getText();
+		  ClickableSpan myClickableSpan = new ClickableSpan() {
+			  @Override
+			  public void onClick(View widget) {
+
+				  System.out.println("show terms of use box --------  ");
+
+				  /*homescreenActivity.showTermsOfService();*/
+				  onLess();
+
+			  }
+		  };
+
+		  mySpannable.setSpan(myClickableSpan, startIndex, endIndex,
+				  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+	  }
+	  OnClickListener offerListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+
+			  fragment=new OfferFragment();
+			  onReplace(fragment);
+		  }
+	  };
+
+	  OnClickListener profileListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new ProfileFragment();
+			  onReplace(fragment);
+		  }
+	  };
+
+	  OnClickListener favouriteListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new FavouriteFragment();
+			  onReplace(fragment);
+
+		  }
+	  };
+
+	  OnClickListener homeListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new OfferFragment();
+			  onReplace(fragment);
+		  }
+	  };
+
+	  OnClickListener notificationListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new NotificationFragment();
+			  onReplace(fragment);
+		  }
+	  };
+
+	  OnClickListener shopEarnListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new ShopEarnFragment();
+			  onReplace(fragment);
+		  }
+	  };
+	  OnClickListener inviteEarnListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  /*fragment=new InviteEarnFragment();*/
+			  fragment=new PriceComparisonFragment();
+			  onReplace(fragment);
+		  }
+	  };
+	  OnClickListener dealpriceListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new DNPDealCouponFragment();
+			  onReplace(fragment);
+		  }
+	  };
+	  OnClickListener couponListener=new OnClickListener() {
+
+		  @Override
+		  public void onClick(View v) {
+			  // TODO Auto-generated method stub
+			  fragment=new ReferEarnFragment();
+			  onReplace(fragment);
+		  }
+	  };
+
+	  public void onReplace(Fragment fragment1){
+		  ft=fm.beginTransaction();
+		  ft.replace(R.id.container, fragment1);
+		  ft.commit();
+		  DashboardActivity.actRef.cancelAllNotifications();
+	  }
+
+	  public class OfferDetailListener{
+		  public void onSuccess(){
+			  if(dialog!=null && dialog.isShowing()){
+				  //loadingViewAnim.stop();
+				  dialog.dismiss();
+			  }
+
+		  }
+		  public void onError(String msg){
+			  if(dialog!=null && dialog.isShowing()){
+				  //loadingViewAnim.stop();
+				  dialog.dismiss();
+			  }
+			  if(msg.equals("slow")){
+				  UtilMethod.showServerError(getActivity());
+			  }
+			  else{
+				  final AlertDialog adialog=new AlertDialog.Builder(getActivity()).create();
+				  adialog.setTitle("Message");
+				  adialog.setMessage(msg);
+				  adialog.setButton("OK", new DialogInterface.OnClickListener() {
+
+					  @Override
+					  public void onClick(DialogInterface dialog, int which) {
+						  // TODO Auto-generated method stub
+						  adialog.dismiss();
+					  }
+				  });
+				  adialog.show();
+			  }
+
+
+		  }
+	  }
+	  /**
+	   * This method Updates the progress on UI
+	   * @param progress
+	   */
+	  public void setProgress(int progress)
+	  {
+		  switch (progress) {
+		  case 0: //Revert back all progress 
+			  progressOneLL.setBackgroundColor(mResources.getColor(R.color.progress_false));
+			  progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
+			  progressOneTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
+			  progressTwoLL.setBackgroundColor(mResources.getColor(R.color.progress_false));
+			  progressTwoTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
+			  progressTwoTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
+			  progressThreeTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_grey));
+			  progressThreeTV.setTextColor(mResources.getColor(R.color.progress_text_color_dark));
+			  StaticData.application_list.get(position).setProgress(progress);
+			  break;
+		  case 1: //Started the install Process
+			  progressOneLL.setBackgroundColor(mResources.getColor(R.color.progress_true));
+			  progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+			  progressOneTV.setTextColor(Color.WHITE);
+			  StaticData.application_list.get(position).setProgress(progress);
+			  break;
+		  case 2: //Installed the app through DnP
+			  progressOneLL.setBackgroundColor(mResources.getColor(R.color.progress_true));
+			  progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+			  progressOneTV.setTextColor(Color.WHITE);
+			  progressTwoLL.setBackgroundColor(mResources.getColor(R.color.progress_true));
+			  progressTwoTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+			  progressTwoTV.setTextColor(Color.WHITE);
+			  StaticData.application_list.get(position).setProgress(progress);
+			  break;
+		  case 3: //Tried the App / Opened the App
+			  if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("normal")) {
+				  progressOneLL.setBackgroundColor(mResources.getColor(R.color.progress_true));
+				  progressOneTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+				  progressOneTV.setTextColor(Color.WHITE);
+				  progressTwoLL.setBackgroundColor(mResources.getColor(R.color.progress_true));
+				  progressTwoTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+				  progressTwoTV.setTextColor(Color.WHITE);
+				  progressThreeTV.setBackground(mResources.getDrawable(R.drawable.progress_circle_blue));
+				  progressThreeTV.setTextColor(Color.WHITE);
+				  StaticData.application_list.get(position).setProgress(progress);
+			  }
+			  else if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("upto"))
+			  {
+
+			  }
+			  break;
+			  case 4:
+			  case 5:
+		  default:
+			  break;
+		  }
+	  }
+
+	  /**
+	   * This method starts a thread that detects if the target app installed has been opened by the user or not
+	   * @param targetApp
+	   */
+
+	  public void startProcessDetection(final String targetApp) {
+		  if(appDetector_timer == null)
+		  {
+			  appDetector_timer	=	new Timer();
+		  }
+		  else
+		  {
+			  stopDetectionTimer();
+		  }
+
+		  TimerTask timerTask	=	new TimerTask() {
+			  int count	=	0;
+
+			  @Override
+			  public void run() {
+
+				  Log.e("Detect Process for  "," "+targetApp);
+				  count++;
+				  if(isNamedProcessRunning(targetApp))
+				  {
+					  String appName	=	StaticData.application_list.get(position).getApp_name();	
+					  DashboardActivity.actRef.showNotification(APP_Constants.SUCCESS_NOTIF_ID,appName);
+					  actRef.runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  stopDetectionTimer();
+							  setProgress(APP_Constants.TRIED);
+
+							  //install_layout.setClickable(false);
+							  if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("normal")) {
+								  UtilMethod.showToast("Now Return to DealsnPrice to earn Reward", getActivity().getApplicationContext());
+								  plsWaitLL.setVisibility(View.VISIBLE);
+								  instructionBoxLL.setVisibility(View.GONE);
+							  }
+							  install_image.setImageDrawable(getResources().getDrawable(R.drawable.refer));
+							  install_text.setText("Refer");
+							  //install_layout.setVisibility(View.GONE);
+						  }
+					  });
+				  }
+				  else
+				  { actRef.runOnUiThread(new Runnable() {
+					  @Override
+					  public void run() {
+						  if(count	==	3*60) //6 mins
+						  {
+							  stopDetectionTimer();
+							  UtilMethod.showToast("Time Expired, Process Failed", getActivity().getApplicationContext());
+
+							  install_text.setText("Install");
+							  plsWaitLL.setVisibility(View.GONE);
+							  instructionBoxLL.setVisibility(View.VISIBLE);
+						  }
+					  }
+				  });
+
+				  }
+			  }
+		  };
+		  appDetector_timer.scheduleAtFixedRate(timerTask, 0, 2000);
+	  }
+
+	  /**
+	   * This method stops the timer thread, if waiting for user to open the target App
+	   */
+	  public void stopDetectionTimer()
+	  {
+		  if(appDetector_timer != null)
+		  {
+			  appDetector_timer.cancel();
+			  appDetector_timer.purge();
+		  }
+	  }
+
+	  /**
+	   * This Method checks whether the given process is currently running or not.
+	   * @param processName
+	   * @return
+	   */
+	  boolean isNamedProcessRunning(String processName){
+		  if (processName == null) 
+			  return false;
+
+		  ActivityManager manager = (ActivityManager) actRef.getSystemService(actRef.ACTIVITY_SERVICE);
+		  List<RunningAppProcessInfo> processes = manager.getRunningAppProcesses();
+		  for (RunningAppProcessInfo process : processes)
+		  {
+			  if (processName.equals(process.processName))
+			  {
+				  Log.e("isNamedProcessRunning "," "+processName +" FOUND ");
+				  return true;
+			  }
+		  }
+		  return false;
+	  }
+
+
+
+	  @Override
+	  public void onDestroy() {
+		  super.onDestroy();
+		  fragRef		=	null;
+		  stopDetectionTimer();
+		  appDetector_timer	=	null;
+		  DashboardActivity.actRef.cancelAllNotifications();
+
+	  }
+
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		fragRef		=	null;
-		stopDetectionTimer();
-		appDetector_timer	=	null;
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
 	}
 }

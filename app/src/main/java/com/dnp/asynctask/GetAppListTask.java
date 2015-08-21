@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.dealnprice.activity.CommonUtilities;
 import com.dealnprice.activity.Constant;
@@ -36,12 +37,15 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 			TelephonyManager telephonyManager = (TelephonyManager)cxt.getSystemService(Context.TELEPHONY_SERVICE);
 			String device_id=telephonyManager.getDeviceId();
 			String user_id=cxt.getSharedPreferences(Constant.pref_name,1).getString(Constant.USER_ID, null);
-			System.out.println("getting app request "+ WebService.APP_LIST_SERVICE+"urlcheck=1&userid="+user_id+"&imei="+device_id);
-			String response=HttpRequest.post(WebService.APP_LIST_SERVICE+"urlcheck=1&userid="+user_id+"&imei="+device_id);
+			String response = HttpRequest.post(WebService.APP_LIST_SERVICE+"urlcheck=1&userid="+user_id+"&imei="+device_id);
+			System.out.println("offer response"+ response );
+			System.out.println(response.equalsIgnoreCase(""));
+
 			return response;
 		}
 		catch(Exception e){
 			UtilMethod.showToast("Exception is "+e, cxt);
+
 		}
 		return null;
 	}
@@ -51,8 +55,8 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 	protected void onPostExecute(String result) {
 
 		super.onPostExecute(result);
-System.out.println("app list response "+ result );
-		if(result!=null){
+		System.out.println(result.equalsIgnoreCase("") + "   "+ "in postexecute");
+		if(result!=null && !result.equalsIgnoreCase("")){
 			try{
 				JSONObject obj=new JSONObject(result);
 				String status=obj.getString("status");
@@ -101,6 +105,7 @@ System.out.println("app list response "+ result );
 						abean.setPurpose_id(object.getInt("purpose_type"));
 						abean.setAppinstall(object.getString(Constant.STATUS));
 						abean.setAppfinalstatus(object.getInt(Constant.APP_FINAL_STATUS));
+						Log.e("GetApp List Task ","APPNAME "+object.getString("packagename")+" APP STATUS "+object.getInt(Constant.APP_FINAL_STATUS));
 						StaticData.read_flag.add(true);
 						abean.setPackage_flag(isAppInstalled(object.getString("packagename")));
 						if(object.getString("rating")!=null){
@@ -116,12 +121,16 @@ System.out.println("app list response "+ result );
 								JSONObject jobj=step_array.getJSONObject(k);
 								ApplicationBean abean1=new ApplicationBean();
 								abean1.setUpto_purpose(jobj.getString("offer"));
-								abean1.setUpto_amount(""+(int)(f=Float.valueOf(jobj.getString("amount"))));
+								abean1.setUpto_amount("" + (int) (f = Float.valueOf(jobj.getString("amount"))));
 								abean1.setApp_id(object.getString(Constant.APP_ID));
 								abean1.setStep_status(jobj.getInt(Constant.STATUS));
-								abean1.setPackid(jobj.getString("packid"));
+								System.out.println(jobj.getString("taskId"));
+								abean1.setTaskId(jobj.getString("taskId"));
+								System.out.println(jobj.getString("taskValue"));
+								abean1.setTaskValue(Integer.parseInt(jobj.getString("taskValue")));
 								StaticData.upto_list.add(abean1);
 							}
+							System.out.println(StaticData.upto_list);
 							f=0;
 							/*if(!UtilMethod.isStringNullOrBlank(object.getString("app_open_rate"))){
 						f+=Float.valueOf(object.getString("app_open_rate"));
@@ -146,29 +155,48 @@ System.out.println("app list response "+ result );
 						}
 
 						abean.setAppinstall(object.getString("status"));
+						
+						/**
+						 * Conditions for showing the application in Offers Section
+						 */
 
 						if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename"))){
+							System.out.println(object.getString("packagename") + " " + 1);
 							StaticData.application_list.add(abean);
 						}
 						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==0){
 							//StaticData.application_list.add(abean);
+							System.out.println(object.getString("packagename") + " " + 2);
+							//Shows the app even if it's all ready been installed
+							//App not installed through us but installed in the device through other source.
 						}
 						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==1){
 							//StaticData.application_list.add(abean);
+							System.out.println(object.getString("packagename") + " " + 3);
+							//Appinstalled though us and money received
 						}
 						else if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==1){
 							StaticData.application_list.add(abean);
+							System.out.println(object.getString("packagename") + " " + 4);
+							//App installed though us but has been removed and money is also received
 						}
 						else if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==2){
 							StaticData.application_list.add(abean);
+							System.out.println(object.getString("packagename") + " " + 5);
+							//App installed through us but money is pending
+						}
+						else if(object.getString("packagename")!=null && object.getInt(Constant.APP_FINAL_STATUS)==2){
+							//StaticData.application_list.add(abean);
+							System.out.println(object.getString("packagename") + " " + 6);
+							//App installed through us but money not received
 						}
 
-						/*if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename"))){
-					StaticData.application_list.add(abean);
-					}
-					else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt("appinstall")==1){
+
+					else if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==3){
 						StaticData.application_list.add(abean);
-					}*/
+							System.out.println(object.getString("packagename") + " " + 7);
+					}
+
 				
 					}
 					olistener.onSuccess();
@@ -182,15 +210,17 @@ System.out.println("app list response "+ result );
 			}
 			catch(Exception e){
 				//UtilMethod.showToast("Exception is "+e, cxt);
-				UtilMethod.showToast("on Post Exception is "+e, cxt);
+				//UtilMethod.showToast("on Post Exception is "+e, cxt);
 			}
 		}
 		else{
+			System.out.println("in else");
 			olistener.onError("slow");
 		}
 	}
 	private boolean isAppInstalled(String packageName) {
 		PackageManager pm = cxt.getPackageManager();
+
 		boolean installed = false;
 		try {
 			pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);

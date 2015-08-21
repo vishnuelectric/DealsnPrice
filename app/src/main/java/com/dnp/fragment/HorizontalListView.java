@@ -62,7 +62,7 @@ import java.util.Queue;
 
 /**
  * A view that shows items in a horizontally scrolling list. The items
- * come from the {@link ListAdapter} associated with this view. <br>
+ * come from the {@link android.widget.ListAdapter} associated with this view. <br>
  * <br>
  * <b>Limitations:</b>
  * <ul>
@@ -329,7 +329,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     /**
      * Sets the width of the divider that will be drawn between each item in the list. Calling
-     * this will override the intrinsic width as set by {@link #setDivider(Drawable)}
+     * this will override the intrinsic width as set by {@link #setDivider(android.graphics.drawable.Drawable)}
      *
      * @param width The width of the divider in pixels.
      */

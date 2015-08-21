@@ -12,6 +12,7 @@ public class ApplicationBean {
 	String app_instruction;
 	String campaign_status;
 	String package_name;
+	int taskValue;
 	float app_rate;
 	String share_link;
 	int purpose_id;
@@ -29,9 +30,24 @@ public class ApplicationBean {
 	String appshare;
 	String uptotalamount;
 	int step_status;
-	String packid;
+	String taskId;
 	int appfinalstatus;
+	boolean isOpened	=	false;  //aadded for local use
+	int progress	=	0;      //added for local use
 	
+	
+	public int getProgress() {
+		return progress;
+	}
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+	public boolean isOpened() {
+		return isOpened;
+	}
+	public void setOpened(boolean isOpened) {
+		this.isOpened = isOpened;
+	}
 	public int getAppfinalstatus() {
 		return appfinalstatus;
 	}
@@ -44,11 +60,11 @@ public class ApplicationBean {
 	public void setStep_status(int step_status) {
 		this.step_status = step_status;
 	}
-	public String getPackid() {
-		return packid;
+	public String getTaskId() {
+		return taskId;
 	}
-	public void setPackid(String packid) {
-		this.packid = packid;
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 	public String getUptotalamount() {
 		return uptotalamount;
@@ -155,7 +171,13 @@ public class ApplicationBean {
 	public void setShare_link(String share_link) {
 		this.share_link = share_link;
 	}
-	
+
+	public void setTaskValue(int value){
+		this.taskValue = value;
+	}
+	public int getTaskValue(){
+		return taskValue;
+	}
 	public String getAmount_type() {
 		return amount_type;
 	}

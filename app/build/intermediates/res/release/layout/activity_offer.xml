@@ -13,6 +13,7 @@
         android:scrollbars="none" >
 
         <include layout="@layout/header" />
+
     </HorizontalScrollView>
     <!--
          <View 
@@ -28,7 +29,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
-
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:minHeight="500dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/swipe"
+            >
         <ListView
             android:id="@+id/offer_list"
             android:layout_width="fill_parent"
@@ -38,7 +46,7 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="5dp" >
         </ListView>
-
+</android.support.v4.widget.SwipeRefreshLayout>
         <LinearLayout
             android:id="@+id/footer_layout"
             android:layout_width="fill_parent"

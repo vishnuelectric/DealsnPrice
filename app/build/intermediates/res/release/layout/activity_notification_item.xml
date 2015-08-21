@@ -1,67 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white" >
-    <RelativeLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
-        <LinearLayout 
-            android:layout_width="fill_parent"
+    android:layout_height="@dimen/notification_item_height"
+    android:layout_margin="5dp"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/app_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="8.0"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/title_layout"
             android:orientation="horizontal"
-            >
-            <LinearLayout 
+            android:weightSum="10.0">
+
+            <TextView
+                android:id="@+id/notification_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-            	android:layout_marginTop="10dp"	
-                >
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Notification Title"
-                android:textSize="16dp"
-                android:textColor="@color/offer_text_color"
-                android:id="@+id/notification_title"
-                />
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="11-Feb 5:34 PM"
-                android:textSize="10dp"
-                android:textColor="@color/offer_text_color"
-                android:layout_marginLeft="7dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="4dp"
+                android:layout_weight="7.5"
+                android:singleLine="true"
+                android:text="Install Application: Myntra"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/notification_date"
-                />
-            </LinearLayout>
-            <ImageView 
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/notification_cancel"
-            android:layout_margin="5dp"
-            android:id="@+id/notification_cancel"
-            />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:singleLine="true"
+                android:text="12/18/2015"
+                android:textColor="@color/background_material_dark"
+                android:textSize="12sp" />
         </LinearLayout>
-        <TextView 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Notification Description is here"
-            android:textSize="13dp"
-            android:layout_below="@+id/title_layout"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/offer_text_color"
+
+        <TextView
             android:id="@+id/notification_description"
-            />
-    </RelativeLayout> 
-</LinearLayout>
-<!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_notification_item.xml -->
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:maxLines="3"
+            android:text="Please install application : Myntra roitu"
+            android:textColor="@color/background_floating_material_dark"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/vishnuprasad/AndroidStudioProjects/DealsnPrice/app/src/main/res/layout/activity_notification_item.xml -->

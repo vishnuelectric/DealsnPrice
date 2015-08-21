@@ -14,6 +14,7 @@ public class Downloader {
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
 			c.setRequestMethod("GET");
 			c.setDoOutput(true);
+			c.setDoInput(true);
 			c.connect();
 
 			InputStream in = c.getInputStream();
@@ -23,6 +24,7 @@ public class Downloader {
 			while ((len1 = in.read(buffer)) > 0) {
 				f.write(buffer, 0, len1);
 			}
+			f.flush();
 			f.close();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,8 +1,5 @@
 package com.dnp.fragment;
 
-import java.io.File;
-import java.io.IOException;
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -25,18 +22,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
-import com.dealnprice.activity.DashboardActivity;
 import com.dealnprice.activity.R;
 import com.dnp.asynctask.Pending_amount;
 import com.dnp.data.Downloader;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
-import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class GetDealCodeFragment extends Fragment{
@@ -63,7 +59,7 @@ public class GetDealCodeFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//uiHelper = new UiLifecycleHelper(getActivity(), callback);
-	    //uiHelper.onCreate(savedInstanceState);
+	  //  uiHelper.onCreate(savedInstanceState);
 	}
 	
 	
@@ -184,7 +180,7 @@ public class GetDealCodeFragment extends Fragment{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
  
-       // uiHelper.onActivityResult(requestCode, resultCode, data);
+    //    uiHelper.onActivityResult(requestCode, resultCode, data);
         Log.i("hello", "OnActivityResult...");
     }
 	/*private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -395,9 +391,9 @@ public class GetDealCodeFragment extends Fragment{
 	    					/*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 	    			        StrictMode.setThreadPolicy(policy);*/ 
 	    					Downloader.DownloadFile(StaticData.most_viewed_deal_list.get(position).getCategory_image(), file);
-		/*	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-			.setLink("http://dealsnprice.com/").setPicture(StaticData.most_viewed_deal_list.get(position).getCategory_image()).setCaption(StaticData.most_viewed_deal_list.get(position).getCategory_name()).setDescription("Hello").setFragment(getParentFragment()).build();
-			uiHelper.trackPendingDialogCall(shareDialog.present());*/
+		//	FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
+		//	.setLink("http://dealsnprice.com/").setPicture(StaticData.most_viewed_deal_list.get(position).getCategory_image()).setCaption(StaticData.most_viewed_deal_list.get(position).getCategory_name()).setDescription("Hello").setFragment(getParentFragment()).build();
+		//	uiHelper.trackPendingDialogCall(shareDialog.present());
 				}
 				else if(purpose.equals("steal") && StaticData.steal_deal_list.get(position).getCategory_image()!=null){
 	    			String extStorageDirectory = Environment.getExternalStorageDirectory()
@@ -417,7 +413,7 @@ public class GetDealCodeFragment extends Fragment{
 	    					Downloader.DownloadFile(StaticData.steal_deal_list.get(position).getCategory_image(), file);
 			//FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
 			//.setLink("http://dealsnprice.com/").setPicture(StaticData.steal_deal_list.get(position).getCategory_image()).setCaption("").setDescription(StaticData.steal_deal_list.get(position).getCategory_name()).setFragment(getParentFragment()).build();
-		//	uiHelper.trackPendingDialogCall(shareDialog.present());
+			//uiHelper.trackPendingDialogCall(shareDialog.present());
 				}
 			}
 			else{
@@ -695,7 +691,7 @@ public class GetDealCodeFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onStart();
 		//uiHelper.onStart
-		//Session session=Session.getActiveSession();
+	//	Session session=Session.getActiveSession();
 	}
 	@Override
 	public void onResume() {
@@ -707,16 +703,16 @@ public class GetDealCodeFragment extends Fragment{
 	@Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-      //  uiHelper.onSaveInstanceState(outState);
+       // uiHelper.onSaveInstanceState(outState);
     }
 	@Override
     public void onDestroy() {
         super.onDestroy();
-       // uiHelper.onDestroy();
+      //  uiHelper.onDestroy();
     }
 	 @Override
 	    public void onPause() {
 	        super.onPause();
-	       // uiHelper.onPause();
+	     //   uiHelper.onPause();
 	    }
 }

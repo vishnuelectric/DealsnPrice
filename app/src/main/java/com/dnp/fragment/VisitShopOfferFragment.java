@@ -31,7 +31,7 @@ public class VisitShopOfferFragment extends Fragment{
 		shpf=getActivity().getSharedPreferences("User_name",1);
 		position=shpf.getInt("position", 0);
 		user_id=shpf.getString("user_id",null);
-		//DashboardActivity.onCustomActionView();
+		//DashboardActivity.fonCustomActionView();
 		
 		Pending_amount pp= new Pending_amount(getActivity());
 		pp.execute();

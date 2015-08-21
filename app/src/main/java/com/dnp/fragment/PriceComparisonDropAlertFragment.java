@@ -74,7 +74,7 @@ public class PriceComparisonDropAlertFragment extends Fragment{
 		shopearn_text=(TextView) view.findViewById(R.id.shopearn_text);
 		inviteearn_text=(TextView) view.findViewById(R.id.pricecomparison_text);
 		dealprice_text=(TextView) view.findViewById(R.id.dealprice_text);
-		couponprice_text=(TextView) view.findViewById(R.id.couponprice_text);
+		couponprice_text=(TextView) view.findViewById(R.id.referearn_text);
 		alert_layout=(LinearLayout) view.findViewById(R.id.alert_layout);
 		duration=(TextView) view.findViewById(R.id.duration);
 		target_price=(EditText) view.findViewById(R.id.target_price);

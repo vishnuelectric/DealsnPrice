@@ -3,7 +3,7 @@
 
     <string name="app_name">DealnPrice</string>
     <!-- <string name="app_id1">946706258674050</string> -->
-    <string name="app_id">1449536222015681</string>
+    <string name="app_id">1634264976847816</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="terms_of_use">By Registering account or signing in you agree to our Terms of use</string>
@@ -54,14 +54,15 @@
     <string name="others">Others</string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="login_using">Or Login to using</string>
+    <string name="login_using">Or Login using</string>
     <string name="signup_using">Or Sign Up to using</string>
     <string name="or">Or</string>
     <string name="share_link">Share this link on some technology</string>
     <string name="amount_warning">Please Enter Amount</string>
     <string name="operator_warning">Please Select Operator</string>
     <string name="regional_warning">Please Select State</string>
-
+    <string name="skip"><u>Skip</u></string>
+    <string name="next"><u>Next</u></string>
     <!--
          <string-array name="list_drawer_nav">
         <item>Overview</item>
@@ -201,8 +202,6 @@
     <string name="amount">Amount</string>
     <string name="recharge">Recharge</string>
     <string name="brand">Brand</string>
-    <string name="skip"><u>Skip</u></string>
-    <string name="next"><u>Next</u></string>
     <string name="model">Model</string>
     <string name="pending_cashback_own">Pending Cashback (Own):</string>
     <string name="pending_cashback_referal">Pending Cashback (Referal):</string>
@@ -218,5 +217,10 @@
     <string name="expected_cashback">Expected CashBack</string>
     <string name="redeemable">REDEEMABLE CASHBACK</string>
     <string name="total_rejected_cashback">Total Rejected Cashback:</string>
+    <string name="undo">Undo</string>
+    <string name="undoall">Undo All</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -50,7 +51,7 @@ public class ReferEarnFragment extends Fragment {
 	String url;
 	String user_id;
 	SharedPreferences shpf;
-	String user_Code;
+	String usercode;
 	LinearLayout sms_layout, whatsapp_layout, other_layout, gmail_layout;
 	LinearLayout footer_layout, offer_layout, shopearn_layout,
 	pricecomparison_layout, dealcoupon_layout, referearn_layout;
@@ -85,7 +86,7 @@ public class ReferEarnFragment extends Fragment {
 		inviteearn_text = (TextView) view
 				.findViewById(R.id.pricecomparison_text);
 		dealprice_text = (TextView) view.findViewById(R.id.dealprice_text);
-		couponprice_text = (TextView) view.findViewById(R.id.couponprice_text);
+		couponprice_text = (TextView) view.findViewById(R.id.referearn_text);
 		LayoutInflater inflater1 = LayoutInflater.from(getActivity());
 		View v1 = inflater1.inflate(R.layout.activity_footer, null);
 		LinearLayout home_layout = (LinearLayout) v1
@@ -124,11 +125,18 @@ public class ReferEarnFragment extends Fragment {
 		copy_link = (TextView) view.findViewById(R.id.copy_link);
 		refer_link = (TextView) view.findViewById(R.id.refer_link);
 		user_id = shpf.getString("user_id", "");
-		user_Code = shpf.getString("user_code", "");
+		usercode = shpf.getString("usercode", "");
 		url = WebService.REFER_EARN_WEBSERVICE + user_id;
-		setProgressDialog();
-		new GetReferEarnTask(getActivity(), url, new ReferEarnListener())
-		.execute();
+		if(StaticData.referearn_list.size() == 0) {
+			setProgressDialog();
+			new GetReferEarnTask(getActivity(), url, new ReferEarnListener())
+					.execute();
+		}
+		else
+		{
+			new ReferEarnListener().onSuccess();
+
+		}
 
 		return view;
 	}
@@ -154,7 +162,13 @@ public class ReferEarnFragment extends Fragment {
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.activity_loading_progressbar);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialogInterface) {
+
+			}
+		});
 		dialog.show();
 	}
 	OnClickListener profileListener = new OnClickListener() {
@@ -250,9 +264,14 @@ public class ReferEarnFragment extends Fragment {
 			// TODO Auto-generated method stub
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			String text = "Download the dealsnprice app & signup using my referral code "
-					+ user_Code
+			/*String text = "Download the dealsnprice app & signup using my referral code "
+					+ usercode
 					+ " & get ready to earn upto Rs. 500 on monthly basis. Also get upto 25% cashback on all your online purchases. Download Now - "
+					+ WebService.PLAY_STORE_URL;
+			*/
+			String text = "Download dealsnprice app, use my referral code "
+					+ usercode
+					+ " to earn Rs.500 monthly & 25% cashback on all online purchases."
 					+ WebService.PLAY_STORE_URL;
 			sendIntent.putExtra(Intent.EXTRA_TEXT, text);
 			sendIntent.setType("text/plain");
@@ -367,7 +386,7 @@ public class ReferEarnFragment extends Fragment {
 								dialog2.dismiss();
 								SmsManager sm = SmsManager.getDefault();
 								String text = "Download the dealsnprice app & signup using my referral code "
-										+ user_Code
+										+ usercode
 										+ " & earn upto Rs. 2500 monthly!"
 										+ WebService.PLAY_STORE_URL;
 								sm.sendTextMessage(StaticData.contact_list
@@ -409,7 +428,7 @@ public class ReferEarnFragment extends Fragment {
 					// waIntent.setType("*/*");
 
 					String text = "Download the dealsnprice app & signup using my referral code "
-							+ user_Code
+							+ usercode
 							+ " & get ready to earn upto Rs. 500 on monthly basis. Also get upto 25% cashback on all your online purchases. Download Now - "
 							+ WebService.PLAY_STORE_URL;
 					// String text =
@@ -453,7 +472,7 @@ public class ReferEarnFragment extends Fragment {
 					+
 
 					"\nHere is some great value up for grab! Download the Dealsnprice app & sign up using my referral code "
-					+ user_Code
+					+ usercode
 					+ " and get ready to earn cashback."
 					+
 
@@ -494,7 +513,7 @@ public class ReferEarnFragment extends Fragment {
 			ClipboardManager clipboard = (ClipboardManager) getActivity()
 					.getSystemService(getActivity().CLIPBOARD_SERVICE);
 			String text = "Download the dealsnprice app & signup using my referral code "
-					+ user_Code
+					+ usercode
 					+ " & get ready to earn upto Rs. 500 on monthly basis. Also get upto 25% cashback on all your online purchases. Download Now - "
 					+ WebService.PLAY_STORE_URL;
 			ClipData clip = ClipData.newPlainText("label", text);
@@ -509,6 +528,7 @@ public class ReferEarnFragment extends Fragment {
 			if (dialog != null && dialog.isShowing()) {
 				dialog.dismiss();
 			}
+
 			if (!UtilMethod.isStringNullOrBlank(getActivity()
 					.getSharedPreferences("User_login", 1).getString(
 							"user_code", null))) {
