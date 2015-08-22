@@ -59,6 +59,8 @@ import com.dnp.data.Receiver;
 import com.dnp.data.StaticData;
 import com.dnp.data.UtilMethod;
 import com.dnp.data.WebService;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -303,6 +305,13 @@ public class OfferDetailFragment extends Fragment{
 			install_image.setImageDrawable(getResources().getDrawable(R.drawable.refer));
 			install_text.setText("Refer");
 			//install_layout.setVisibility(View.GONE);
+		}
+		else if(StaticData.application_list.get(position).isPackage_flag() && StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("upto"))
+		{
+			install_layout.setVisibility(View.VISIBLE);
+			instructionBoxLL.setVisibility(View.GONE);
+			install_image.setImageDrawable(getResources().getDrawable(R.drawable.refer));
+			install_text.setText("Refer");
 		}
 
 		String value;
@@ -568,7 +577,7 @@ public class OfferDetailFragment extends Fragment{
 							}
 						}
 					});*/
-							/*facebook_share_layout.setOnClickListener(new OnClickListener() {
+							facebook_share_layout.setOnClickListener(new OnClickListener() {
 
 								@SuppressWarnings("deprecation")
 								@Override
@@ -576,16 +585,17 @@ public class OfferDetailFragment extends Fragment{
 									// TODO Auto-generated method stub
 									dialog1.dismiss();
 									if(isAppInstalled("com.facebook.katana")){
-										//FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-										//.setLink(StaticData.application_list.get(position).getAppshare()).setCaption("DealsnPrice").setDescription("DealsnPrice").setFragment(getParentFragment()).build();
-										//uiHelper.trackPendingDialogCall(shareDialog.present());
+										ShareDialog shareDialog = new ShareDialog(getActivity());
+										ShareLinkContent content = new ShareLinkContent.Builder()
+										.setContentUrl(Uri.parse(StaticData.application_list.get(position).getAppshare())).setContentTitle("DealsnPrice").setContentDescription("DealsnPrice").build();
+										shareDialog.show(getActivity(),content);
 									}
 									else{
 										UtilMethod.showToast("Please install Facebook App", getActivity());
 									}
 
 								}
-							});*/
+							});
 
 
 
@@ -618,7 +628,7 @@ public class OfferDetailFragment extends Fragment{
 									}
 								}
 							});
-						/*	google_plus_share_layout.setOnClickListener(new OnClickListener() {
+							/*google_plus_share_layout.setOnClickListener(new OnClickListener() {
 
 								@Override
 								public void onClick(View v) {
@@ -631,10 +641,8 @@ public class OfferDetailFragment extends Fragment{
 												.getIntent()
 												.setPackage("com.google.android.apps.plus");
 										getActivity().startActivity(shareIntent);
-										} catch (IOException e1) {
-				    						e1.printStackTrace();
-				    					}
-									}
+										}
+
 									else{
 										UtilMethod.showToast("Please install Google Plus", getActivity());
 
@@ -855,7 +863,7 @@ public class OfferDetailFragment extends Fragment{
 		  dialog.setContentView(R.layout.activity_loading);
 		  LinearLayout loadinglayout=(LinearLayout) dialog.findViewById(R.id.LinearLayout1);
 		  loading_image=(ImageView) dialog.findViewById(R.id.imageView111);
-		  loading_image.setBackgroundResource(R.anim.loading_animation);
+		  //loading_image.setBackgroundResource(R.anim.loading_animation);
 		  //	loadingViewAnim = (AnimationDrawable) loading_image.getBackground();
 		  dialog.setCancelable(false);
 		  //loadingViewAnim.start();

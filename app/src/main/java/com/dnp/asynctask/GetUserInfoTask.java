@@ -205,6 +205,7 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 					offer_bean.setConversion_date(offer_object.getString("conversion_date"));
 					offer_bean.setOffername(offer_object.getString("offer_name"));
 					offer_bean.setConversion_amount_user(offer_object.getString("conversion_amount_user"));
+
 					StaticData.offer_user.add(offer_bean);
 				}
 				

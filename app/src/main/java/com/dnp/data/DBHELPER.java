@@ -36,7 +36,7 @@ public class DBHELPER extends SQLiteOpenHelper {
                         "(id integer primary key autoincrement, title text,message text,email text,date text)"
         );
         db.execSQL("create table appinfo_upto (userid text  not null, packagename text UNIQUE not null, appname text not null," +
-                " installdate text ,targetdate text, datetask text , dataused integer, targetdata integer, datatask text, uid text   )");
+                " installdate text ,targetdate text, datetask text ,datetaskamount integer , dataused integer, targetdata integer, datatask text, datataskamount integer , uid text   )");
     }
 
     @Override

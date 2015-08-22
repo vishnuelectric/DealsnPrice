@@ -160,12 +160,12 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 						 * Conditions for showing the application in Offers Section
 						 */
 
-						if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename"))){
+						if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==0){
 							System.out.println(object.getString("packagename") + " " + 1);
 							StaticData.application_list.add(abean);
 						}
 						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==0){
-							//StaticData.application_list.add(abean);
+							StaticData.application_list.add(abean);
 							System.out.println(object.getString("packagename") + " " + 2);
 							//Shows the app even if it's all ready been installed
 							//App not installed through us but installed in the device through other source.
@@ -185,7 +185,7 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 							System.out.println(object.getString("packagename") + " " + 5);
 							//App installed through us but money is pending
 						}
-						else if(object.getString("packagename")!=null && object.getInt(Constant.APP_FINAL_STATUS)==2){
+						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==2){
 							//StaticData.application_list.add(abean);
 							System.out.println(object.getString("packagename") + " " + 6);
 							//App installed through us but money not received
@@ -193,7 +193,7 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 
 
 					else if(object.getString("packagename")!=null && !isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==3){
-						StaticData.application_list.add(abean);
+						//StaticData.application_list.add(abean);
 							System.out.println(object.getString("packagename") + " " + 7);
 					}
 

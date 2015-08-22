@@ -233,7 +233,7 @@ public class LoginActivity extends Activity {
 		/*authButton.setLayoutParams(LayoutParams.FILL_PARENT,"60dp");*/
 		APP_ID=getString(R.string.app_id);
 		//fb=new Facebook(APP_ID);
-		//generateHash();	/*if(mGoogleApiClient.isConnected()){*/
+		generateHash();	/*if(mGoogleApiClient.isConnected()){*/
 		/*if(flag1==0){
 			mGoogleApiClient = new GoogleApiClient.Builder(this)
 			.addConnectionCallbacks(this)
