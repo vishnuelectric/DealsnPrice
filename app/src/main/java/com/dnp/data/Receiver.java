@@ -12,8 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
-import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.dealnprice.activity.DashboardActivity;
@@ -90,9 +90,8 @@ public class Receiver extends BroadcastReceiver{
 			String m_androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 
 			String user_id=context.getSharedPreferences("User_login", 1).getString("user_id", null);
-			TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-			String device_id=telephonyManager.getDeviceId();
 
+			String device_id = PreferenceManager.getDefaultSharedPreferences(context).getString("imei",null);
 			if(intent.getAction().equals("android.intent.action.PACKAGE_ADDED")){
 				String url1=WebService.INSERT_APP_STATUS_SERVICE+"extension=1&userid="+user_id+"&appid="+context.getSharedPreferences("APP_INFO", 0).getString("app_id", null)+"&imei="+device_id+"&status=1&stepcode="+context.getSharedPreferences("APP_INFO", 0).getString("app_id", null);
                    System.out.println(url1);

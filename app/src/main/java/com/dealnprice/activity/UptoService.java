@@ -1,20 +1,25 @@
 package com.dealnprice.activity;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
-import com.dnp.asynctask.Pending_amount;
+import com.dnp.asynctask.UptoTask;
 import com.dnp.data.APP_Constants;
 import com.dnp.data.DBHELPER;
+import com.dnp.data.UtilMethod;
+
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +34,8 @@ public class UptoService extends Service {
     Notification.Builder builder;
     NotificationManager notificationManager;
     static UptoService uptoService = null;
+    SharedPreferences sharedPreferences;
+    String appname;
 
     Cursor c;
     public UptoService() {
@@ -59,7 +66,7 @@ builder = new Notification.Builder(this);
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         dbhelper = new DBHELPER(this);
-
+sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sqLiteDatabase = dbhelper.getWritableDatabase();
        t= null;
         timerTask = null;
@@ -68,20 +75,11 @@ builder = new Notification.Builder(this);
         timerTask = new TimerTask() {
             @Override
             public void run() {
-
+                   sqLiteDatabase = dbhelper.getWritableDatabase();
                         boolean result = checkdatatask(c);
                         boolean result1 = checkdatetask(c);
-               /* else if(notificationId == 5)
-                {
-                    message = "Congratulations!! you have completed your date task";
-                    title= "date task completed for"+appName;
-                }
-                else if(notificationId == 6)
-                {
-                    message = "Congratulations!! you have completed teh data task";
-                    title = "data task completed for"+appName;
-                }*/
 
+                   sqLiteDatabase.close();
 
 
 
@@ -94,26 +92,34 @@ builder = new Notification.Builder(this);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 contentValues.put("datetask", "true");
 
-               int rows_affected=  sqLiteDatabase.update("appinfo_upto",contentValues," targetdate < "+"'"+simpleDateFormat.format(new Date()) +"'"+ " AND datetask = 'false'" ,null);
-    if(rows_affected > 0) {
-        //TODO show notification for date tasks
-        builder.setContentTitle("Date task");
-        builder.setContentText("Date task finished for one or more apps");
-        builder.setSmallIcon(R.drawable.app_icon);
-        Intent resultIntent = new Intent(uptoService, DashboardActivity.class);
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        uptoService,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        builder.setContentIntent(resultPendingIntent);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon));
-        Notification n1 = builder.build();
+                int rows_affected=  sqLiteDatabase.update("appinfo_upto", contentValues, " targetdate < " + "'" + simpleDateFormat.format(new Date()) + "'" + " AND datetask = 'false'", null);
+                Cursor c = sqLiteDatabase.rawQuery("select appid,userid,installdate,appname from appinfo_upto where targetdate > "+"'"+simpleDateFormat.format(new Date()) +"'", null);
 
-        notificationManager.notify(5, n1);
-    }
+                try {
+                    if (rows_affected > 0 && c.moveToFirst()) {
+                        do {
+                            MultipartEntity multipartEntity = new MultipartEntity();
+                            multipartEntity.addPart("appid", new StringBody(c.getString(0)));
+                            multipartEntity.addPart("userid", new StringBody(c.getString(1)));
+                            multipartEntity.addPart("data", new StringBody(c.getString(2)));
+                            multipartEntity.addPart("taskid", new StringBody("222"));
+                            multipartEntity.addPart("imei", new StringBody(sharedPreferences.getString("imei",null)));
+
+                            appname = c.getString(3);
+                            new UptoTask(uptoService, multipartEntity, new UptoListener("date"),appname).execute();
+
+                        }
+                        while (c.moveToNext());
+
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+
 
                 return true;
 
@@ -126,24 +132,29 @@ builder = new Notification.Builder(this);
 
                 int rows_affected= sqLiteDatabase.updateWithOnConflict("appinfo_upto",contentValues," targetdata < dataused AND datatask = 'false'",null,SQLiteDatabase.CONFLICT_IGNORE);
                 //TODO show notifs for datatasks
-if(rows_affected >0 ) {
-    builder.setContentTitle("Data task");
+                Cursor c = sqLiteDatabase.rawQuery("select appid,userid,dataused,appname from appinfo_upto where targetdata > dataused",null);
+try {
 
-    builder.setContentText("Data task finished for one or more apps");
-    builder.setSmallIcon(R.drawable.app_icon);
-    Intent resultIntent = new Intent(uptoService, DashboardActivity.class);
-    PendingIntent resultPendingIntent =
-            PendingIntent.getActivity(
-                    uptoService,
-                    0,
-                    resultIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-            );
-    builder.setContentIntent(resultPendingIntent);
-    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon));
-    Notification n1 = builder.build();
+    if (rows_affected > 0 && c.moveToFirst()) {
 
-    notificationManager.notify(6, n1);
+        do {
+            MultipartEntity multipartEntity = new MultipartEntity();
+            multipartEntity.addPart("appid", new StringBody(c.getString(0)));
+            multipartEntity.addPart("userid", new StringBody(c.getString(1)));
+            multipartEntity.addPart("data", new StringBody(c.getString(2)));
+            multipartEntity.addPart("taskid", new StringBody("333"));
+            multipartEntity.addPart("imei", new StringBody(sharedPreferences.getString("imei",null)));
+           appname = c.getString(2);
+            new UptoTask(uptoService, multipartEntity, new UptoListener("data"),appname).execute();
+        }
+        while (c.moveToNext());
+
+
+    }
+}
+catch (Exception e)
+{
+    e.printStackTrace();
 }
                 return true;
             }
@@ -159,40 +170,36 @@ if(rows_affected >0 ) {
     }
 
 
-    public void processAmount(int amountType, Object context)
-    {
-        if(amountType   == APP_Constants.AMOUNT_DETAILS)
-        {
-           //new AmountTask(uptoService,AMOUNT_DETAIL_URL).execute();
-        }
-        else if(amountType  ==  APP_Constants.ACCOUNT_DETAILS)
-        {
+    public void processAmount(int amountType, Object context) {
+      /*  if (amountType == APP_Constants.AMOUNT_DETAILS) {
+            // new AmountTask(amntServiceRef,AMOUNT_DETAIL_URL).execute();
+        } else if (amountType == APP_Constants.ACCOUNT_DETAILS) {
+            new GetBasicAccountDetailsTask(DashboardActivity.actRef).execute();
+            if (APP_Constants.IS_AMOUNT_CHANGED) {
+                builder.setContentTitle(APP_Constants.REWARD_TITLE);
+                builder.setContentText(APP_Constants.REWARD_MESSAGE);
+                builder.setSmallIcon(R.drawable.app_icon);
+                builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon));
+                Notification n1 = builder.build();
+                notificationManager.notify(APP_Constants.MONEY_NOTIF_ID, n1);
+                APP_Constants.IS_AMOUNT_CHANGED = false;
+               // UtilMethod.showToast(" Amount Changed", DashboardActivity.actRef);
+            }
+            // UtilMethod.showToast(" Success Amount Service Called",DashboardActivity.actRef);
+        } else if (amountType == APP_Constants.PENDING_AMOUNT_DETAILS) {
+            new Pending_amount(DashboardActivity.actRef);
+        } else if (amountType == APP_Constants.MISSING_CASHBACK_DETAILS) {
+
+        } else if (amountType == APP_Constants.PAYMENT_TRANSFER_DETAILS) {
+
+        } else if (amountType == APP_Constants.UPDATE_BANK_DETAILS) {
+
+        } else if (amountType == APP_Constants.REDEEM_HISTORY_DETAILS) {
+
+        } else if (amountType == APP_Constants.MISSING_CASHBACK_LIST) {
 
         }
-        else if(amountType  ==  APP_Constants.PENDING_AMOUNT_DETAILS)
-        {
-            new Pending_amount((Activity)context);
-        }
-        else if(amountType  ==  APP_Constants.MISSING_CASHBACK_DETAILS)
-        {
-            //TODO
-        }
-        else if(amountType  ==  APP_Constants.PAYMENT_TRANSFER_DETAILS)
-        {
-
-        }
-        else if(amountType  ==  APP_Constants.UPDATE_BANK_DETAILS)
-        {
-
-        }
-        else if(amountType  ==  APP_Constants.REDEEM_HISTORY_DETAILS)
-        {
-
-        }
-        else if(amountType  ==  APP_Constants.MISSING_CASHBACK_LIST)
-        {
-
-        }
+*/
     }
 
     @Override
@@ -200,4 +207,69 @@ if(rows_affected >0 ) {
         super.onDestroy();
         uptoService = null;
     }
+    public class UptoListener {
+        String type;
+        public UptoListener(String type){
+            this.type= type;
+        }
+        public void onSuccess(String msg,String app){
+
+if(type.equalsIgnoreCase("date") && msg.equalsIgnoreCase("success"))
+{
+    builder.setContentTitle("Date task");
+    builder.setContentText("Date task finished for " + app + " apps");
+    builder.setSmallIcon(R.drawable.app_icon);
+    Intent resultIntent = new Intent(uptoService, DashboardActivity.class);
+    PendingIntent resultPendingIntent =
+            PendingIntent.getActivity(
+                    uptoService,
+                    0,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+    builder.setContentIntent(resultPendingIntent);
+    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon));
+    Notification n1 = builder.build();
+    dbhelper.insertNotification(APP_Constants.DAYS_TITLE,APP_Constants.DAYS_MESSAGE,"", UtilMethod.getCurrentDate());
+
+    notificationManager.notify(5, n1);
+}
+            else if(type.equalsIgnoreCase("data") && msg.equalsIgnoreCase("success")){
+    builder.setContentTitle("Data task");
+
+    builder.setContentText("Data task finished for " + app + " apps");
+    builder.setSmallIcon(R.drawable.app_icon);
+    Intent resultIntent = new Intent(uptoService, DashboardActivity.class);
+    PendingIntent resultPendingIntent =
+            PendingIntent.getActivity(
+                    uptoService,
+                    0,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+    builder.setContentIntent(resultPendingIntent);
+    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon));
+    Notification n1 = builder.build();
+
+    notificationManager.notify(6, n1);
+}
+
+            if(msg.equalsIgnoreCase("error") && type.equalsIgnoreCase("data"))
+            { ContentValues content = new ContentValues();
+                content.put("datatask","false");
+                sqLiteDatabase.update("appinfo_upto",content,"appname ="+ app,null);
+            }
+            else if(msg.equalsIgnoreCase("error") && type.equalsIgnoreCase("date"))
+            {
+                ContentValues content = new ContentValues();
+                content.put("datetask","false");
+                sqLiteDatabase.update("appinfo_upto",content,"appname ="+ app,null);
+
+            }
+        }
+        public void onError(String msg){
+
+        }
+    }
+
 }

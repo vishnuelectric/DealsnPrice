@@ -4,9 +4,13 @@ package com.dealnprice.activity;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.dnp.data.APP_Constants;
@@ -26,7 +30,14 @@ public class StylistActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-		
+		  TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		  String device_id=telephonyManager.getDeviceId();
+		  String deviceName = android.os.Build.MODEL;
+		  String deviceMan = android.os.Build.MANUFACTURER;
+		  String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putString("devicename",deviceName).
+				putString("manufacturer",deviceMan).putString("androidid",m_androidId).putString("imei",device_id).commit();
+
 		shpf=getSharedPreferences("User_login", 1);
 		user_id=shpf.getString("user_id", null);
 		Mint.initAndStartSession(this, "dfeda966");
