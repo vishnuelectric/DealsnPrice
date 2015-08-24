@@ -9,6 +9,7 @@ public class WebService {
 	//public static String WEB_HOST_URL="http://ec2-52-27-70-107.us-west-2.compute.amazonaws.com/"; //testing
 	//public static String WEB_HOST_URL="http://dealsandprice.in/";
 	public static String HOST_URL="http://72.167.41.165/cashitback/webservices/";
+	public static String UPTO_TASK = WEB_HOST_URL+"/app/task";
 		
 	public static String REGISTRATION_SERVICE=WEB_HOST_URL+"login/register";
 	

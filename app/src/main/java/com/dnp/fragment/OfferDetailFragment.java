@@ -377,7 +377,7 @@ public class OfferDetailFragment extends Fragment{
 				sqLiteDatabase = dbhelper.getWritableDatabase();
 
 
-				Cursor c = sqLiteDatabase.rawQuery("select installdate,datetask,datatask,dataused,targetdata,uid from appinfo_upto where packagename = "+"'"+StaticData.application_list.get(position).getPackage_name()+"'",null);
+				Cursor c = sqLiteDatabase.rawQuery("select installdate,datetask,datatask,dataused,targetdata,uid from appinfo_upto where packagename = "+"'"+StaticData.application_list.get(position).getPackage_name()+"' AND userid = '"+ getActivity().getSharedPreferences("User_login", 1).getString("user_id", null)+"'",null);
 				if(c.moveToFirst()) {
 					Long byt = c.getString(3) == null ? 0 : Long.parseLong(c.getString(3)) + TrafficStats.getUidTxBytes(Integer.parseInt(c.getString(5))) + TrafficStats.getUidRxBytes(Integer.parseInt(c.getString(5)));
 					System.out.println(" "+c.getString(0)+" "+c.getString(1)+" "+c.getString(2)+" "+c.getString(3)+" "+c.getString(4)+" "+ c.getString(5) + " " + byt);
@@ -408,11 +408,17 @@ public class OfferDetailFragment extends Fragment{
 						//ImageView v = (ImageView) lv.getChildAt(1).findViewById(R.id.step_offer_image);
 						//v.setImageDrawable(getResources().getDrawable(R.drawable.active_circle));
 					}
+					dbhelper = new DBHELPER(getActivity());
+					sqLiteDatabase = dbhelper.getWritableDatabase();
+					ContentValues content = new ContentValues();
 					if ( c.getString(2)!= null && c.getString(4) != null  && (c.getString(2).equalsIgnoreCase("true") || (byt / 1024) > c.getInt(4))) {
 						int i =0;
 						for(ApplicationBean b :offer_list){
 							System.out.println("data "+b.getPackage_name()+ " " +b.getTaskId()+ " ");
+							content.put("dataused",(byt/1024));
+							sqLiteDatabase.update("appinfo_upto",content,"packagename = "+"'"+ StaticData.application_list.get(position).getPackage_name()+"' AND userid = '"+ getActivity().getSharedPreferences("User_login", 1).getString("user_id", null)+ "'",null);
 							if(b.getTaskId().equalsIgnoreCase("333")) {
+
 								offer_list.get(i).setStep_status(1);
 							}
 							i++;
@@ -658,29 +664,33 @@ public class OfferDetailFragment extends Fragment{
 							//--
 							dbhelper = new DBHELPER(getActivity());
 							sqLiteDatabase=dbhelper.getWritableDatabase();
-							ContentValues contentValues = new ContentValues();
-							contentValues.put("packagename",StaticData.application_list.get(position).getPackage_name());
-							contentValues.put("userid", getActivity().getSharedPreferences("User_login", 1).getString("user_id", null));
-							contentValues.put("appname", StaticData.application_list.get(position).getApp_name());
-							for(ApplicationBean b :offer_list) {
-								if (b.getTaskId().equalsIgnoreCase("333")) {
-									//TODO change condition to value, put value in upto list in applisttask, n get it here n insert in db
-									contentValues.put("targetdata", b.getTaskValue()*1024);
-									System.out.println(b.getTaskValue());
-								}
-								if(b.getTaskId().equalsIgnoreCase("222"))
-								{
-									SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							if(StaticData.application_list.get(position).getApp_type().equalsIgnoreCase("upto")) {
+								ContentValues contentValues = new ContentValues();
+								contentValues.put("packagename", StaticData.application_list.get(position).getPackage_name());
+								contentValues.put("userid", getActivity().getSharedPreferences("User_login", 1).getString("user_id", null));
+								contentValues.put("appid",StaticData.application_list.get(position).getApp_id());
+								contentValues.put("appname", StaticData.application_list.get(position).getApp_name());
+								for (ApplicationBean b : offer_list) {
+									if (b.getTaskId().equalsIgnoreCase("333")) {
+										//TODO change condition to value, put value in upto list in applisttask, n get it here n insert in db
+										contentValues.put("targetdata", b.getTaskValue() * 1024);
+										contentValues.put("datataskamount",b.getUpto_amount());
+										System.out.println(b.getTaskValue());
+									}
+									if (b.getTaskId().equalsIgnoreCase("222")) {
+										SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-									Date d = new Date(System.currentTimeMillis());
-									d.setTime(d.getTime()+ (b.getTaskValue()*24*60*60*1000));
-									System.out.println(simpleDateFormat.format(d) + "  " + b.getTaskValue() + " "+ b.getTaskId());
-									contentValues.put("targetdate",simpleDateFormat.format(d));
+										Date d = new Date(System.currentTimeMillis());
+										d.setTime(d.getTime() + (b.getTaskValue() * 24 * 60 * 60 * 1000));
+										System.out.println(simpleDateFormat.format(d) + "  " + b.getTaskValue() + " " + b.getTaskId());
+										contentValues.put("targetdate", simpleDateFormat.format(d));
+										contentValues.put("datetaskamount",b.getUpto_amount());
 
+									}
 								}
+
+								sqLiteDatabase.insertWithOnConflict("appinfo_upto", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
 							}
-							sqLiteDatabase.insertWithOnConflict("appinfo_upto", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-
 							sqLiteDatabase.close();
 							if(!StaticData.application_list.get(position).isOpened() && StaticData.application_list.get(position).isPackage_flag())
 							{

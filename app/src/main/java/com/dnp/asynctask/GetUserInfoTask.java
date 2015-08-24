@@ -1,11 +1,14 @@
 package com.dnp.asynctask;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
 import com.dnp.bean.FavouriteBean;
 import com.dnp.bean.MyAccountBean;
 import com.dnp.bean.UserBean;
+import com.dnp.data.DBHELPER;
 import com.dnp.data.HttpRequest;
 import com.dnp.data.StaticData;
 import com.dnp.data.WebService;
@@ -23,7 +26,10 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 	//ProgressDialog pdialog;
 	FavouriteListener fListener;
 	BankListener bankListener;
-	MyAccountListener maListener; 
+	MyAccountListener maListener;
+	SQLiteDatabase sqLiteDatabase;
+	DBHELPER dbhelper;
+
 	
 	
 	public GetUserInfoTask(Context cxt,ProfileListener plistener){
@@ -45,6 +51,8 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 	public GetUserInfoTask(Context cxt,MyAccountListener malistener){
 		this.cxt=cxt;
 		this.maListener=malistener;
+		dbhelper = new DBHELPER(cxt);
+		sqLiteDatabase= dbhelper.getWritableDatabase();
 	}
 	
 	@Override
@@ -87,7 +95,7 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 				JSONObject object=jobj.getJSONObject("userlogininfo");
 				UserBean ubean=new UserBean();
 				ubean.setUser_id(object.getString("od_id"));
-				ubean.setUser_name(object.getString("od_user_first_name")+" "+object.getString("od_user_last_name"));
+				ubean.setUser_name(object.getString("od_user_first_name") + " " + object.getString("od_user_last_name"));
 				ubean.setUser_email(object.getString("od_user_email"));
 				ubean.setUser_mobile(object.getString("od_user_mobile"));
 				ubean.setUser_pass(object.getString("od_user_password"));
@@ -198,13 +206,39 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 				}
 				
 				JSONArray offer_array=jobj.getJSONArray("offeruser");
+				Cursor c;
 				for(int k=0;k<offer_array.length();k++){
 					JSONObject offer_object=offer_array.getJSONObject(k);
 					MyAccountBean offer_bean=new MyAccountBean();
 					offer_bean.setConversion_status(offer_object.getString("conversion_status"));
 					offer_bean.setConversion_date(offer_object.getString("conversion_date"));
 					offer_bean.setOffername(offer_object.getString("offer_name"));
-					offer_bean.setConversion_amount_user(offer_object.getString("conversion_amount_user"));
+					int amount_app= offer_object.getInt("conversion_amount_user");
+					int temp=0;
+
+					c = sqLiteDatabase.rawQuery("select appname,datetaskamount,datetask,datataskamount,datatask from appinfo_upto where appname = "+"'"+offer_object.getString("offer_name")+"'",null);
+
+					if(c.moveToFirst() && c.getString(0).equalsIgnoreCase(offer_object.getString("offer_name"))){
+						if(c.getString(2).equalsIgnoreCase("false")){
+							amount_app= amount_app - c.getInt(1);
+							temp = c.getInt(1);
+						}
+						if(c.getString(4).equalsIgnoreCase("false"))
+						{
+							amount_app = amount_app - c.getInt(3);
+							temp = c.getInt(3);
+						}
+				offer_bean.setConversion_amount_user(String.valueOf(amount_app));
+						StaticData.user_info.get(0).setTotal_amount(String.valueOf(Integer.parseInt(StaticData.user_info.get(0).getTotal_amount()) - temp));
+
+					}
+					else{
+						StaticData.user_info.get(0).setTotal_amount(String.valueOf(Integer.parseInt(StaticData.user_info.get(0).getTotal_amount()) - temp));
+						//StaticData.user_account.get(0).setTotal_amount(String.valueOf(Integer.parseInt(StaticData.user_info.get(0).getTotal_amount()) - temp));
+
+						offer_bean.setConversion_amount_user(String.valueOf(amount_app));
+					}
+
 
 					StaticData.offer_user.add(offer_bean);
 				}
@@ -246,6 +280,7 @@ public class GetUserInfoTask extends AsyncTask<String, Void, String>{
 			}
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				if(pListener!=null){
 				pListener.onSuccess();
 				}

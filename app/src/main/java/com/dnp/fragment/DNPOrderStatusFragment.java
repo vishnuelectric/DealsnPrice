@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dealnprice.activity.DashboardActivity;
 import com.dealnprice.activity.R;
 import com.dnp.adapter.OrderStatusAdapter;
 import com.dnp.asynctask.Pending_amount;
@@ -101,7 +100,21 @@ public class DNPOrderStatusFragment extends Fragment{
 		status_layout.setOnClickListener(statusListener);
 		shopping_layout.setOnClickListener(ordershoppingListener);
 
+
 		return view;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		for(int i=0;i<StaticData.offer_user.size();i++) {
+			if (StaticData.offer_user.get(i).getConversion_status().equals("0")) {
+				StaticData.order_filter_list.add(StaticData.offer_user.get(i));
+			}
+			OrderStatusAdapter osadapter=new OrderStatusAdapter(getActivity());
+			order_list.setAdapter(osadapter);
+			osadapter.notifyDataSetChanged();
+		}
 	}
 
 	OnClickListener offerListener=new OnClickListener() {

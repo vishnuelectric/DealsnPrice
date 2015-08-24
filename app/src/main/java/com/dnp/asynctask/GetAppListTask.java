@@ -165,7 +165,7 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 							StaticData.application_list.add(abean);
 						}
 						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==0){
-							StaticData.application_list.add(abean);
+							//StaticData.application_list.add(abean);
 							System.out.println(object.getString("packagename") + " " + 2);
 							//Shows the app even if it's all ready been installed
 							//App not installed through us but installed in the device through other source.
@@ -186,7 +186,7 @@ public class GetAppListTask extends AsyncTask<String, Void, String>{
 							//App installed through us but money is pending
 						}
 						else if(object.getString("packagename")!=null && isAppInstalled(object.getString("packagename")) && object.getInt(Constant.APP_FINAL_STATUS)==2){
-							//StaticData.application_list.add(abean);
+							StaticData.application_list.add(abean);
 							System.out.println(object.getString("packagename") + " " + 6);
 							//App installed through us but money not received
 						}
